@@ -57,20 +57,20 @@ export const sendRequest = async <T>(props: IRequest) => {
   // console.log('🚀 ~ url:', options)
 
   return fetch(url, options).then(async (res: any) => {
-    if (!id_user_guest) {
-      const newIdUserGuest = res.headers.get('id_user_guest')
-      if (newIdUserGuest) {
-        await cookie.set({
-          name: 'id_user_guest',
-          value: newIdUserGuest,
-          path: '/',
-          httpOnly: true,
-          secure: true,
-          sameSite: 'lax',
-          maxAge: 60 * 60 * 24 * 365 * 10 //10 năm
-        })
-      }
-    }
+    // if (!id_user_guest) {
+    //   const newIdUserGuest = res.headers.get('id_user_guest')
+    //   if (newIdUserGuest) {
+    //     await cookie.set({
+    //       name: 'id_user_guest',
+    //       value: newIdUserGuest,
+    //       path: '/',
+    //       httpOnly: true,
+    //       secure: true,
+    //       sameSite: 'lax',
+    //       maxAge: 60 * 60 * 24 * 365 * 10 //10 năm
+    //     })
+    //   }
+    // }
     if (res.ok) {
       return res.json() as T //generic
     } else {
