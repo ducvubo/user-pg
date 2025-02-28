@@ -106,8 +106,8 @@
 
 import { Label } from '@/components/ui/label'
 import Link from 'next/link'
-import { IRestaurant } from '../interface/restaurant.interface'
-import { GetRestaurantById } from '../actions/home.api'
+import { IRestaurant } from '../../interface/restaurant.interface'
+import { GetRestaurantById, GetRestaurantByIds } from '../home.api'
 import CarouselRestaurantClient from './CarouselRestaurantClient'
 
 interface IProps {
@@ -118,14 +118,11 @@ interface IProps {
 }
 
 export default async function CarouselRestaurant({ link, order, selectedRestaurant, title }: IProps) {
-  const listRestaurantSelected = (
-    await Promise.all(
-      selectedRestaurant.map(async (id) => {
-        const res = await GetRestaurantById(id)
-        return res.statusCode === 200 ? res.data : null
-      })
-    )
-  ).filter((item) => item !== null) as IRestaurant[]
+  let listRestaurantSelected: IRestaurant[] = []
+  const res: IBackendRes<IRestaurant[]> = await GetRestaurantByIds(selectedRestaurant)
+  if (res.statusCode === 201 && res.data) {
+    listRestaurantSelected = res.data
+  }
 
   return (
     <div className='mt-10'>

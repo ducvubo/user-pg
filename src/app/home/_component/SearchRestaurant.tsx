@@ -3,7 +3,7 @@
 import { Search } from 'lucide-react'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Input } from '@/components/ui/input'
-import { getAllCategoryName, getRestaurantTypes, ICategory } from '../actions/home.api'
+import { getAllCategoryName, getRestaurantTypes, ICategory } from '../home.api'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import Link from 'next/link'

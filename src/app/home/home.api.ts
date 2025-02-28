@@ -92,9 +92,17 @@ export const GetRestaurantById = async (id: string) => {
     url: `${URL_SERVER}/restaurants/get-restaurant-by-id/${id}`,
     method: 'GET',
     nextOption: {
-      // cache: 'no-store'
       revalidate: 3600
     }
+  })
+  return res
+}
+
+export const GetRestaurantByIds = async (restaurant_ids: string[]) => {
+  const res: IBackendRes<IRestaurant[]> = await sendRequest({
+    url: `${URL_SERVER}/restaurants/get-restaurant-by-ids`,
+    method: 'POST',
+    body: { restaurant_ids }
   })
   return res
 }

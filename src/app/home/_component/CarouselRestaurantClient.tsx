@@ -6,8 +6,8 @@ import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
 import Image from 'next/image'
 import Link from 'next/link'
-import { IRestaurant } from '../interface/restaurant.interface'
-import { buildPriceRestaurant, replaceDimensions } from '../utils'
+import { IRestaurant } from '../../interface/restaurant.interface'
+import { buildPriceRestaurant, replaceDimensions } from '../../utils'
 
 const NextArrow = ({ className, style, onClick }: any) => (
   <div className={className} style={{ ...style, display: 'block', right: '10px', zIndex: 1 }} onClick={onClick} />
@@ -47,16 +47,21 @@ export default function CarouselRestaurantClient({ listRestaurantSelected }: IPr
               alt='vuducbo'
               className='flex justify-center w-full h-[310px]'
             />
-            <div className='flex flex-col gap-1 group hover:text-red-500'>
+            <div className='flex flex-col gap-1 group hover:text-red-500 mt-3'>
               <span className='font-semibold line-clamp-1'>{restaurant.restaurant_name}</span>
               <div className='flex gap-2'>
                 <span className='line-clamp-1'>{restaurant.restaurant_address.address_province.name}</span>
-                <span className='border rounded-md p-1 -mt-1'>
-                  {restaurant.restaurant_type[0].restaurant_type_name}
-                </span>
-                <span className='border rounded-md p-1 -mt-1'>
-                  {restaurant.restaurant_type[1].restaurant_type_name}
-                </span>
+                {restaurant.restaurant_type[0] && (
+                  <span className='border rounded-md p-1 -mt-1'>
+                    {restaurant.restaurant_type[0].restaurant_type_name}
+                  </span>
+                )}
+
+                {restaurant.restaurant_type[1] && (
+                  <span className='border rounded-md p-1 -mt-1'>
+                    {restaurant.restaurant_type[1].restaurant_type_name}
+                  </span>
+                )}
               </div>
               <span className='font-semibold text-red-500 text-sm'>
                 {buildPriceRestaurant(restaurant.restaurant_price)}

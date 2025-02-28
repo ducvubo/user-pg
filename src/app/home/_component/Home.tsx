@@ -1,8 +1,8 @@
 import React from 'react'
 import Header from './Header'
 import CarouselRestaurant from './CarouselRestaurant'
-import { getRestaurantHome, getSysteParameter } from '../actions/home.api'
-import { IRestaurant } from '../interface/restaurant.interface'
+import { getRestaurantHome, getSysteParameter } from '../home.api'
+import { IRestaurant } from '../../interface/restaurant.interface'
 import CarouselBanner from './RestaurantDeals'
 import SearchRestaurant from './SearchRestaurant'
 import { mockRestaurants } from './mockData'
@@ -10,7 +10,7 @@ import TopRestaurantAddress from './TopRestaurantAddress'
 import YouFind from './YouLookingForRestaurant'
 import Image from 'next/image'
 import RestaurantDeals from './RestaurantDeals'
-import { SystemParameterEnum } from '../utils/ListSystemParameter'
+import { SystemParameterEnum } from '../../utils/ListSystemParameter'
 import YouLookingForRestaurant from './YouLookingForRestaurant'
 import Footer from './Footer'
 import Link from 'next/link'
@@ -67,7 +67,7 @@ const HomePage = async () => {
             )
               .sort((a: any, b: any) => a.order - b.order)
               .map((item: any, index: number) => (
-                <Link href={item.link} className='flex flex-col gap-5' key={index} >
+                <Link href={item.link} className='flex flex-col gap-5' key={index}>
                   <Image key={index} src={item.image_cloud} width={1920} height={1080} alt='vuducbo' />
                 </Link>
               ))}

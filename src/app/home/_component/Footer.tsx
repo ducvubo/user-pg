@@ -1,5 +1,5 @@
 import React from 'react'
-import { settings } from '../setting'
+import { settings } from '../../setting'
 
 export default function Footer() {
   return (

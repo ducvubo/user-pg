@@ -1,31 +1,60 @@
-import { Card, CardContent, CardHeader } from '@/components/ui/card'
-import { ChevronRight, CircleDollarSign, MapPin } from 'lucide-react'
+import { ChevronRight, CircleDollarSign, List, MapPin, PhoneCall } from 'lucide-react'
 import React from 'react'
-import Image from 'next/image'
-import { Button } from '@/components/ui/button'
-import { settings } from '@/app/setting'
 import { IRestaurant } from '@/app/interface/restaurant.interface'
-import { buildPriceRestaurant, replaceDimensions } from '@/app/utils'
-import { getFoodRestaurant } from '../api'
-import CarouselFood from '@/app/components/CarouselFood'
-import dynamic from 'next/dynamic'
+import { getCategoryRestaurant, getCookie, getFoodRestaurant, getListCombo, getListDish, getSpecialOffer } from '../api'
 import { IFoodRestaurant } from '@/app/interface/food-restaurant.interface'
+import Image from 'next/image'
+import { buildPriceRestaurant, replaceDimensions } from '@/app/utils'
+import ShowMoreImages from './BannerAndGallery'
+import BannerAndGallery from './BannerAndGallery'
+import CategoryBlock, { ICategoryRestaurant } from '@/app/components/CategoryBlock'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import OrderTable from './OrderTable'
-const ToastServer = dynamic(() => import('@/components/ToastServer'), {
-  ssr: true
-})
+import FoodList from './FoodList'
+import ComboList, { IComboFood } from './ComboList'
+import DishList from './DishList'
+import { cookies } from 'next/headers'
+import CarouselRestaurant from '@/app/home/_component/CarouselRestaurant'
 interface IProps {
   restaurant: IRestaurant
 }
 
+export interface ISpecialOffer {
+  spo_id: string
+  spo_title: string
+  spo_description: string
+}
+
 export default async function InforRestaurant({ restaurant }: IProps) {
-  const listFood: IBackendRes<IFoodRestaurant[]> = await getFoodRestaurant(restaurant._id)
-  if (listFood.statusCode !== 200 || !listFood.data) {
-    // return (
-    //   <div>
-    //     <ToastServer message='Không tìm thấy nhà hàng' title='Lỗi' variant='destructive' />
-    //   </div>
-    // )
+  // const restaurantIds = await addRestaurantToCookie(restaurant._id)
+  const listIdView = await getCookie('restaurantIds')
+  let restaurantIds: string[] = listIdView?.value
+    ? JSON.parse(listIdView.value).filter((t: string) => t !== restaurant._id)
+    : []
+  console.log('🚀 ~ InforRestaurant ~ restaurantIds:', restaurantIds)
+
+  const [listFood, listCategory, listSpecialOffer, listCombo, listDish] = await Promise.all([
+    getFoodRestaurant(restaurant._id),
+    getCategoryRestaurant(restaurant._id),
+    getSpecialOffer(restaurant._id),
+    getListCombo(restaurant._id),
+    getListDish(restaurant._id)
+  ])
+
+  const groupHoursByDay = (hours: { close: string; open: string; day_of_week: string }[]) => {
+    const grouped: { [key: string]: { open: string; close: string }[] } = {}
+
+    hours.forEach((hour) => {
+      if (!grouped[hour.day_of_week]) {
+        grouped[hour.day_of_week] = []
+      }
+      grouped[hour.day_of_week].push({ open: hour.open, close: hour.close })
+    })
+
+    return Object.keys(grouped).map((day) => ({
+      day_of_week: day,
+      times: grouped[day]
+    }))
   }
   return (
     <div className='bg-[#e6eaed] h-full pb-20'>
@@ -39,36 +68,19 @@ export default async function InforRestaurant({ restaurant }: IProps) {
         <span className='text-sm'>{restaurant.restaurant_address.address_ward.name}</span>
       </div>
 
-      <div className='flex  gap-2 mt-5 justify-center'>
-        <div className='flex flex-col w-[720px] justify-center'>
-          <Card className='inline-flex'>
-            <CardContent className='flex flex-col mt-5'>
-              <div className='flex gap-2'>
-                <Image
-                  loading='lazy'
-                  src={replaceDimensions(restaurant.restaurant_banner.image_custom, 1000, 1000)}
-                  alt='vuducbo'
-                  width={800}
-                  height={800}
-                  className='w-[549px] h-[549px] rounded-lg'
-                />
-                <div className='flex flex-col gap-3'>
-                  {restaurant.restaurant_image
-                    .sort(() => Math.random() - 0.5)
-                    .slice(0, 4)
-                    .map((image, index) => (
-                      <Image
-                        key={index}
-                        loading='lazy'
-                        src={replaceDimensions(image.image_custom, 1000, 1000)}
-                        alt='vuducbo'
-                        width={500}
-                        height={500}
-                        className='w-32 h-32 rounded-lg'
-                      />
-                    ))}
-                </div>
-              </div>
+      {listCategory.statusCode === 200 && listCategory.data && listCategory.data.length > 0 && (
+        <CategoryBlock categories={listCategory.data} />
+      )}
+
+      <BannerAndGallery
+        bannerImage={restaurant.restaurant_banner.image_cloud}
+        restaurantImages={restaurant.restaurant_image}
+        restaurant_id={restaurant._id}
+      />
+      <div className='flex gap-3 px-[100px] mt-3' style={{ alignItems: 'flex-start' }}>
+        <div className='w-[67%] rounded-lg flex flex-col gap-3'>
+          <Card>
+            <CardContent>
               <div className='p-3'>
                 <h1 className='font-semibold text-2xl'>{restaurant.restaurant_name}</h1>
                 <div className='flex mt-3'>
@@ -81,13 +93,17 @@ export default async function InforRestaurant({ restaurant }: IProps) {
                     {buildPriceRestaurant(restaurant.restaurant_price)}
                   </span>
                 </div>
+                <div className='flex mt-3'>
+                  <PhoneCall size={20} />
+                  <span className='ml-1 font-semibold text-red-500'>{restaurant.restaurant_phone}</span>
+                </div>
               </div>
               <hr className='border-gray-300 border-t-1' />
               <div className='flex flex-wrap gap-2 mt-2'>
                 {restaurant.restaurant_type.map((type, index) => (
                   <div
                     key={index}
-                    className='truncate  cursor-pointer text-sm px-2 py-1 border border-gray-300 rounded-full text-gray-700 hover:bg-gray-100'
+                    className='truncate cursor-pointer text-sm px-2 py-1 border border-gray-300 rounded-full text-gray-700 hover:bg-gray-100'
                   >
                     {type.restaurant_type_name}
                   </div>
@@ -95,61 +111,66 @@ export default async function InforRestaurant({ restaurant }: IProps) {
               </div>
             </CardContent>
           </Card>
-          <Card className='mt-2'>
-            <CardContent className='w-auto overflow-hidden'>
-              <div dangerouslySetInnerHTML={{ __html: restaurant.restaurant_description }} />
+          <Card>
+            <CardContent>
+              {listCombo.statusCode === 200 && listCombo.data && listCombo.data.length > 0 && (
+                <ComboList comboFoods={listCombo.data} />
+              )}
             </CardContent>
           </Card>
-          {/* <Card className='mt-2'>
-            <CardContent className='w-auto overflow-hidden'>
-              <div className='w-full h-[500px]'>
-                <iframe
-                  src='https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3723.924224070705!2d105.774349!3d21.036237!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135ab03c4690305%3A0xa18f44f2be3dd1b7!2zTeG7uSDEkMOgIHThu6sgMQ!5e0!3m2!1sen!2s!4v1672208769623!5m2!1sen!2s'
-                  width='100%'
-                  height='100%'
-                  allowFullScreen={true}
-                  loading='lazy'
-                  style={{ border: 0 }}
-                ></iframe>
-              </div>
+          <Card>
+            <CardContent>
+              {listFood.statusCode === 200 && listFood.data && listFood.data.length > 0 && (
+                <FoodList foods={listFood.data} />
+              )}
             </CardContent>
-          </Card> */}
-          <Card className='mt-2'>
-            <CardContent className='w-auto overflow-hidden'>
-              <CarouselFood listFoodRestaurant={listFood.data} />
+          </Card>
+
+          <Card>
+            <CardContent className='mt-3'>
+              <span className='font-bold text-2xl'>Giới thiệu về nhà hàng</span>
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: restaurant.restaurant_description
+                }}
+              ></div>
             </CardContent>
           </Card>
         </div>
 
-        <div className='flex flex-col gap-2'>
-          <Card className='w-80'>
+        <div className='w-[33%] rounded-lg flex flex-col gap-3'>
+          <Card>
             <CardHeader className='font-bold text-2xl text-center'>{restaurant.restaurant_name} </CardHeader>
             <CardContent>
-            <OrderTable/>
-              <div className='mt-2 flex flex-col justify-center items-center'>
+              <OrderTable />
+              <div className='mt-4 flex flex-col justify-center items-center'>
                 <span className=''>
-                  Hoặc gọi tới: <span className='font-semibold text-xl'>{settings.phone}</span>{' '}
+                  Hoặc gọi tới: <span className='font-semibold text-xl'>{restaurant.restaurant_phone}</span>{' '}
                 </span>
                 <span>Để đặt chỗ và được tư vấn</span>
               </div>
             </CardContent>
           </Card>
-          <Card className='w-80'>
+          <Card>
             <CardContent className='mt-4'>
               <span className='font-semibold text-base uppercase'>Giờ hoạt động</span>
               <ul style={{ listStyleType: 'disc' }}>
-                {restaurant.restaurant_hours.map((hour, index) => (
+                {groupHoursByDay(restaurant.restaurant_hours).map((item, index) => (
                   <li key={index} className='font-semibold text-sm ml-4 mt-1'>
-                    {hour.day_of_week}:
+                    {item.day_of_week}:
                     <span className='font-normal'>
-                      {hour.open} - {hour.close}
+                      {item.times.map((time, idx) => (
+                        <span className='ml-1' key={idx}>
+                          {time.open} - {time.close}
+                          {idx < item.times.length - 1 && ' và '}
+                        </span>
+                      ))}
                     </span>
                   </li>
                 ))}
               </ul>
               <hr className='border-gray-300 border-t-1 mt-2 mb-3' />
               <span className='font-semibold text-base uppercase'>Tiện ích</span>
-
               {restaurant.restaurant_amenity.map((amenity, index) => (
                 <div key={index} className='flex gap-2 mt-1'>
                   <div className='w-6'>
@@ -165,12 +186,55 @@ export default async function InforRestaurant({ restaurant }: IProps) {
               ))}
             </CardContent>
           </Card>
-          <Card className='w-80'>
-            <CardContent className='w-auto overflow-hidden'>
-              <div dangerouslySetInnerHTML={{ __html: restaurant.restaurant_overview }} />
+          <Card>
+            <CardContent className='mt-4'>
+              <span className='font-semibold text-base uppercase'>Ưu đãi đặc biệt</span>
+              <ul className='flex flex-col gap-3'>
+                {listSpecialOffer.statusCode === 200 &&
+                  listSpecialOffer.data &&
+                  listSpecialOffer.data.map((offer, index) => (
+                    <li key={index} className='mt-1 flex flex-col gap-2 border border-gray-300 p-2 rounded-lg'>
+                      <span className='font-semibold'>{offer.spo_title}</span>
+                      <div
+                        dangerouslySetInnerHTML={{
+                          __html: offer.spo_description
+                        }}
+                      ></div>
+                    </li>
+                  ))}
+              </ul>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardContent className='mt-3'>
+              <span className='font-bold text-2xl'>Mô tả</span>
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: restaurant.restaurant_overview
+                }}
+              ></div>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardContent>
+              {listDish.statusCode === 200 && listDish.data && listDish.data.length > 0 && (
+                <DishList dishes={listDish.data} />
+              )}
             </CardContent>
           </Card>
         </div>
+      </div>
+      <div className='mt-3 px-[100px]'>
+        <Card>
+          <CardContent>
+            <CarouselRestaurant
+              link='/'
+              order={5}
+              selectedRestaurant={restaurantIds}
+              title='Danh sách nhà hàng đã xem'
+            />
+          </CardContent>
+        </Card>
       </div>
     </div>
   )

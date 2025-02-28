@@ -19,5 +19,5 @@ export interface IFoodRestaurant {
   isDeleted: number
   food_id: string
   food_status: 'enable' | 'disable'
-  food_state: 'inStock' | 'outOfStock'
+  food_state: 'soldOut' | 'inStock' | 'almostOut'
 }

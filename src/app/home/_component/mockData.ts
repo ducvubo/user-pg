@@ -1,6 +1,6 @@
-import { IRestaurant } from "../interface/restaurant.interface";
+import { IRestaurant } from '../../interface/restaurant.interface'
 
-export const mockRestaurants:any = [
+export const mockRestaurants: any = [
   {
     restaurant_slug: 'nha-hang-hai-san-tom-hum',
     restaurant_name: 'Nhà hàng Hải Sản Tôm Hùm',
@@ -31,7 +31,7 @@ export const mockRestaurants:any = [
     restaurant_slug: 'nha-hang-lau-thai',
     restaurant_name: 'Nhà hàng Lẩu Thái',
     restaurant_banner: {
-      image_custom:'/images/image_0c1f3b36-c2b9-4b61-9adb-8b6245a6e0d7_66 - Copy - Copy - Copy.jpg'
+      image_custom: '/images/image_0c1f3b36-c2b9-4b61-9adb-8b6245a6e0d7_66 - Copy - Copy - Copy.jpg'
     },
     restaurant_address: {
       address_district: {

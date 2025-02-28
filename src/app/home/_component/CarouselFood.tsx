@@ -6,9 +6,9 @@ import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
 import Image from 'next/image'
 import Link from 'next/link'
-import { IRestaurant } from '../interface/restaurant.interface'
-import { buildPriceRestaurant, replaceDimensions } from '../utils'
-import { IFoodRestaurant } from '../interface/food-restaurant.interface'
+import { IRestaurant } from '../../interface/restaurant.interface'
+import { buildPriceRestaurant, replaceDimensions } from '../../utils'
+import { IFoodRestaurant } from '../../interface/food-restaurant.interface'
 
 const NextArrow: React.FC<{ className?: string; style?: React.CSSProperties; onClick?: () => void }> = (props) => {
   const { className, style, onClick } = props
