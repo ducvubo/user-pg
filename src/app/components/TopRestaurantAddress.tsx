@@ -1,6 +1,7 @@
 import { Label } from '@/components/ui/label'
 import React from 'react'
 import Image from 'next/image'
+import Link from 'next/link'
 
 export interface ImageUrl {
   image_cloud: string
@@ -22,9 +23,9 @@ export default function TopRestaurantAddress({ images, order, title }: ItemData)
 
       <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5'>
         {images.map((image, index) => (
-          <div key={index}>
-            <Image src={image.image_cloud} width={250} height={350} alt='vuducbo' />
-          </div>
+          <Link href={image.link ? image.link : '/'} key={index}>
+            <Image src={image.image_cloud} width={350} height={350} alt='vuducbo' />
+          </Link>
         ))}
       </div>
     </div>
