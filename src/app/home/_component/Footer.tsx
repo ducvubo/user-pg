@@ -3,14 +3,11 @@ import { settings } from '../../setting'
 
 export default function Footer() {
   return (
-    <div className='flex flex-col items-center p-6  h-auto'>
-      {/* Tiêu đề */}
+    <div className='flex flex-col items-center h-auto mt-5'>
       <h1 className='text-2xl font-bold mb-2'>Hướng dẫn đặt bàn</h1>
       <p className='text-gray-500 mb-6'>Xem chi tiết hướng dẫn tại đây</p>
 
-      {/* Các bước đặt bàn */}
       <div className='flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-8 mb-8'>
-        {/* Bước 1 */}
         <div className='flex flex-col items-center'>
           <div className='w-16 h-16 bg-red-500 rounded-full flex items-center justify-center text-white'>
             <svg
@@ -33,10 +30,8 @@ export default function Footer() {
           <span className='mt-2 text-xl font-bold text-red-500'>1</span>
         </div>
 
-        {/* Mũi tên */}
         <div className='hidden md:block text-gray-400 text-3xl'>➜</div>
 
-        {/* Bước 2 */}
         <div className='flex flex-col items-center'>
           <div className='w-16 h-16 bg-red-500 rounded-full flex items-center justify-center text-white'>
             <svg
@@ -133,9 +128,7 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* Thông tin liên hệ và điều khoản */}
-      <div className='w-full bg-red-500 text-white p-6 rounded-lg flex flex-col md:flex-row justify-between items-center'>
-        {/* Thông tin liên hệ */}
+      <div className='w-full bg-red-500 text-white p-6 flex flex-col md:flex-row justify-between items-center'>
         <div className='mb-4 md:mb-0'>
           <h3 className='font-semibold'>THÔNG TIN LIÊN HỆ</h3>
           <p>Hotline: {settings.phone}</p>
@@ -143,7 +136,6 @@ export default function Footer() {
           <p>Email: vminhduc8@gmail.com</p>
         </div>
 
-        {/* Về chúng tôi */}
         <div className='mb-4 md:mb-0'>
           <h3 className='font-semibold'>VỀ CHÚNG TÔI</h3>
           <p>Trang chủ</p>
@@ -151,14 +143,12 @@ export default function Footer() {
           <p>Liên hệ</p>
         </div>
 
-        {/* Điều khoản sử dụng */}
         <div className='mb-4 md:mb-0'>
           <h3 className='font-semibold'>ĐIỀU KHOẢN SỬ DỤNG</h3>
           <p>Giới thiệu</p>
           <p>Quy chế hoạt động</p>
         </div>
 
-        {/* Kết nối */}
         <div className='flex space-x-4'>
           <a href='#' className='text-white'>
             <svg className='w-6 h-6' fill='currentColor' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'>
@@ -173,9 +163,8 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* Footer */}
-      <div className='mt-6 text-center text-gray-600 text-sm'>
-        <p>© 2024 - Bản quyền thuộc về Vũ Đức Bo.</p>
+      <div className='pt-6 text-center bg-red-500 w-full h-full text-white text-sm'>
+        <p>© 2024 - Bản quyền thuộc về Vũ Đức Bo - vminhduc8@gmail.com</p>
       </div>
     </div>
   )

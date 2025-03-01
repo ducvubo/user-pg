@@ -97,7 +97,7 @@ interface IProps {
   listRestaurantSelected: IRestaurant[]
 }
 
-export default function CarouselRestaurantClient({ listRestaurantSelected }: IProps) {
+export default function CarouselRestaurantCatClient({ listRestaurantSelected }: IProps) {
   const settings = {
     dots: false,
     infinite: true,
@@ -141,6 +141,7 @@ export default function CarouselRestaurantClient({ listRestaurantSelected }: IPr
     </Link>
   )
 
+  // Kiểm tra nếu số lượng nhà hàng < 5 thì hiển thị dạng danh sách
   if (listRestaurantSelected.length < 5) {
     return (
       <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'>
@@ -149,6 +150,7 @@ export default function CarouselRestaurantClient({ listRestaurantSelected }: IPr
     )
   }
 
+  // Nếu đủ 5 hoặc hơn, hiển thị carousel
   return (
     <Slider {...settings}>
       {listRestaurantSelected.map((restaurant, index) => renderRestaurantItem(restaurant, index))}

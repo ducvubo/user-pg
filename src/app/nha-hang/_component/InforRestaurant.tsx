@@ -15,6 +15,8 @@ import ComboList, { IComboFood } from './ComboList'
 import DishList from './DishList'
 import { cookies } from 'next/headers'
 import CarouselRestaurant from '@/app/home/_component/CarouselRestaurant'
+import CarouselRestaurantCat from './CarouselRestaurantCat'
+import Footer from '@/app/home/_component/Footer'
 interface IProps {
   restaurant: IRestaurant
 }
@@ -31,7 +33,6 @@ export default async function InforRestaurant({ restaurant }: IProps) {
   let restaurantIds: string[] = listIdView?.value
     ? JSON.parse(listIdView.value).filter((t: string) => t !== restaurant._id)
     : []
-  console.log('🚀 ~ InforRestaurant ~ restaurantIds:', restaurantIds)
 
   const [listFood, listCategory, listSpecialOffer, listCombo, listDish] = await Promise.all([
     getFoodRestaurant(restaurant._id),
@@ -57,7 +58,7 @@ export default async function InforRestaurant({ restaurant }: IProps) {
     }))
   }
   return (
-    <div className='bg-[#e6eaed] h-full pb-20'>
+    <div className='bg-[#e6eaed] h-auto'>
       <div className='bg-white h-10 px-[100px] flex items-center gap-4'>
         <span className='text-sm'>Trang chủ</span>
         <ChevronRight size={16} strokeWidth={3} />
@@ -111,20 +112,20 @@ export default async function InforRestaurant({ restaurant }: IProps) {
               </div>
             </CardContent>
           </Card>
-          <Card>
-            <CardContent>
-              {listCombo.statusCode === 200 && listCombo.data && listCombo.data.length > 0 && (
+          {listCombo.statusCode === 200 && listCombo.data && listCombo.data.length > 0 && (
+            <Card>
+              <CardContent>
                 <ComboList comboFoods={listCombo.data} />
-              )}
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent>
-              {listFood.statusCode === 200 && listFood.data && listFood.data.length > 0 && (
+              </CardContent>
+            </Card>
+          )}
+          {listFood.statusCode === 200 && listFood.data && listFood.data.length > 0 && (
+            <Card>
+              <CardContent>
                 <FoodList foods={listFood.data} />
-              )}
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
+          )}
 
           <Card>
             <CardContent className='mt-3'>
@@ -186,13 +187,12 @@ export default async function InforRestaurant({ restaurant }: IProps) {
               ))}
             </CardContent>
           </Card>
-          <Card>
-            <CardContent className='mt-4'>
-              <span className='font-semibold text-base uppercase'>Ưu đãi đặc biệt</span>
-              <ul className='flex flex-col gap-3'>
-                {listSpecialOffer.statusCode === 200 &&
-                  listSpecialOffer.data &&
-                  listSpecialOffer.data.map((offer, index) => (
+          {listSpecialOffer.statusCode === 200 && listSpecialOffer.data && listSpecialOffer.data.length > 0 && (
+            <Card>
+              <CardContent className='mt-4'>
+                <span className='font-semibold text-base uppercase'>Ưu đãi đặc biệt</span>
+                <ul className='flex flex-col gap-3'>
+                  {listSpecialOffer.data.map((offer, index) => (
                     <li key={index} className='mt-1 flex flex-col gap-2 border border-gray-300 p-2 rounded-lg'>
                       <span className='font-semibold'>{offer.spo_title}</span>
                       <div
@@ -202,9 +202,10 @@ export default async function InforRestaurant({ restaurant }: IProps) {
                       ></div>
                     </li>
                   ))}
-              </ul>
-            </CardContent>
-          </Card>
+                </ul>
+              </CardContent>
+            </Card>
+          )}
           <Card>
             <CardContent className='mt-3'>
               <span className='font-bold text-2xl'>Mô tả</span>
@@ -215,13 +216,13 @@ export default async function InforRestaurant({ restaurant }: IProps) {
               ></div>
             </CardContent>
           </Card>
-          <Card>
-            <CardContent>
-              {listDish.statusCode === 200 && listDish.data && listDish.data.length > 0 && (
+          {listDish.statusCode === 200 && listDish.data && listDish.data.length > 0 && (
+            <Card>
+              <CardContent>
                 <DishList dishes={listDish.data} />
-              )}
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
+          )}
         </div>
       </div>
       <div className='mt-3 px-[100px]'>
@@ -235,7 +236,23 @@ export default async function InforRestaurant({ restaurant }: IProps) {
             />
           </CardContent>
         </Card>
+        <div className='flex flex-col gap-3 mt-3'>
+          {restaurant.restaurant_category &&
+            restaurant.restaurant_category.length > 0 &&
+            restaurant.restaurant_category.map((cate, index) => {
+              return (
+                <CarouselRestaurantCat
+                  idCate={cate._id}
+                  key={index}
+                  link={`/danh-muc/${cate._id}`}
+                  order={5}
+                  title={cate.category_name}
+                />
+              )
+            })}
+        </div>
       </div>
+      <Footer />
     </div>
   )
 }

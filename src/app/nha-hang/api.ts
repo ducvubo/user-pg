@@ -71,8 +71,21 @@ export const addRestaurantToCookie = async (restaurantId: string) => {
 
   if (!restaurantIds.includes(restaurantId)) {
     restaurantIds.push(restaurantId)
+
+    if (restaurantIds.length > 15) {
+      restaurantIds.pop()
+    }
+
     await cookie.set('restaurantIds', JSON.stringify(restaurantIds), { path: '/' })
   }
 
-  return restaurantIds // Trả về danh sách để sử dụng nếu cần
+  return restaurantIds
+}
+
+export const getListRestaurantByCategory = async (categoryId: string) => {
+  const res: IBackendRes<IRestaurant[]> = await sendRequest({
+    url: `${URL_SERVER}/restaurants/restaurant-by-id-cat/${categoryId}`,
+    method: 'GET'
+  })
+  return res
 }
