@@ -27,7 +27,6 @@ export default function Footer() {
           </div>
           <h3 className='mt-2 font-semibold'>CHỌN NHÀ HÀNG</h3>
           <p className='text-gray-600 text-center'>Hàng ngàn nhà hàng với nhiều ưu đãi</p>
-          <span className='mt-2 text-xl font-bold text-red-500'>1</span>
         </div>
 
         <div className='hidden md:block text-gray-400 text-3xl'>➜</div>
@@ -51,7 +50,6 @@ export default function Footer() {
           </div>
           <h3 className='mt-2 font-semibold'>GỌI ĐẶT CHỖ</h3>
           <p className='text-gray-600 text-center'>{settings.phone}</p>
-          <span className='mt-2 text-xl font-bold text-red-500'>2</span>
         </div>
 
         {/* Mũi tên */}
@@ -72,7 +70,6 @@ export default function Footer() {
           </div>
           <h3 className='mt-2 font-semibold'>ĐẶT BÀN ONLINE</h3>
           <p className='text-gray-600 text-center'>Truy cập Website www.pato.com.vn</p>
-          <span className='mt-2 text-xl font-bold text-red-500'>3</span>
         </div>
 
         {/* Mũi tên */}
@@ -98,7 +95,6 @@ export default function Footer() {
           </div>
           <h3 className='mt-2 font-semibold'>XÁC NHẬN</h3>
           <p className='text-gray-600 text-center'>Xác nhận </p>
-          <span className='mt-2 text-xl font-bold text-red-500'>4</span>
         </div>
 
         {/* Mũi tên */}
@@ -124,7 +120,6 @@ export default function Footer() {
           </div>
           <h3 className='mt-2 font-semibold'>THƯỞNG THỨC</h3>
           <p className='text-gray-600 text-center'>Thưởng thức món ngon tại nhà hàng</p>
-          <span className='mt-2 text-xl font-bold text-red-500'>5</span>
         </div>
       </div>
 
