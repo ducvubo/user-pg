@@ -106,3 +106,23 @@ export const GetRestaurantByIds = async (restaurant_ids: string[]) => {
   })
   return res
 }
+
+export const GetCategoryByIds = async (category_ids: string[]) => {
+  const res: IBackendRes<ICategory[]> = await sendRequest({
+    url: `${URL_SERVER}/category/get-category-by-ids`,
+    method: 'POST',
+    body: { category_ids }
+  })
+  return res
+}
+
+export const getSysteParameterById = async (id: string) => {
+  const res: IBackendRes<ISystemParameter> = await sendRequest({
+    url: `${process.env.URL_SERVER_USER}/system-parameter/${id}`,
+    method: 'GET',
+    nextOption: {
+      cache: 'no-store'
+    }
+  })
+  return res
+}

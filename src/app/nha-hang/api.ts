@@ -1,5 +1,5 @@
 'use server'
-import { ICategoryRestaurant } from '../components/CategoryBlock'
+import { ICategoryRestaurant } from '../components/CategoryRestaurantBlock'
 import { IFoodRestaurant } from '../interface/food-restaurant.interface'
 import { IRestaurant } from '../interface/restaurant.interface'
 import { sendRequest } from '@/lib/api'
@@ -86,6 +86,12 @@ export const getListRestaurantByCategory = async (categoryId: string) => {
   const res: IBackendRes<IRestaurant[]> = await sendRequest({
     url: `${URL_SERVER}/restaurants/restaurant-by-id-cat/${categoryId}`,
     method: 'GET'
+    // nextOption: {
+    //   cache: 'force-cache',
+    //   next: {
+    //     revalidate: 3600
+    //   }
+    // }
   })
   return res
 }

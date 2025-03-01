@@ -1,7 +1,7 @@
 import React from 'react'
 import Header from './Header'
 import CarouselRestaurant from './CarouselRestaurant'
-import { getRestaurantHome, getSysteParameter } from '../home.api'
+import { GetCategoryByIds, getRestaurantHome, getSysteParameter } from '../home.api'
 import { IRestaurant } from '../../interface/restaurant.interface'
 import CarouselBanner from './RestaurantDeals'
 import SearchRestaurant from './SearchRestaurant'
@@ -14,20 +14,23 @@ import { SystemParameterEnum } from '../../utils/ListSystemParameter'
 import YouLookingForRestaurant from './YouLookingForRestaurant'
 import Footer from './Footer'
 import Link from 'next/link'
+import CategoryBlock from '@/app/components/CategoryBlock'
 const HomePage = async () => {
   const res = await getSysteParameter()
 
   if (res.statusCode !== 200 || !res.data) {
     return <div>Không có dữ liệu</div>
   }
-  const bannerHeader = res.data.find(
-    (p) => p.sys_para_id === SystemParameterEnum.LOGOHEADER.sys_para_id
-  )?.sys_para_value
 
+  const catIds = res.data.find((p) => p.sys_para_id === SystemParameterEnum.CATHOME.sys_para_id)?.sys_para_value
+  const resListCategory = await GetCategoryByIds(catIds ? JSON.parse(catIds).data : [])
   return (
     <div>
-      {bannerHeader && <Header image={JSON.parse(bannerHeader)} />}
-      <div className='px-[100px] mt-10 h-auto'>
+      <Header />
+      {resListCategory.statusCode !== 200 && resListCategory.data && (
+        <CategoryBlock categories={resListCategory.data} />
+      )}
+      <div className='px-4 md:px-8 lg:px-[100px] mt-10 h-auto'>
         {res.data.find((p) => p.sys_para_id === SystemParameterEnum.RESTAURANTDEAL.sys_para_id)?.sys_para_value &&
           JSON.parse(
             res.data.find((p) => p.sys_para_id === SystemParameterEnum.RESTAURANTDEAL.sys_para_id)?.sys_para_value ||

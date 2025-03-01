@@ -5,10 +5,15 @@ import Slider from 'react-slick'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
 import Link from 'next/link'
-import { ICategory } from '../home/home.api'
+
+export interface ICategoryRestaurant {
+  cat_res_slug: string
+  cat_res_icon: string
+  cat_res_name: string
+}
 
 interface IProps {
-  categories: ICategory[]
+  categories: ICategoryRestaurant[]
 }
 
 const NextArrow = ({ className, style, onClick }: any) => (
@@ -51,7 +56,7 @@ const PrevArrow = ({ className, style, onClick }: any) => (
   />
 )
 
-export default function CategoryBlock({ categories }: IProps) {
+export default function CategoryRestaurantBlock({ categories }: IProps) {
   const settings = {
     dots: false,
     infinite: true,
@@ -99,13 +104,13 @@ export default function CategoryBlock({ categories }: IProps) {
     <div className='px-4 sm:px-8 md:px-12 lg:px-[100px] py-4'>
       <Slider {...settings}>
         {categories.map((category, index) => (
-          <Link href={`/category/${category.category_slug}`} key={index}>
+          <Link href={`/category/${category.cat_res_slug}`} key={index}>
             <div className='flex flex-col items-center cursor-pointer px-2'>
               <div className='w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-white rounded-full flex items-center justify-center shadow-md'>
-                <span className='text-xl sm:text-2xl md:text-3xl'>{category.category_icon}</span>
+                <span className='text-xl sm:text-2xl md:text-3xl'>{category.cat_res_icon}</span>
               </div>
               <span className='mt-2 text-sm sm:text-base md:text-lg text-gray-700 font-semibold text-center line-clamp-1'>
-                {category.category_name}
+                {category.cat_res_name}
               </span>
             </div>
           </Link>
