@@ -29,12 +29,12 @@ export default async function Navbar() {
             src={dataLogo.image_cloud}
             alt='Giồng Giọt Logo'
             width={200}
-            height={70}
-            className='h-10 sm:h-12 w-auto'
+            height={100}
+            className='h-32 w-auto -mt-5'
           />
         </div>
 
-        <div className='flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 md:gap-6 mt-2 sm:mt-0'>
+        <div className='flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 md:gap-6 sm:mt-0 -mt-20'>
           <Link href='/ve-ban' className='text-white text-sm sm:text-base md:text-lg hover:text-yellow-300'>
             Về bản
           </Link>

@@ -1,6 +1,6 @@
 'use server'
-import { IRestaurant } from '../interface/restaurant.interface'
 import { sendRequest } from '@/lib/api'
+import { IRestaurant } from '../interface/restaurant.interface'
 
 const URL_SERVER = process.env.URL_SERVER
 

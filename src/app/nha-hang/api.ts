@@ -2,14 +2,32 @@
 import { ICategoryRestaurant } from '../components/CategoryRestaurantBlock'
 import { IFoodRestaurant } from '../interface/food-restaurant.interface'
 import { IRestaurant } from '../interface/restaurant.interface'
-import { sendRequest } from '@/lib/api'
 import { ISpecialOffer } from './_component/InforRestaurant'
 import { IComboFood } from './_component/ComboList'
 import { IDish } from './_component/DishList'
 import { cookies } from 'next/headers'
+import { sendRequest } from '@/lib/api'
 
 const URL_SERVER = process.env.URL_SERVER
 const URL_SERVER_ORDER = process.env.URL_SERVER_ORDER
+
+export interface ICreateBookTable {
+  book_tb_user_id?: string
+  book_tb_restaurant_id: string
+  book_tb_email: string
+  book_tb_phone: string
+  book_tb_name: string
+  book_tb_date: Date
+  book_tb_hour: string
+  book_tb_number_adults: number
+  book_tb_number_children: number
+  book_tb_note?: string
+  book_tb_redirect_url: string
+  restaurant?: IRestaurant
+  createdAt?: string
+  book_tb_status?: string
+}
+
 export const getRestaurantBySlug = async (slug: string) => {
   const res: IBackendRes<IRestaurant> = await sendRequest({
     url: `${URL_SERVER}/restaurants/slug/${slug}`,
@@ -92,6 +110,15 @@ export const getListRestaurantByCategory = async (categoryId: string) => {
     //     revalidate: 3600
     //   }
     // }
+  })
+  return res
+}
+
+export const createBookTable = async (data: ICreateBookTable) => {
+  const res: IBackendRes<ICreateBookTable> = await sendRequest({
+    url: `${URL_SERVER}/book-table`,
+    method: 'POST',
+    body: data
   })
   return res
 }

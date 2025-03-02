@@ -6,9 +6,7 @@ export const sendRequest = async <T>(props: IRequest) => {
   let { url, method, body, queryParams = {}, useCredentials = false, headers = {}, nextOption = {} } = props
   let options: any
   const cookie = await cookies()
-  const { nonce, sign, stime, version } = genSignEndPoint()
   const id_user_guest = cookie.get('id_user_guest')?.value
-
   const access_token = cookie.get('access_token')?.value
   const refresh_token = cookie.get('refresh_token')?.value
 
@@ -19,11 +17,7 @@ export const sendRequest = async <T>(props: IRequest) => {
         'content-type': 'application/json',
         // 'x-at-tk': `Bearer ${access_token}`,
         // 'x-rf-tk': `Bearer ${refresh_token}`,
-        // nonce,
-        // sign,
-        // stime,
-        // version,
-        // id_user_guest: id_user_guest,
+        'x-cl-id': id_user_guest,
         ...headers
       }),
       body: body ? JSON.stringify(body) : null,
@@ -37,11 +31,7 @@ export const sendRequest = async <T>(props: IRequest) => {
       headers: new Headers({
         'content-type': 'application/json',
         ...headers,
-        // id_user_guest: id_user_guest,
-        // nonce,
-        // sign,
-        // stime,
-        // version
+        'x-cl-id': id_user_guest
       }),
       body: body ? JSON.stringify(body) : null,
       ...nextOption
@@ -54,25 +44,10 @@ export const sendRequest = async <T>(props: IRequest) => {
     url = `${url}?${buildQueryString(queryParams)}`
   }
   console.log('🚀 ~ url:', url)
-  // console.log('🚀 ~ url:', options)
 
   return fetch(url, options).then(async (res: any) => {
-    // if (!id_user_guest) {
-    //   const newIdUserGuest = res.headers.get('id_user_guest')
-    //   if (newIdUserGuest) {
-    //     await cookie.set({
-    //       name: 'id_user_guest',
-    //       value: newIdUserGuest,
-    //       path: '/',
-    //       httpOnly: true,
-    //       secure: true,
-    //       sameSite: 'lax',
-    //       maxAge: 60 * 60 * 24 * 365 * 10 //10 năm
-    //     })
-    //   }
-    // }
     if (res.ok) {
-      return res.json() as T //generic
+      return res.json() as T
     } else {
       return res.json().then(async function (json: any) {
         return {
@@ -87,12 +62,10 @@ export const sendRequest = async <T>(props: IRequest) => {
 }
 
 export const sendRequestFile = async <T>(props: IRequest) => {
-  //type
   let { url, method, body, queryParams = {}, useCredentials = false, headers = {}, nextOption = {} } = props
 
   const options: any = {
     method: method,
-    // by default setting the content-type to be json type
     headers: new Headers({ ...headers }),
     body: body ? body : null,
     ...nextOption

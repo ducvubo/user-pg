@@ -15,6 +15,7 @@ import YouLookingForRestaurant from './YouLookingForRestaurant'
 import Footer from './Footer'
 import Link from 'next/link'
 import CategoryBlock from '@/app/components/CategoryBlock'
+import HeaderPato from './HeaderPato'
 const HomePage = async () => {
   const res = await getSysteParameter()
 
@@ -26,7 +27,7 @@ const HomePage = async () => {
   const resListCategory = await GetCategoryByIds(catIds ? JSON.parse(catIds).data : [])
   return (
     <div>
-      <Header />
+      <HeaderPato />
       {resListCategory.statusCode !== 200 && resListCategory.data && (
         <CategoryBlock categories={resListCategory.data} />
       )}

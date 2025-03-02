@@ -54,7 +54,7 @@ export default async function InforRestaurant({ restaurant }: IProps) {
   }
 
   return (
-    <div className='bg-[#e6eaed] min-h-screen'>
+    <div className='bg-[#e6eaed] min-h-screen pb-10'>
       <div className='bg-white h-auto min-h-10 px-4 sm:px-6 md:px-8 lg:px-[100px] flex flex-wrap items-center gap-2 sm:gap-3 md:gap-4 py-2'>
         <span className='text-xs sm:text-sm md:text-base'>Trang chủ</span>
         <ChevronRight size={12} strokeWidth={3} className='sm:w-4 sm:h-4 md:w-5 md:h-5 shrink-0' />
@@ -114,7 +114,7 @@ export default async function InforRestaurant({ restaurant }: IProps) {
           <Card className='block md:hidden'>
             <CardHeader className='font-bold text-xl md:text-2xl text-center'>{restaurant.restaurant_name}</CardHeader>
             <CardContent>
-              <OrderTable />
+              <OrderTable restaurant={restaurant} />
               <div className='mt-4 text-center'>
                 <span className='text-sm md:text-base'>
                   Hoặc gọi tới: <span className='font-semibold text-lg md:text-xl'>{restaurant.restaurant_phone}</span>
@@ -153,7 +153,7 @@ export default async function InforRestaurant({ restaurant }: IProps) {
           <Card className='hidden md:block'>
             <CardHeader className='font-bold text-xl md:text-2xl text-center'>{restaurant.restaurant_name}</CardHeader>
             <CardContent>
-              <OrderTable />
+              <OrderTable restaurant={restaurant} />
               <div className='mt-4 text-center'>
                 <span className='text-sm md:text-base'>
                   Hoặc gọi tới: <span className='font-semibold text-lg md:text-xl'>{restaurant.restaurant_phone}</span>
@@ -242,7 +242,7 @@ export default async function InforRestaurant({ restaurant }: IProps) {
             />
           </CardContent>
         </Card>
-        <div className='flex flex-col gap-3 mt-3'>
+        {/* <div className='flex flex-col gap-3 mt-3'>
           {restaurant.restaurant_category &&
             restaurant.restaurant_category.length > 0 &&
             restaurant.restaurant_category.map((cate, index) => (
@@ -254,7 +254,7 @@ export default async function InforRestaurant({ restaurant }: IProps) {
                 title={cate.category_name}
               />
             ))}
-        </div>
+        </div> */}
       </div>
     </div>
   )

@@ -113,6 +113,7 @@ export default function CarouselRestaurantCatClient({ listRestaurantSelected }: 
           width={500}
           height={700}
           alt={restaurant.restaurant_name}
+          priority
           className='w-full h-40 md:h-64 lg:h-[310px] object-cover'
           sizes='(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 20vw'
         />
