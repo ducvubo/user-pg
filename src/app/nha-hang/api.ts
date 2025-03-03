@@ -27,6 +27,10 @@ export interface ICreateBookTable {
   restaurant?: IRestaurant
   createdAt?: string
   book_tb_status?: string
+  book_tb_star?: number
+  book_tb_note_res: string
+  book_tb_feedback_restaurant: string
+  book_tb_feedback: string
 }
 
 export const getRestaurantBySlug = async (slug: string) => {
