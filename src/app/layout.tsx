@@ -58,7 +58,7 @@ export default async function RootLayout({
         <meta charSet='UTF-8' />
         <meta name='viewport' content='width=device-width, initial-scale=1.0' />
         <meta name='robots' content='index, follow' />
-        <link rel='icon' href='/favicon.ico' />
+        <link rel='icon' href='/logo.ico' />
       </Head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <Toaster />
@@ -77,6 +77,19 @@ export default async function RootLayout({
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
             gtag('config', 'G-84N3NEETJF');
+          `
+        }}
+      />
+      <Script
+        id='clarity-init'
+        strategy='afterInteractive'
+        dangerouslySetInnerHTML={{
+          __html: `
+            (function(c,l,a,r,i,t,y){
+                c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+                t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+                y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+            })(window, document, "clarity", "script", "qifzm7kru0");
           `
         }}
       />
