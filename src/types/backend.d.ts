@@ -22,7 +22,7 @@ declare global {
 
   interface IModelPaginate<T> {
     meta: {
-      current: number
+      pageIndex: number
       pageSize: number
       totalPage: number
       totalItem: number

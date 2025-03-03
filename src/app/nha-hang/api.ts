@@ -12,6 +12,7 @@ const URL_SERVER = process.env.URL_SERVER
 const URL_SERVER_ORDER = process.env.URL_SERVER_ORDER
 
 export interface ICreateBookTable {
+  _id?: string
   book_tb_user_id?: string
   book_tb_restaurant_id: string
   book_tb_email: string
