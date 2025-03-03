@@ -1,15 +1,20 @@
 'use client'
 
 import { useRouter, useSearchParams } from 'next/navigation'
-import { use, useEffect, useState } from 'react'
+import { useEffect, useState, Suspense } from 'react'
 import { confirmBookTable } from './api'
 import { ICreateBookTable } from '../nha-hang/api'
 import { toast } from '@/hooks/use-toast'
-import { el, ro } from 'date-fns/locale'
 import HeaderPato from '../home/_component/HeaderPato'
 import Footer from '../home/_component/Footer'
 
-export default function Page() {
+// A fallback component to show while Suspense is resolving
+function LoadingFallback() {
+  return <div>Loading...</div>
+}
+
+// The main page component
+function ConfirmPage() {
   const [isLoad, setIsLoad] = useState(false)
   const searchParams = useSearchParams()
   const token = searchParams.get('token')
@@ -27,7 +32,7 @@ export default function Page() {
         setIsLoad(false)
         toast({
           title: 'Thành công',
-          description: ' Xác nhận đặt bàn thành công, chúc bạn ngon miệng',
+          description: 'Xác nhận đặt bàn thành công, chúc bạn ngon miệng',
           variant: 'default'
         })
         router.push('ban-da-dat')
@@ -50,13 +55,25 @@ export default function Page() {
       setIsLoad(false)
     }
   }
+
   useEffect(() => {
     confirmBook()
   }, [])
+
   return (
     <div>
       <HeaderPato />
+      {isLoad ? <div>Đang xử lý...</div> : null}
       <Footer />
     </div>
+  )
+}
+
+// Wrap the page in Suspense
+export default function Page() {
+  return (
+    <Suspense fallback={<LoadingFallback />}>
+      <ConfirmPage />
+    </Suspense>
   )
 }
