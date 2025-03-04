@@ -31,6 +31,13 @@ export interface ICreateBookTable {
   book_tb_note_res?: string
   book_tb_feedback_restaurant?: string
   book_tb_feedback?: string
+  book_tb_details?: IBookTableDetail[]
+}
+
+export interface IBookTableDetail {
+  book_tb_detail_name: string
+  book_tb_detail_status: string
+  date_of_now: Date
 }
 
 export const getRestaurantBySlug = async (slug: string) => {
