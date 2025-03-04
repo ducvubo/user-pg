@@ -309,6 +309,7 @@ export default function OrderTable({ restaurant }: IProps) {
                         'w-full justify-start text-left font-normal',
                         !book_tb_date && 'text-muted-foreground'
                       )}
+                      onTouchStart={() => {}}
                     >
                       <CalendarIcon className='mr-2 h-4 w-4' />
                       {book_tb_date ? (
