@@ -131,6 +131,8 @@ export default function OrderTable({ restaurant }: IProps) {
         book_tb_name: values.book_tb_name,
         book_tb_note: values.book_tb_note,
         book_tb_date: new Date(book_tb_date),
+        //trừ 7 giờ để đúng múi giờ VN
+        // book_tb_date: new Date(book_tb_date.setHours(book_tb_date.getHours() - 7)),
         book_tb_number_adults: values.book_tb_number_adults,
         book_tb_number_children: values.book_tb_number_children,
         book_tb_phone: values.book_tb_phone,
@@ -191,11 +193,7 @@ export default function OrderTable({ restaurant }: IProps) {
 
       <DialogContent className='max-w-[95vw] sm:max-w-[600px] md:max-w-[700px] overflow-y-auto max-h-[95vh] rounded-lg shadow-xl border border-gray-200 bg-white p-6'>
         <DialogHeader className='mb-6'>
-          <DialogTitle className='text-2xl sm:text-3xl font-bold text-gray-800'>Nhập thông tin đặt bàn</DialogTitle>
-          <DialogDescription className='text-base sm:text-lg text-gray-600'>
-            Vui lòng cung cấp thông tin để hoàn tất đặt bàn tại{' '}
-            <span className='font-semibold'>{restaurant.restaurant_name}</span>.
-          </DialogDescription>
+          <DialogTitle className=' font-bold text-gray-800'>Nhập thông tin đặt bàn</DialogTitle>
         </DialogHeader>
 
         <Form {...form}>
@@ -301,7 +299,21 @@ export default function OrderTable({ restaurant }: IProps) {
             <div className='grid grid-cols-1 gap-3 sm:grid-cols-2'>
               <div className='w-full flex flex-col gap-2'>
                 <Label className='text-sm font-medium'>Ngày đến</Label>
-                <Popover>
+                <DatePicker
+                  selected={book_tb_date}
+                  onChange={(date: Date | null) => {
+                    if (date) {
+                      setBook_tb_date(date)
+                    }
+                  }}
+                  minDate={currentDate}
+                  dateFormat="EEEE, dd 'Tháng' MM 'Năm' yyyy"
+                  locale={vi}
+                  placeholderText='Chọn ngày'
+                  className='-mt-[1px]'
+                  customInput={<Input />}
+                />
+                {/* <Popover>
                   <PopoverTrigger asChild>
                     <Button
                       variant={'outline'}
@@ -338,13 +350,13 @@ export default function OrderTable({ restaurant }: IProps) {
                       }}
                     />
                   </PopoverContent>
-                </Popover>
+                </Popover> */}
               </div>
               <div className='w-full flex flex-col mt-2 gap-2'>
                 <Label className=''>Giờ đến</Label>
                 <DatePicker
                   selected={book_tb_hour ? new Date(`1970-01-01T${book_tb_hour}:00`) : null}
-                  onChange={(date) => {
+                  onChange={(date: Date | null) => {
                     if (date) {
                       setBook_tb_hour(format(date, 'HH:mm'))
                     }
