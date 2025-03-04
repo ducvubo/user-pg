@@ -326,6 +326,7 @@ export default function OrderTable({ restaurant }: IProps) {
                       initialFocus
                       locale={vi}
                       fromDate={currentDate}
+                      captionLayout='dropdown'
                       classNames={{
                         day_hidden: 'invisible',
                         dropdown:
