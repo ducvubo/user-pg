@@ -373,7 +373,7 @@ export default function PageOrderTable() {
                                 <div className='aspect-square w-3 bg-gray-900 rounded-full absolute left-0 translate-x-[-29.5px] z-10 top-1 dark:bg-gray-50' />
                                 <div className='font-medium'>
                                   {detail.date_of_now
-                                    ? detail.date_of_now.toLocaleDateString()
+                                    ? new Date(detail.date_of_now).toLocaleDateString()
                                     : new Date().toLocaleDateString()}{' '}
                                   - {getTextStatus(detail.book_tb_detail_status)}
                                 </div>
