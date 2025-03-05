@@ -20,9 +20,8 @@ interface PaginationProps {
 
 export function Pagination({ meta, defaultRow, pageIndex, pageSize, setPageIndex, setPageSize }: PaginationProps) {
   return (
-    <div className='flex flex-col sm:flex-row items-center justify-between px-2 py-3 space-y-3 sm:space-y-0'>
-      <div className='flex flex-wrap items-center justify-center sm:justify-start space-x-2 sm:space-x-4 lg:space-x-6'>
-        {/* Số bản ghi */}
+    <div className='flex flex-col sm:flex-row items-center justify-between px-1 py-1 space-y-3 sm:space-y-0'>
+      {/* <div className='flex flex-wrap items-center justify-center sm:justify-start space-x-2 sm:space-x-4 lg:space-x-6'> */}
         <div className='flex items-center space-x-2'>
           <p className='text-xs sm:text-sm font-medium whitespace-nowrap'>Số bản ghi</p>
           <Select
@@ -45,11 +44,10 @@ export function Pagination({ meta, defaultRow, pageIndex, pageSize, setPageIndex
           </Select>
         </div>
 
-        {/* Thông tin trang */}
         <div className='flex w-[90px] sm:w-[100px] items-center justify-center text-xs sm:text-sm font-medium'>
           Trang {pageIndex} của {meta.totalPage}
         </div>
-      </div>
+      {/* </div> */}
 
       <div className='flex items-center space-x-1 sm:space-x-2'>
         <Button

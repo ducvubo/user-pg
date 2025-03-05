@@ -134,3 +134,27 @@ export const createBookTable = async (data: ICreateBookTable) => {
   })
   return res
 }
+
+export const getFeedBackBookTable = async ({
+  restaurantId,
+  pageSize,
+  pageIndex,
+  start
+}: {
+  restaurantId: string
+  pageSize: string
+  pageIndex: string
+  start: number
+}) => {
+  const res: IBackendRes<IModelPaginate<ICreateBookTable>> = await sendRequest({
+    url: `${URL_SERVER}/book-table/list-feedback_book_tb/${restaurantId}`,
+    method: 'GET',
+    queryParams: {
+      pageIndex,
+      pageSize,
+      star: start
+    }
+  })
+  console.log('🚀 ~ res:', res)
+  return res
+}

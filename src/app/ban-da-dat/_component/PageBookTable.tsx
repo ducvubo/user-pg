@@ -21,6 +21,7 @@ import {
 import { Label } from '@/components/ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
+import Link from 'next/link'
 
 const getTextStatus = (status: string) => {
   switch (status) {
@@ -286,7 +287,14 @@ export default function PageOrderTable() {
             listTableOrder.map((order, index) => (
               <div key={index} className='flex flex-col p-4 border border-gray-200 '>
                 <div className='flex flex-col md:flex-row items-start space-y-4 md:space-y-0 md:space-x-4 mb-4 last:mb-0'>
-                  <div className='w-32 h-32 rounded-md overflow-hidden flex-shrink-0'>
+                  <Link
+                    href={
+                      order.restaurant && order.restaurant?.restaurant_slug
+                        ? 'nha-hang/' + order.restaurant.restaurant_slug
+                        : '/'
+                    }
+                    className='w-44 h-44 rounded-md overflow-hidden flex-shrink-0'
+                  >
                     {order.restaurant && (
                       <Image
                         src={order.restaurant?.restaurant_banner.image_cloud}
@@ -296,9 +304,16 @@ export default function PageOrderTable() {
                         className='w-full h-full object-cover'
                       />
                     )}
-                  </div>
+                  </Link>
 
-                  <div className='flex-1 w-full'>
+                  <Link
+                    href={
+                      order.restaurant && order.restaurant?.restaurant_slug
+                        ? 'nha-hang/' + order.restaurant.restaurant_slug
+                        : '/'
+                    }
+                    className='flex-1 w-full'
+                  >
                     <h3 className='text-base md:text-lg font-semibold text-gray-800'>
                       {order.restaurant?.restaurant_name}
                     </h3>
@@ -320,7 +335,7 @@ export default function PageOrderTable() {
                     <p className='text-sm text-red-500 font-bold'>
                       Trạng thái: {getTextStatus(order.book_tb_status ? order.book_tb_status : '')}
                     </p>
-                  </div>
+                  </Link>
 
                   <div className='flex-1 w-full'>
                     <h3 className='text-base md:text-lg font-semibold text-gray-800'>Tên: {order.book_tb_name}</h3>
@@ -365,7 +380,7 @@ export default function PageOrderTable() {
                   <AccordionItem value='item-1'>
                     <AccordionTrigger>Thông tin thêm</AccordionTrigger>
                     <AccordionContent>
-                      <div className='p-1 sm:p-2'>
+                      <div className='p-1 pl-2 sm:p-2'>
                         <div className='after:absolute after:inset-y-0 after:w-px after:bg-gray-500/20 relative pl-6 after:left-0 grid gap-10 dark:after:bg-gray-400/20'>
                           {order.book_tb_details &&
                             order.book_tb_details.map((detail: IBookTableDetail, index) => (

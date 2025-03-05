@@ -14,6 +14,8 @@ import DishList from './DishList'
 import CarouselRestaurant from '@/app/home/_component/CarouselRestaurant'
 import CarouselRestaurantCat from './CarouselRestaurantCat'
 import Footer from '@/app/home/_component/Footer'
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
+import ListFeedBackBookTable from './ListFeedBackBookTable'
 
 interface IProps {
   restaurant: IRestaurant
@@ -228,6 +230,19 @@ export default async function InforRestaurant({ restaurant }: IProps) {
               </CardContent>
             </Card>
           )}
+          <Card className='!p-2'>
+            <CardHeader className='text-xl font-bold mb-6 text-center'>Feedback của khách hàng</CardHeader>
+            <CardContent className='p-2'>
+              <Accordion type='single' collapsible className='w-full'>
+                <AccordionItem value='item-1'>
+                  <AccordionTrigger>Feedback đặt bàn</AccordionTrigger>
+                  <AccordionContent>
+                    <ListFeedBackBookTable restaurantId={restaurant._id} />
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
+            </CardContent>
+          </Card>
         </div>
       </div>
 
