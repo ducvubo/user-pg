@@ -16,6 +16,9 @@ import CarouselRestaurantCat from './CarouselRestaurantCat'
 import Footer from '@/app/home/_component/Footer'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
 import ListFeedBackBookTable from './ListFeedBackBookTable'
+import AddLikeRestaurant from './AddLikeRestaurant'
+import CarouselRestaurantLike from '@/app/home/_component/CarouselRestaurantLike'
+import CarouselRestaurantRecommend from '@/app/home/_component/CarouselRestaurantRecommend'
 
 interface IProps {
   restaurant: IRestaurant
@@ -81,7 +84,10 @@ export default async function InforRestaurant({ restaurant }: IProps) {
         <div className='w-full lg:w-[67%] flex flex-col gap-3'>
           <Card>
             <CardContent className='p-4'>
-              <h1 className='font-semibold text-xl md:text-2xl'>{restaurant.restaurant_name}</h1>
+              <div className='flex justify-between'>
+                <h1 className='font-semibold text-xl md:text-2xl'>{restaurant.restaurant_name}</h1>
+                <AddLikeRestaurant restaurantId={restaurant._id} />
+              </div>
               <div className='flex items-center mt-3'>
                 <MapPin size={16} />
                 <span className='ml-1 text-sm md:text-base'>
@@ -235,7 +241,7 @@ export default async function InforRestaurant({ restaurant }: IProps) {
             <CardContent className='p-2'>
               <Accordion type='single' collapsible className='w-full'>
                 <AccordionItem value='item-1'>
-                  <AccordionTrigger>Feedback đặt bàn</AccordionTrigger>
+                  <AccordionTrigger className='font-semibold'>Feedback đặt bàn</AccordionTrigger>
                   <AccordionContent>
                     <ListFeedBackBookTable restaurantId={restaurant._id} />
                   </AccordionContent>
@@ -246,7 +252,21 @@ export default async function InforRestaurant({ restaurant }: IProps) {
         </div>
       </div>
 
-      <div className='mt-3 px-4 md:px-8 lg:px-[100px]'>
+      <div className='mt-3 px-4 md:px-8 lg:px-[100px] flex flex-col gap-3'>
+        <Card>
+          <CardContent>
+            <CarouselRestaurantRecommend />
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent>
+            <CarouselRestaurantLike
+              link='#'
+              order={5}
+              title='Danh sách nhà hàng đã thích'
+            />
+          </CardContent>
+        </Card>
         <Card>
           <CardContent>
             <CarouselRestaurant
@@ -257,6 +277,7 @@ export default async function InforRestaurant({ restaurant }: IProps) {
             />
           </CardContent>
         </Card>
+
         {/* <div className='flex flex-col gap-3 mt-3'>
           {restaurant.restaurant_category &&
             restaurant.restaurant_category.length > 0 &&

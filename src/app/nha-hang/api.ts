@@ -155,6 +155,66 @@ export const getFeedBackBookTable = async ({
       star: start
     }
   })
-  console.log('🚀 ~ res:', res)
+  return res
+}
+
+export const addRestaurantLike = async (restaurantId: string) => {
+  const listLikedRestaurant = await getCookie('listLikedRestaurant');
+
+  let listLikedRestaurantArr: string[] = [];
+
+  if (listLikedRestaurant && listLikedRestaurant.value) {
+    listLikedRestaurantArr = JSON.parse(listLikedRestaurant.value);
+
+    if (listLikedRestaurantArr.includes(restaurantId)) {
+      return {
+        success: true,
+        message: 'Restaurant already in favorites',
+        list: listLikedRestaurantArr
+      };
+    }
+  }
+
+  listLikedRestaurantArr.unshift(restaurantId);
+
+  if (listLikedRestaurantArr.length > 15) {
+    listLikedRestaurantArr.pop();
+  }
+
+  const cookieStore = await cookies();
+  cookieStore.set('listLikedRestaurant', JSON.stringify(listLikedRestaurantArr), {
+    path: '/',
+    maxAge: 60 * 60 * 24 * 30000,
+    sameSite: 'strict',
+  });
+}
+
+export const removeRestaurantLike = async (restaurantId: string) => {
+  const listLikedRestaurant = await getCookie('listLikedRestaurant');
+  let listLikedRestaurantArr: string[] = [];
+  if (listLikedRestaurant && listLikedRestaurant.value) {
+    listLikedRestaurantArr = JSON.parse(listLikedRestaurant.value);
+    listLikedRestaurantArr = listLikedRestaurantArr.filter((item) => item !== restaurantId);
+  }
+  const cookieStore = await cookies();
+  cookieStore.set('listLikedRestaurant', JSON.stringify(listLikedRestaurantArr), {
+    path: '/',
+    maxAge: 60 * 60 * 24 * 30000,
+    sameSite: 'strict',
+  });
+}
+
+export const findRecommendRestaurant = async (id_user?: string) => {
+  const listLikedRestaurant = await getCookie('listLikedRestaurant');
+  const listViewedRestaurant = await getCookie('restaurantIds');
+  const res: IBackendRes<IRestaurant[]> = await sendRequest({
+    url: `${URL_SERVER}/restaurants/recommend-restaurants`,
+    method: 'POST',
+    body: {
+      id_user: id_user,
+      list_like: listLikedRestaurant?.value ? JSON.parse(listLikedRestaurant.value) : [],
+      list_view: listViewedRestaurant?.value ? JSON.parse(listViewedRestaurant.value) : []
+    }
+  })
   return res
 }

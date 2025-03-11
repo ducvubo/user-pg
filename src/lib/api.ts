@@ -7,6 +7,7 @@ export const sendRequest = async <T>(props: IRequest) => {
   let options: any
   const cookie = await cookies()
   const id_user_guest = cookie.get('id_user_guest')?.value
+  const id_user_number = cookie.get('id_user_number')?.value
   const access_token = cookie.get('access_token')?.value
   const refresh_token = cookie.get('refresh_token')?.value
 
@@ -31,7 +32,8 @@ export const sendRequest = async <T>(props: IRequest) => {
       headers: new Headers({
         'content-type': 'application/json',
         ...headers,
-        'x-cl-id': id_user_guest
+        'x-cl-id': id_user_guest,
+        'id-user-number': id_user_number
       }),
       body: body ? JSON.stringify(body) : null,
       ...nextOption
