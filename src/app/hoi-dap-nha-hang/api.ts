@@ -3,10 +3,10 @@ import { ICategoryRestaurant } from '../components/CategoryRestaurantBlock'
 import { IFoodRestaurant } from '../interface/food-restaurant.interface'
 import { IRestaurant } from '../interface/restaurant.interface'
 import { ISpecialOffer } from './_component/QARestaurant'
-import { IComboFood } from './_component/ComboList'
-import { IDish } from './_component/DishList'
 import { cookies } from 'next/headers'
 import { sendRequest } from '@/lib/api'
+import { IComboFood } from '../nha-hang/_component/ComboList'
+import { IDish } from '../nha-hang/_component/DishList'
 
 const URL_SERVER = process.env.URL_SERVER
 const URL_SERVER_ORDER = process.env.URL_SERVER_ORDER
