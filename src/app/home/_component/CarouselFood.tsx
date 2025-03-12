@@ -48,18 +48,18 @@ export default function CarouselFood({ listFoodRestaurant }: IProps) {
   }
 
   const renderFoodCard = (food: IFoodRestaurant, index: number) => {
-    let parsedImage = ''
-    try {
-      parsedImage = replaceDimensions(JSON.parse(food.food_image).image_custom, 1000, 1000)
-    } catch (error) {
-      console.error('Invalid image JSON:', error)
-    }
+    // let parsedImage = ''
+    // try {
+    //   parsedImage = replaceDimensions(JSON.parse(food.food_image).image_custom, 1000, 1000)
+    // } catch (error) {
+    //   console.error('Invalid image JSON:', error)
+    // }
 
     return (
       <Link href={`/`} key={index}>
         <div className='w-full px-1 cursor-pointer relative'>
           <Image
-            src={parsedImage || '/fallback-image.jpg'} // Fallback nếu parse thất bại
+            src={JSON.parse(food.food_image).image_cloud || '/fallback-image.jpg'} // Fallback nếu parse thất bại
             width={500}
             height={500}
             alt={food.food_name}

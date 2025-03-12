@@ -106,10 +106,11 @@ export default function CarouselRestaurantCatClient({ listRestaurantSelected }: 
   }
 
   const renderRestaurantItem = (restaurant: IRestaurant, index: number) => (
-    <Link href={`/nha-hang/${restaurant.restaurant_slug}`} key={index}>
+    <Link href={`/nha-hang/${restaurant.restaurant_slug}`} target='_blank' key={index}>
       <div className='w-full px-2 cursor-pointer'>
         <Image
-          src={replaceDimensions(restaurant.restaurant_banner.image_custom, 1000, 1000)}
+          // src={replaceDimensions(restaurant.restaurant_banner.image_custom, 1000, 1000)}
+          src={restaurant.restaurant_banner.image_cloud}
           width={500}
           height={700}
           alt={restaurant.restaurant_name}

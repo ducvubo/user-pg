@@ -1,8 +1,7 @@
-import { ChevronRight, CircleDollarSign, List, MapPin, PhoneCall } from 'lucide-react'
+import { ChevronRight, CircleDollarSign, List, MapPin, PhoneCall, MessageCircleQuestion } from 'lucide-react'
 import React from 'react'
 import { IRestaurant } from '@/app/interface/restaurant.interface'
 import { getCategoryRestaurant, getCookie, getFoodRestaurant, getListCombo, getListDish, getSpecialOffer } from '../api'
-import Image from 'next/image'
 import { buildPriceRestaurant } from '@/app/utils'
 import BannerAndGallery from './BannerAndGallery'
 import CategoryRestaurantBlock from '@/app/components/CategoryRestaurantBlock'
@@ -12,16 +11,16 @@ import FoodList from './FoodList'
 import ComboList from './ComboList'
 import DishList from './DishList'
 import CarouselRestaurant from '@/app/home/_component/CarouselRestaurant'
-import CarouselRestaurantCat from './CarouselRestaurantCat'
-import Footer from '@/app/home/_component/Footer'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
 import ListFeedBackBookTable from './ListFeedBackBookTable'
 import AddLikeRestaurant from './AddLikeRestaurant'
 import CarouselRestaurantLike from '@/app/home/_component/CarouselRestaurantLike'
 import CarouselRestaurantRecommend from '@/app/home/_component/CarouselRestaurantRecommend'
+import Link from 'next/link'
 
 interface IProps {
   restaurant: IRestaurant
+  slug: string
 }
 
 export interface ISpecialOffer {
@@ -30,7 +29,7 @@ export interface ISpecialOffer {
   spo_description: string
 }
 
-export default async function InforRestaurant({ restaurant }: IProps) {
+export default async function InforRestaurant({ restaurant, slug }: IProps) {
   const listIdView = await getCookie('restaurantIds')
   let restaurantIds: string[] = listIdView?.value
     ? JSON.parse(listIdView.value).filter((t: string) => t !== restaurant._id)
@@ -106,6 +105,12 @@ export default async function InforRestaurant({ restaurant }: IProps) {
                   {restaurant.restaurant_phone}
                 </span>
               </div>
+              <Link href={`/hoi-dap-nha-hang/${slug}`} target='_blank' className='flex items-center mt-2'>
+                <MessageCircleQuestion size={16} />
+                <span className='ml-1 font-semibold text-red-500 text-sm md:text-base'>
+                  Hỏi đáp
+                </span>
+              </Link>
               <hr className='border-gray-300 my-3' />
               <div className='flex flex-wrap gap-2'>
                 {restaurant.restaurant_type.map((type, index) => (

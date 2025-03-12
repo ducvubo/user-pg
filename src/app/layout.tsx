@@ -82,7 +82,7 @@ export default async function RootLayout({
           `
         }}
       />
-      <Script
+      {/* <Script
         id='clarity-init'
         strategy='afterInteractive'
         dangerouslySetInnerHTML={{
@@ -94,7 +94,7 @@ export default async function RootLayout({
             })(window, document, "clarity", "script", "qifzm7kru0");
           `
         }}
-      />
+      /> */}
     </html>
   )
 }
