@@ -4,6 +4,7 @@ import { IRestaurant } from '@/app/interface/restaurant.interface'
 import { Card, CardHeader } from '@/components/ui/card'
 import Image from 'next/image'
 import { buildPriceRestaurant, replaceDimensions } from '@/app/utils'
+import GuestQARestaurant from './GuestQARestaurant'
 
 interface IProps {
   restaurant: IRestaurant
@@ -70,6 +71,10 @@ export default async function QARestaurant({ restaurant }: IProps) {
 
           </div>
         </div>
+      </Card>
+
+      <Card className='bg-white h-auto min-h-10 mx-4 sm:mx-6 md:mx-8 lg:mx-[100px] mt-2'>
+        <GuestQARestaurant restaurant={restaurant} />
       </Card>
 
     </div >

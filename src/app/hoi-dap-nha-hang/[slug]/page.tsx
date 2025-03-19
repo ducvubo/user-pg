@@ -1,7 +1,7 @@
 import { IRestaurant } from '@/app/interface/restaurant.interface'
 import dynamic from 'next/dynamic'
-import { getRestaurantBySlug } from '../api'
 import QARestaurant from '../_component/QARestaurant'
+import { getRestaurantBySlug } from '@/app/nha-hang/api'
 const ToastServer = dynamic(() => import('@/components/ToastServer'), {
   ssr: true
 })
