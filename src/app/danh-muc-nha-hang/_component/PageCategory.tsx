@@ -18,6 +18,17 @@ export default function PageCategory() {
   const [listRestaurant, setListRestaurant] = useState<IRestaurant[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const [hasMore, setHasMore] = useState(true)
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
 
   const getInforCat = async () => {
     try {
@@ -33,6 +44,7 @@ export default function PageCategory() {
       setInforCat(undefined)
     }
   }
+
 
   const getRestaurantByQuery = async (page: number) => {
     if (!hasMore || isLoading) return;
@@ -74,16 +86,28 @@ export default function PageCategory() {
     }
   }, [inforCat])
 
+  // const handleScroll = useCallback(() => {
+  //   if (
+  //     window.innerHeight + document.documentElement.scrollTop >=
+  //     document.documentElement.offsetHeight - 300 // Trigger 100px before bottom
+  //     && !isLoading
+  //     && hasMore
+  //   ) {
+  //     setPageIndex(prev => prev + 1)
+  //   }
+  // }, [isLoading, hasMore])
+
   const handleScroll = useCallback(() => {
+    const triggerDistance = isMobile ? 1200 : 500
     if (
       window.innerHeight + document.documentElement.scrollTop >=
-      document.documentElement.offsetHeight - 300 // Trigger 100px before bottom
+      document.documentElement.offsetHeight - triggerDistance
       && !isLoading
       && hasMore
     ) {
       setPageIndex(prev => prev + 1)
     }
-  }, [isLoading, hasMore])
+  }, [isLoading, hasMore, isMobile])
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll)
