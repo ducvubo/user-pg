@@ -99,7 +99,7 @@ export default function CategoryBlock({ categories }: IProps) {
     <div className='px-4 sm:px-8 md:px-12 lg:px-[100px] py-4'>
       <Slider {...settings}>
         {categories.map((category, index) => (
-          <Link href={`/category/${category.category_slug}`} key={index}>
+          <Link href={`/danh-muc-nha-hang/${category.category_slug}`} key={index}>
             <div className='flex flex-col items-center cursor-pointer px-2'>
               <div className='w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-white rounded-full flex items-center justify-center shadow-md'>
                 <span className='text-xl sm:text-2xl md:text-3xl'>{category.category_icon}</span>
