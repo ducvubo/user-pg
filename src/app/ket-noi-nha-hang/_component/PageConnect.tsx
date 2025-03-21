@@ -483,13 +483,16 @@ const PageConnect = ({ idUser }: Props) => {
         }}
         className="hover:bg-gray-700"
       >
-        {restaurant.restaurant_name}
-        <CheckIcon
-          className={cn(
-            "ml-auto h-4 w-4",
-            restaurantId === restaurant._id ? "opacity-100" : "opacity-0"
-          )}
-        />
+        <>
+          {restaurant.restaurant_name}
+          <CheckIcon
+            className={cn(
+              "ml-auto h-4 w-4",
+              restaurantId === restaurant._id ? "opacity-100" : "opacity-0"
+            )}
+          />
+        </>
+
       </CommandItem>
     ));
   }, [restaurants, restaurantId, conversations]);
