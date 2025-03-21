@@ -38,9 +38,9 @@ import {
 } from "@/components/ui/command";
 import { useRouter, useSearchParams } from "next/navigation";
 
-import { searchRestaurantByName } from "./../connect.api";
+import { getRestaurantById, searchRestaurantByName } from "./../connect.api";
 import { GetRestaurantByIds } from "../../home/home.api";
-import { MenuIcon, XIcon } from "lucide-react";
+import { Loader2, MenuIcon, XIcon } from "lucide-react";
 import { IRestaurant } from "@/app/interface/restaurant.interface";
 import Image from "next/image";
 import Link from "next/link";
@@ -124,8 +124,36 @@ const PageConnect = ({ idUser }: Props) => {
     if (isExistingConversation) {
       setSelectedConversation(idResParam);
     }
+
+    //chưa có thì gọi hàm findRestaurantById rồi thêm vào danh sách cuộc trò chuyện và set vào selectedConversation
+    if (idResParam && !isExistingConversation) {
+      findRestaurantById(idResParam).then((res) => {
+        if (res.statusCode === 200 && res.data) {
+          const restaurant = res.data;
+          const newConversation: Conversation = {
+            restaurantId: restaurant._id,
+            latestMessage: null,
+            isUnreadFromRestaurant: false,
+          };
+          setConversations((prev) => {
+            const updated = [...prev, newConversation];
+            const uniqueConversations = Array.from(
+              new Map(updated.map((item) => [item.restaurantId, item])).values()
+            );
+            conversationsRef.current = uniqueConversations;
+            return uniqueConversations;
+          });
+          setSelectedConversation(restaurant._id);
+        }
+      });
+    }
+
   }, [idResParam, conversations]);
 
+  const findRestaurantById = async (id: string) => {
+    const res: IBackendRes<IRestaurant> = await getRestaurantById({ id });
+    return res;
+  };
 
   useEffect(() => {
     const checkUserId = async (id: string) => {
@@ -688,10 +716,10 @@ const PageConnect = ({ idUser }: Props) => {
                   }
                   <div className="flex flex-col ml-2 mt-2">
                     <span className="text-lg font-semibold">
-                      {restaurantDetails[selectedConversation]?.restaurant_name || selectedConversation}
+                      {restaurantDetails[selectedConversation]?.restaurant_name || <Loader2 className="animate-spin" />}
                     </span>
                     <span>
-                      {restaurantDetails[selectedConversation]?.restaurant_address.address_specific || selectedConversation}
+                      {restaurantDetails[selectedConversation]?.restaurant_address.address_specific || <Loader2 className="animate-spin" />}
                     </span>
                   </div>
                 </Link>
