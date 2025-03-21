@@ -727,6 +727,7 @@ const PageConnect = ({ idUser }: Props) => {
                   restaurantId={selectedConversation}
                   customerId={idUser}
                   userType="customer"
+                  banner={restaurantDetails[selectedConversation]?.restaurant_banner?.image_cloud}
                 />
               </div>
             ) : (

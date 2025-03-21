@@ -33,9 +33,10 @@ interface ChatProps {
   restaurantId: string;
   customerId: string;
   userType: "restaurant" | "customer";
+  banner: string;
 }
 
-const Chat = ({ restaurantId, customerId, userType }: ChatProps) => {
+const Chat = ({ restaurantId, customerId, userType, banner }: ChatProps) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState<string>("");
   const [username, setUsername] = useState<string>(customerId);
@@ -151,7 +152,7 @@ const Chat = ({ restaurantId, customerId, userType }: ChatProps) => {
                       src={
                         msg.userType === "customer"
                           ? "https://github.com/shadcn.png"
-                          : "https://via.placeholder.com/150?text=Restaurant"
+                          : banner
                       }
                       alt={msg.userType === "customer" ? username : "Nhà hàng"}
                     />

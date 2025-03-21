@@ -148,6 +148,11 @@ export default function HeaderPato({
                   <span className='block px-4 py-2 hover:bg-gray-100 text-black'>Ticket</span>
                 </Link>
               </li>
+              <li>
+                <Link href='/ket-noi-nha-hang'>
+                  <span className='block px-4 py-2 hover:bg-gray-100 text-black text-center'>Kết nối</span>
+                </Link>
+              </li>
             </ul>
           </li>
         </ul>
@@ -276,6 +281,11 @@ export default function HeaderPato({
           <li>
             <Link href='/danh-sach-ticket'>
               <span className='block px-4 py-2 hover:bg-gray-100 text-black text-center'>Ticket</span>
+            </Link>
+          </li>
+          <li>
+            <Link href='/ket-noi-nha-hang'>
+              <span className='block px-4 py-2 hover:bg-gray-100 text-black text-center'>Kết nối</span>
             </Link>
           </li>
         </ul>
