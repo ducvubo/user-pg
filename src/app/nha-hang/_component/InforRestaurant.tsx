@@ -1,4 +1,4 @@
-import { ChevronRight, CircleDollarSign, List, MapPin, PhoneCall, MessageCircleQuestion } from 'lucide-react'
+import { ChevronRight, CircleDollarSign, List, MapPin, PhoneCall, MessageCircleQuestion, MessageCircle } from 'lucide-react'
 import React from 'react'
 import { IRestaurant } from '@/app/interface/restaurant.interface'
 import { getCategoryRestaurant, getCookie, getFoodRestaurant, getListCombo, getListDish, getSpecialOffer } from '../api'
@@ -109,6 +109,12 @@ export default async function InforRestaurant({ restaurant, slug }: IProps) {
                 <MessageCircleQuestion size={16} />
                 <span className='ml-1 font-semibold text-red-500 text-sm md:text-base'>
                   Hỏi đáp
+                </span>
+              </Link>
+              <Link href={`/ket-noi-nha-hang?id=${restaurant._id}`} target='_blank' className='flex items-center mt-2'>
+                <MessageCircle size={16} />
+                <span className='ml-1 font-semibold text-red-500 text-sm md:text-base'>
+                  Kết nối
                 </span>
               </Link>
               <hr className='border-gray-300 my-3' />
