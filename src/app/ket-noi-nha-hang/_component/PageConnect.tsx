@@ -45,6 +45,7 @@ import { IRestaurant } from "@/app/interface/restaurant.interface";
 import Image from "next/image";
 import Link from "next/link";
 import { where } from "firebase/firestore";
+import { toast } from "@/hooks/use-toast";
 
 interface Restaurant {
   _id: string;
@@ -180,7 +181,12 @@ const PageConnect = ({ idUser }: Props) => {
         }
       } catch (error) {
         console.error("Lỗi khi kiểm tra userId:", error);
-        alert("Không thể kiểm tra userId. Vui lòng thử lại!");
+        // alert("Không thể kiểm tra userId. Vui lòng thử lại!");
+        toast({
+          title: "Lỗi",
+          description: "Không thể kiểm tra userId. Vui lòng thử lại!",
+          variant: "destructive"
+        })
         setHasUsername(false);
         setIsDialogOpen(true);
       }
@@ -191,7 +197,12 @@ const PageConnect = ({ idUser }: Props) => {
 
   const handleSaveName = async () => {
     if (!name.trim()) {
-      alert("Vui lòng nhập tên!");
+      // alert("Vui lòng nhập tên!");
+      toast({
+        title: "Lỗi",
+        description: "Vui lòng nhập tên!",
+        variant: "destructive"
+      })
       return;
     }
 
@@ -204,10 +215,20 @@ const PageConnect = ({ idUser }: Props) => {
 
       setHasUsername(true);
       setIsDialogOpen(false);
-      alert("Tên đã được lưu thành công!");
+      // alert("Tên đã được lưu thành công!");
+      toast({
+        title: "Thành công",
+        description: "Tên đã được lưu thành công!",
+        variant: "default"
+      })
     } catch (error) {
       console.error("Lỗi khi lưu tên:", error);
-      alert("Không thể lưu tên. Vui lòng thử lại!");
+      // alert("Không thể lưu tên. Vui lòng thử lại!");
+      toast({
+        title: "Lỗi",
+        description: "Không thể lưu tên. Vui lòng thử lại!",
+        variant: "destructive"
+      })
     }
   };
 
@@ -217,7 +238,12 @@ const PageConnect = ({ idUser }: Props) => {
 
   const handleChangeName = async () => {
     if (!newName.trim()) {
-      alert("Vui lòng nhập tên mới!");
+      // alert("Vui lòng nhập tên mới!");
+      toast({
+        title: "Lỗi",
+        description: "Vui lòng nhập tên mới!",
+        variant: "destructive"
+      })
       return;
     }
 
@@ -231,10 +257,20 @@ const PageConnect = ({ idUser }: Props) => {
       setName(newName);
       setNewName("");
       setIsChangeNameDialogOpen(false);
-      alert("Tên đã được đổi thành công!");
+      // alert("Tên đã được đổi thành công!");
+      toast({
+        title: "Thành công",
+        description: "Tên đã được đổi thành công!",
+        variant: "default"
+      })
     } catch (error) {
       console.error("Lỗi khi đổi tên:", error);
-      alert("Không thể đổi tên. Vui lòng thử lại!");
+      // alert("Không thể đổi tên. Vui lòng thử lại!");
+      toast({
+        title: "Lỗi",
+        description: "Không thể đổi tên. Vui lòng thử lại!",
+        variant: "destructive"
+      })
     }
   };
 
@@ -303,7 +339,12 @@ const PageConnect = ({ idUser }: Props) => {
 
   const handleAddConversation = async () => {
     if (!restaurantId.trim()) {
-      alert("Vui lòng chọn một nhà hàng!");
+      // alert("Vui lòng chọn một nhà hàng!");
+      toast({
+        title: "Lỗi",
+        description: "Vui lòng chọn một nhà hàng!",
+        variant: "destructive"
+      })
       return;
     }
 
@@ -336,7 +377,12 @@ const PageConnect = ({ idUser }: Props) => {
       setIsAddConversationDialogOpen(false);
     } catch (error) {
       console.error("Lỗi khi thêm cuộc trò chuyện:", error);
-      alert("Không thể thêm cuộc trò chuyện. Vui lòng thử lại!");
+      // alert("Không thể thêm cuộc trò chuyện. Vui lòng thử lại!");
+      toast({
+        title: "Lỗi",
+        description: "Không thể thêm cuộc trò chuyện. Vui lòng thử lại!",
+        variant: "destructive"
+      })
     }
   };
 
