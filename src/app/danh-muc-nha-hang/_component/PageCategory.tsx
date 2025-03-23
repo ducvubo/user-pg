@@ -358,7 +358,7 @@ export default function PageCategory() {
   )
 
   return (
-    <div className='container mx-auto px-4 py-8 relative'>
+    <div className='px-4 md:px-8 lg:px-[100px] mt-10 relative'>
       {inforCat && (
         <h1 className='text-2xl font-bold mb-6'>
           {inforCat.category_name}
