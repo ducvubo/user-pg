@@ -44,6 +44,7 @@ import { Loader2, MenuIcon, XIcon } from "lucide-react";
 import { IRestaurant } from "@/app/interface/restaurant.interface";
 import Image from "next/image";
 import Link from "next/link";
+import { where } from "firebase/firestore";
 
 interface Restaurant {
   _id: string;
@@ -367,14 +368,17 @@ const PageConnect = ({ idUser }: Props) => {
   useEffect(() => {
     if (hasUsername !== true || !idUser) return;
 
-    const chatsRef = collection(db, "chats");
+    const chatsRef = query(
+      collection(db, "chats"),
+      where("customerId", "==", idUser)
+    );
     const unsubscribeChats = onSnapshot(chatsRef, (snapshot) => {
       const allChatRooms = snapshot.docs.map((doc) => doc.id);
-      const relatedChatRooms = allChatRooms.filter((chatRoomId) =>
-        chatRoomId.endsWith(`_${idUser}`)
-      );
+      // const relatedChatRooms = allChatRooms.filter((chatRoomId) =>
+      //   chatRoomId.endsWith(`_${idUser}`)
+      // );
 
-      const newConversations = relatedChatRooms.map((chatRoomId) => {
+      const newConversations = allChatRooms.map((chatRoomId) => {
         const restaurantId = chatRoomId.replace(`_${idUser}`, "");
         const existingConv = conversationsRef.current.find(
           (conv) => conv.restaurantId === restaurantId

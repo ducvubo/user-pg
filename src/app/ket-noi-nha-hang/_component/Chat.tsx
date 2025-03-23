@@ -17,7 +17,8 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { DocumentData } from "firebase/firestore";
+import { DocumentData, setDoc } from "firebase/firestore";
+import { id } from "date-fns/locale";
 
 // Định nghĩa type cho tin nhắn
 interface Message {
@@ -101,6 +102,15 @@ const Chat = ({ restaurantId, customerId, userType, banner }: ChatProps) => {
 
     try {
       const messagesRef = collection(db, "chats", chatRoomId, "messages");
+      // kiểm tra nếu chatRoomId chưa tồn tại thì tạo mới
+      const chatRoomRef = doc(db, "chats", chatRoomId);
+      if (!(await getDoc(chatRoomRef)).exists()) {
+        await setDoc(chatRoomRef, {
+          id: chatRoomId,
+          customerId,
+          restaurantId,
+        }, { merge: true });
+      }
       await addDoc(messagesRef, {
         text: newMessage,
         timestamp: new Date(),
