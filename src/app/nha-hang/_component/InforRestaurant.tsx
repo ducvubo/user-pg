@@ -17,6 +17,7 @@ import AddLikeRestaurant from './AddLikeRestaurant'
 import CarouselRestaurantLike from '@/app/home/_component/CarouselRestaurantLike'
 import CarouselRestaurantRecommend from '@/app/home/_component/CarouselRestaurantRecommend'
 import Link from 'next/link'
+import BlockBlog from './BlockBlog'
 
 interface IProps {
   restaurant: IRestaurant
@@ -286,6 +287,11 @@ export default async function InforRestaurant({ restaurant, slug }: IProps) {
               selectedRestaurant={restaurantIds}
               title='Danh sách nhà hàng đã xem'
             />
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent>
+            <BlockBlog inforRestaurant={restaurant} />
           </CardContent>
         </Card>
 

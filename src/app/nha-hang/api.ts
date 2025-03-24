@@ -40,6 +40,26 @@ export interface IBookTableDetail {
   date_of_now: Date
 }
 
+export interface ICategoryBlogRestaurant {
+  catId: string
+  catName: string
+  catSlug: string
+}
+
+export interface IArticleRestaurant {
+  atlId: string
+  catId: string
+  atlTitle: string
+  atlDescription: string
+  atlSlug: string
+  atlImage: string
+  atlType: string | "DEFAULT"
+  atlContent: string
+  atlPublishedTime: number
+  atlView: number
+  listArticleRelated: any[]
+}
+
 export const getRestaurantBySlug = async (slug: string) => {
   const res: IBackendRes<IRestaurant> = await sendRequest({
     url: `${URL_SERVER}/restaurants/slug/${slug}`,
@@ -214,6 +234,28 @@ export const findRecommendRestaurant = async (id_user?: string) => {
       id_user: id_user,
       list_like: listLikedRestaurant?.value ? JSON.parse(listLikedRestaurant.value) : [],
       list_view: listViewedRestaurant?.value ? JSON.parse(listViewedRestaurant.value) : []
+    }
+  })
+  return res
+}
+
+export const getCategoryBlogRestaurant = async (restaurantId: string) => {
+  const res: IBackendRes<ICategoryBlogRestaurant[]> = await sendRequest({
+    url: `${process.env.URL_SERVER_BLOG}/categories/all-category-view`,
+    method: 'GET',
+    queryParams: {
+      resId: restaurantId
+    }
+  })
+  return res
+}
+
+export const getArtilceRestaurant = async (restaurantId: string) => {
+  const res: IBackendRes<IArticleRestaurant[]> = await sendRequest({
+    url: `${process.env.URL_SERVER_BLOG}/articles/all-article-view`,
+    method: 'GET',
+    queryParams: {
+      resId: restaurantId
     }
   })
   return res

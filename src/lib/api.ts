@@ -6,6 +6,7 @@ export const sendRequest = async <T>(props: IRequest) => {
   let { url, method, body, queryParams = {}, useCredentials = false, headers = {}, nextOption = {} } = props
   let options: any
   const cookie = await cookies()
+  const { nonce, sign, stime, version } = genSignEndPoint()
   const id_user_guest = cookie.get('id_user_guest')?.value
   const id_user_number = cookie.get('id_user_number')?.value
   const access_token = cookie.get('access_token')?.value
@@ -19,6 +20,10 @@ export const sendRequest = async <T>(props: IRequest) => {
         // 'x-at-tk': `Bearer ${access_token}`,
         // 'x-rf-tk': `Bearer ${refresh_token}`,
         'x-cl-id': id_user_guest,
+        nonce,
+        sign,
+        stime,
+        version,
         ...headers
       }),
       body: body ? JSON.stringify(body) : null,
@@ -33,7 +38,11 @@ export const sendRequest = async <T>(props: IRequest) => {
         'content-type': 'application/json',
         ...headers,
         'x-cl-id': id_user_guest,
-        'id-user-number': id_user_number
+        'id-user-number': id_user_number,
+        nonce,
+        sign,
+        stime,
+        version,
       }),
       body: body ? JSON.stringify(body) : null,
       ...nextOption

@@ -133,7 +133,6 @@ export default function ListFeedBackBookTable({ restaurantId }: Props) {
         restaurantId,
         start
       })
-      console.log('🚀 ~ getListFeedBack ~ res:', res)
       if (res.statusCode === 200 && res.data) {
         setListFeedBack(res.data.result)
         setMeta({
