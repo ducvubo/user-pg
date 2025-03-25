@@ -18,7 +18,7 @@ export default function HeaderPato({
   }
 }) {
   return (
-    <nav className='flex items-center justify-between px-4 md:px-8 lg:px-[100px] bg-[#e6624f] shadow-md h-[60px]'>
+    <nav className='flex items-center sticky top-0 z-50 justify-between px-4 md:px-8 lg:px-[100px] bg-[#e6624f] shadow-md h-[60px]'>
       <Link href='/' className=''>
         <Image
           src={image ? image?.image_cloud : '/images/logo.webp'}
