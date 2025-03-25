@@ -1,5 +1,4 @@
 import React from 'react'
-import Header from './Header'
 import CarouselRestaurant from './CarouselRestaurant'
 import { GetCategoryByIds, getRestaurantHome, getSysteParameter } from '../home.api'
 import { IRestaurant } from '../../interface/restaurant.interface'

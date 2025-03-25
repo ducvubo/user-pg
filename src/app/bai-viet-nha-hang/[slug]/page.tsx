@@ -1,6 +1,5 @@
 import { IRestaurant } from '@/app/interface/restaurant.interface'
 import dynamic from 'next/dynamic'
-import Header from '@/app/home/_component/Header'
 import PageArticleRestaurant from '../_component/PageArticleRestaurant'
 import { getArticleRestaurantBySlug } from '../article.api'
 import { IArticleRestaurant } from '@/app/nha-hang/api'

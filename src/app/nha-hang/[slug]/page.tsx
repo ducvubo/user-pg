@@ -2,7 +2,6 @@ import InforRestaurant from '../_component/InforRestaurant'
 import { IRestaurant } from '@/app/interface/restaurant.interface'
 import dynamic from 'next/dynamic'
 import { getRestaurantBySlug } from '../api'
-import Header from '@/app/home/_component/Header'
 const ToastServer = dynamic(() => import('@/components/ToastServer'), {
   ssr: true
 })
