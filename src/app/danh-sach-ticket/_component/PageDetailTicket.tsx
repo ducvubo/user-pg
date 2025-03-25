@@ -13,20 +13,26 @@ import { closeTicket, createTicketReplice, getInformationTicket, getTicketReplic
 import { getTextPriority, getTextStatus, getTextType } from './PageListTicket'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { formatDateMongo } from '@/app/utils'
+import { IRestaurant } from '@/app/interface/restaurant.interface'
+import { GetRestaurantByIds } from '@/app/home/home.api'
+import { Label } from '@radix-ui/react-label'
+import Link from 'next/link'
 
 export default function PageDetailTicket() {
   const params = useParams()
   const [ticket, setTicket] = useState<ITicketGuestRestaurant>()
+  console.log("🚀 ~ PageDetailTicket ~ ticket:", ticket)
   const [ticketReply, setTicketReply] = useState<ITicketGuestRestaurantReplice[]>()
   const [isReplying, setIsReplying] = useState(false)
   const [replyAttachmentLinks, setReplyAttachmentLinks] = useState<string[]>([])
   const [isUploading, setIsUploading] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false) // New loading state for reply submission
+  const [restaurant, setRestaurant] = useState<IRestaurant>()
+  console.log("🚀 ~ PageDetailTicket ~ restaurant:", restaurant)
   const refContent = useRef<any>('')
 
   const getTicket = async () => {
     const res = await getInformationTicket(params.slug as string)
-    console.log('🚀 ~ getTicket ~ res:', res)
     if (res.statusCode === 200) {
       setTicket(res.data)
     } else if (res.code === -10) {
@@ -54,9 +60,23 @@ export default function PageDetailTicket() {
     }
   }
 
+  const getInforRestaurant = async () => {
+    const res = await GetRestaurantByIds([ticket?.tkgr_res_id ? ticket.tkgr_res_id : ""])
+    if (res.statusCode === 201 && res.data && res.data.length > 0) {
+      setRestaurant(res.data[0])
+    } else {
+      setRestaurant(undefined)
+    }
+  }
+
+  useEffect(() => {
+    if (ticket) {
+      getInforRestaurant()
+    }
+  }, [ticket])
+
   const getTicketReply = async () => {
     const res = await getTicketReplice(params.slug as string)
-    console.log('🚀 ~ getTicketReply ~ res:', res)
     if (res.statusCode === 200) {
       setTicketReply(res.data)
     } else if (res.code === -10) {
@@ -228,6 +248,9 @@ export default function PageDetailTicket() {
       <Card className='w-full'>
         <CardHeader className='p-4'>
           <CardTitle className='text-lg truncate'>{ticket?.tkgr_title || 'Thông tin ticket'}</CardTitle>
+          <Link href={`/nha-hang/${restaurant?.restaurant_slug}`}>
+            <Label className='text-base truncate cursor-pointer'>Nhà hàng: {restaurant?.restaurant_name || ''}</Label>
+          </Link>
         </CardHeader>
         <CardContent className='p-4 pt-0'>
           {ticket ? (
@@ -302,7 +325,7 @@ export default function PageDetailTicket() {
               </div>
             </div>
           ) : (
-            <div className='text-center text-muted-foreground'>No ticket data available</div>
+            <div className='text-center text-muted-foreground'>Đang tải...</div>
           )}
         </CardContent>
       </Card>

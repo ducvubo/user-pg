@@ -260,3 +260,21 @@ export const getArtilceRestaurant = async (restaurantId: string) => {
   })
   return res
 }
+
+export const addFoodToCart = async ({ food_id }: { food_id: string }) => {
+  const res: IBackendRes<boolean> = await sendRequest({
+    url: `${URL_SERVER_ORDER}/food-restaurant/add-food-to-cart`,
+    method: 'POST',
+    queryParams: { food_id }
+  })
+  return res
+}
+
+export const addComboToCart = async ({ fcb_id }: { fcb_id: string }) => {
+  const res: IBackendRes<boolean> = await sendRequest({
+    url: `${URL_SERVER_ORDER}/combo-food-res/add-combo-food-to-cart`,
+    method: 'POST',
+    queryParams: { fcb_id }
+  })
+  return res
+}

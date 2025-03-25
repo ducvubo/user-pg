@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import Link from 'next/link'
 import { Pagination } from '@/components/Pagination'
-
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 export const getTextStatus = (status?: string) => {
   switch (status) {
     case 'open':
@@ -81,7 +81,6 @@ export default function PageListTicket() {
       tkgr_type: type,
       tkgr_user_id: 0
     })
-    console.log('🚀 ~ findListTicket ~ res:', res)
     if (res.statusCode === 200 && res.data && res.data.result) {
       setListTicket(res.data.result)
       setMeta({
@@ -122,6 +121,76 @@ export default function PageListTicket() {
 
   return (
     <div className='px-4 md:px-8 lg:px-[100px] mt-10 h-auto'>
+      {/* Filter Section */}
+      <div className='mb-6'>
+        <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4'>
+          {/* Status Filter */}
+          <div>
+            <label className='text-sm font-medium mb-1 block'>Trạng thái</label>
+            <Select value={status} onValueChange={(e: any) => setStatus(e)}>
+              <SelectTrigger className='w-full'>
+                <SelectValue placeholder='Chọn trạng thái' />
+              </SelectTrigger>
+              <SelectContent>
+                {/* <SelectItem value=''>Tất cả</SelectItem> */}
+                <SelectItem value='open'>Mở</SelectItem>
+                <SelectItem value='in_progress'>Đang xử lý</SelectItem>
+                <SelectItem value='close'>Đóng</SelectItem>
+                <SelectItem value='resolved'>Đã giải quyết</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          {/* Priority Filter */}
+          <div>
+            <label className='text-sm font-medium mb-1 block'>Độ ưu tiên</label>
+            <Select value={priority} onValueChange={(e: any) => setPriority(e)}>
+              <SelectTrigger className='w-full'>
+                <SelectValue placeholder='Chọn độ ưu tiên' />
+              </SelectTrigger>
+              <SelectContent>
+                {/* <SelectItem value=''>Tất cả</SelectItem> */}
+                <SelectItem value='low'>Thấp</SelectItem>
+                <SelectItem value='medium'>Trung bình</SelectItem>
+                <SelectItem value='high'>Cao</SelectItem>
+                <SelectItem value='urgent'>Khẩn cấp</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          {/* Type Filter */}
+          <div>
+            <label className='text-sm font-medium mb-1 block'>Loại</label>
+            <Select value={type} onValueChange={(e: any) => setType(e)}>
+              <SelectTrigger className='w-full'>
+                <SelectValue placeholder='Chọn loại' />
+              </SelectTrigger>
+              <SelectContent>
+                {/* <SelectItem value=''>Tất cả</SelectItem> */}
+                <SelectItem value='book_table'>Đặt bàn</SelectItem>
+                <SelectItem value='order_dish'>Gọi món</SelectItem>
+                <SelectItem value='Q&A'>Hỏi đáp</SelectItem>
+                <SelectItem value='complain'>Khiếu nại</SelectItem>
+                <SelectItem value='other'>Khác</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          {/* Search Input */}
+          <div>
+            <label className='text-sm font-medium mb-1 block'>Tìm kiếm</label>
+            <input
+              type='text'
+              value={q}
+              onChange={(e) => setQ(e.target.value)}
+              placeholder='Tìm kiếm ticket...'
+              className='w-full px-3 py-2 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500'
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* Ticket List */}
       <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4'>
         {listTicket.map((ticket, index) => (
           <Card className='w-full shadow-sm' key={index}>
@@ -190,6 +259,8 @@ export default function PageListTicket() {
           </Card>
         ))}
       </div>
+
+      {/* Pagination */}
       <div className='flex justify-center mt-3'>
         <Pagination
           meta={meta}

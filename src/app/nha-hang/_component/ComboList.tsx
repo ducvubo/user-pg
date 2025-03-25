@@ -1,5 +1,6 @@
 import React from 'react'
 import Image from 'next/image'
+import AddComboFoodToCart from './AddComboFoodToCart'
 export interface IComboFood {
   fcb_id: string
   fcb_name: string
@@ -55,7 +56,10 @@ export default function ComboList({ comboFoods }: { comboFoods: IComboFood[] }) 
                 </div>
               )}
               <div className='p-4'>
-                <h2 className='text-xl font-semibold text-gray-800 mb-2'>{combo.fcb_name}</h2>
+                <div className='flex justify-between'>
+                  <h2 className='text-xl font-semibold text-gray-800 mb-2'>{combo.fcb_name}</h2>
+                  <AddComboFoodToCart fcb_id={combo.fcb_id} />
+                </div>
                 <p className='text-gray-600 mb-2'>Giá: {combo.fcb_price.toLocaleString('vi-VN')} VNĐ</p>
                 <p className='text-sm text-gray-500'>
                   Giờ mở: {combo.fcb_open_time} - {combo.fcb_close_time} {sellingStatus ? '(Đang bán)' : '(Hết giờ)'}

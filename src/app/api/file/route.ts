@@ -27,6 +27,7 @@ export const POST = async (req: any) => {
       body: formDataToSend
     })
     const result = await response.json()
+    console.log("🚀 ~ POST ~ result:", result)
     return new Response(JSON.stringify(result), {
       status: result.statusCode
     })

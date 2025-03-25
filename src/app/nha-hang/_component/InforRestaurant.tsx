@@ -1,7 +1,7 @@
 import { ChevronRight, CircleDollarSign, List, MapPin, PhoneCall, MessageCircleQuestion, MessageCircle } from 'lucide-react'
 import React from 'react'
 import { IRestaurant } from '@/app/interface/restaurant.interface'
-import { getCategoryRestaurant, getCookie, getFoodRestaurant, getListCombo, getListDish, getSpecialOffer } from '../api'
+import { getArtilceRestaurant, getCategoryBlogRestaurant, getCategoryRestaurant, getCookie, getFoodRestaurant, getListCombo, getListDish, getSpecialOffer } from '../api'
 import { buildPriceRestaurant } from '@/app/utils'
 import BannerAndGallery from './BannerAndGallery'
 import CategoryRestaurantBlock from '@/app/components/CategoryRestaurantBlock'
@@ -36,13 +36,16 @@ export default async function InforRestaurant({ restaurant, slug }: IProps) {
     ? JSON.parse(listIdView.value).filter((t: string) => t !== restaurant._id)
     : []
 
-  const [listFood, listCategory, listSpecialOffer, listCombo, listDish] = await Promise.all([
+  const [listFood, listCategory, listSpecialOffer, listCombo, listDish, catBlogRestaurant, articleRestaurant] = await Promise.all([
     getFoodRestaurant(restaurant._id),
     getCategoryRestaurant(restaurant._id),
     getSpecialOffer(restaurant._id),
     getListCombo(restaurant._id),
-    getListDish(restaurant._id)
+    getListDish(restaurant._id),
+    getCategoryBlogRestaurant(restaurant._id),
+    getArtilceRestaurant(restaurant._id)
   ])
+  console.log("🚀 ~ InforRestaurant ~ articleRestaurant:", articleRestaurant.data?.length)
 
   const groupHoursByDay = (hours: { close: string; open: string; day_of_week: string }[]) => {
     const grouped: { [key: string]: { open: string; close: string }[] } = {}
@@ -289,12 +292,15 @@ export default async function InforRestaurant({ restaurant, slug }: IProps) {
             />
           </CardContent>
         </Card>
-        <Card>
-          <CardContent>
-            <BlockBlog inforRestaurant={restaurant} />
-          </CardContent>
-        </Card>
-
+        {
+          catBlogRestaurant && articleRestaurant && articleRestaurant.data && articleRestaurant.data?.length > 0 && (
+            <Card>
+              <CardContent>
+                <BlockBlog inforRestaurant={restaurant} articleRestaurant={articleRestaurant} catBlogRestaurant={catBlogRestaurant} />
+              </CardContent>
+            </Card>
+          )
+        }
         {/* <div className='flex flex-col gap-3 mt-3'>
           {restaurant.restaurant_category &&
             restaurant.restaurant_category.length > 0 &&

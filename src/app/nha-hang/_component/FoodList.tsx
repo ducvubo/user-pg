@@ -1,6 +1,8 @@
 import React from 'react'
 import Image from 'next/image'
 import { IFoodRestaurant } from '@/app/interface/food-restaurant.interface'
+import { ShoppingBasket } from 'lucide-react'
+import AddFoodToCart from './AddFoodToCart'
 
 export default function FoodList({ foods }: { foods: IFoodRestaurant[] }) {
   // Hàm chuyển đổi thời gian string sang Date object
@@ -43,7 +45,10 @@ export default function FoodList({ foods }: { foods: IFoodRestaurant[] }) {
                 </div>
               )}
               <div className='p-4'>
-                <h2 className='text-xl font-semibold text-gray-800 mb-2'>{food.food_name}</h2>
+                <div className='flex justify-between'>
+                  <h2 className='text-xl font-semibold text-gray-800 mb-2'>{food.food_name}</h2>
+                  <AddFoodToCart food_id={food.food_id} />
+                </div>
                 <p className='text-gray-600 mb-2'>Giá: {food.food_price.toLocaleString('vi-VN')} VNĐ</p>
                 <p className='text-sm text-gray-500'>
                   Giờ mở: {food.food_open_time} - {food.food_close_time} {sellingStatus ? '(Đang bán)' : '(Hết giờ)'}

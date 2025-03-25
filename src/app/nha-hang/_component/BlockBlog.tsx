@@ -5,11 +5,11 @@ import BlockBlogClient from './BlockBlogClient';
 
 interface Props {
   inforRestaurant: IRestaurant;
+  catBlogRestaurant: IBackendRes<ICategoryBlogRestaurant[]>;
+  articleRestaurant: IBackendRes<IArticleRestaurant[]>
 }
 
-export default async function BlockBlog({ inforRestaurant }: Props) {
-  const catBlogRestaurant: IBackendRes<ICategoryBlogRestaurant[]> = await getCategoryBlogRestaurant(inforRestaurant._id);
-  const articleRestaurant: IBackendRes<IArticleRestaurant[]> = await getArtilceRestaurant(inforRestaurant._id);
+export default async function BlockBlog({ inforRestaurant, articleRestaurant, catBlogRestaurant }: Props) {
 
   if (!catBlogRestaurant || catBlogRestaurant.statusCode !== 200 || !catBlogRestaurant.data || catBlogRestaurant.data.length === 0) {
     return <div className="text-center text-gray-500">Không có danh mục nào để hiển thị.</div>;

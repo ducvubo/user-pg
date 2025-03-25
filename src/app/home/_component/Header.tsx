@@ -1,66 +1,280 @@
-import React from 'react'
-import Image from 'next/image'
-import Link from 'next/link'
-import { getSysteParameterById } from '../home.api'
-import { SystemParameterEnum } from '@/app/utils/ListSystemParameter'
+// // import React from 'react'
+// import Image from 'next/image'
+// import { CircleUserRound, Menu, ChevronDown } from 'lucide-react'
+// import Link from 'next/link'
+// import {
+//   DropdownMenu,
+//   DropdownMenuContent,
+//   DropdownMenuItem,
+//   DropdownMenuTrigger,
+// } from "@/components/ui/dropdown-menu"
 
-export default async function Navbar() {
-  let paraBanner = await getSysteParameterById(SystemParameterEnum.BANNER_HEADER.sys_para_id)
-  let paraLogo = await getSysteParameterById(SystemParameterEnum.LOGOHEADER.sys_para_id)
-  let dataBanner
-  if (paraBanner.statusCode === 200 && paraBanner.data && paraBanner.data.sys_para_value) {
-    dataBanner = JSON.parse(paraBanner.data.sys_para_value)
-  }
-  let dataLogo
-  if (paraLogo.statusCode === 200 && paraLogo.data && paraLogo.data.sys_para_value) {
-    dataLogo = JSON.parse(paraLogo.data.sys_para_value)
-  }
+// export default function HeaderPato({
+//   image
+// }: {
+//   image?: {
+//     image_cloud: string
+//     image_custom: string
+//   }
+// }) {
+//   return (
+//     <nav className='flex items-center justify-between px-4 md:px-8 lg:px-[100px] bg-[#e6624f] shadow-md h-20'>
+//       <Link href='/'>
+//         <Image
+//           src={image ? image?.image_cloud : '/images/logo.webp'}
+//           alt='vuducbo'
+//           width={180}
+//           height={40}
+//           className='w-32 sm:w-40 md:w-48 lg:w-[220px]'
+//           priority
+//         />
+//       </Link>
 
-  return (
-    <div
-      className='relative h-screen bg-cover bg-center'
-      style={{ backgroundImage: `url('${dataBanner.image_cloud}')` }}
-    >
-      <div className='absolute inset-0 bg-black/20 z-0'></div>
+//       <div className='md:hidden'>
+//         <DropdownMenu>
+//           <DropdownMenuTrigger asChild>
+//             <button className='text-white focus:outline-none'>
+//               <Menu size={24} />
+//             </button>
+//           </DropdownMenuTrigger>
+//           <DropdownMenuContent className="w-64 mr-4 bg-[#e6624f] text-white border-none shadow-lg rounded-lg transition-all duration-300">
+//             <DropdownMenuItem className="font-semibold text-base hover:bg-[#d55543] focus:bg-[#d55543] py-3">
+//               <a href='#' className='w-full'>Gần bạn</a>
+//             </DropdownMenuItem>
+//             <DropdownMenuItem className="font-semibold text-base hover:bg-[#d55543] focus:bg-[#d55543] py-3">
+//               <a href='#' className='w-full'>Bộ sưu tập</a>
+//             </DropdownMenuItem>
 
-      <nav className='relative z-10 flex flex-col sm:flex-row justify-between items-start sm:items-center px-4 sm:px-6 md:px-8 py-4'>
-        <div className='flex items-center'>
-          <Image
-            src={dataLogo.image_cloud}
-            alt='Giồng Giọt Logo'
-            width={200}
-            height={100}
-            className='h-32 w-auto -mt-5'
-          />
-        </div>
+//             {/* Ẩm thực submenu */}
+//             <DropdownMenu>
+//               <DropdownMenuTrigger className="w-full text-left font-semibold text-base hover:bg-[#d55543] focus:bg-[#d55543] px-4 py-3 flex items-center justify-between">
+//                 Ẩm thực <ChevronDown size={16} />
+//               </DropdownMenuTrigger>
+//               <DropdownMenuContent className="w-64 bg-white text-black shadow-lg rounded-lg transition-all duration-300">
+//                 <DropdownMenuItem className="hover:bg-gray-100 py-2">
+//                   <a href='#' className='w-full'>Đồ uống</a>
+//                 </DropdownMenuItem>
+//                 <DropdownMenuItem className="hover:bg-gray-100 py-2">
+//                   <a href='#' className='w-full'>Bánh & Tráng miệng</a>
+//                 </DropdownMenuItem>
+//                 <DropdownMenuItem className="hover:bg-gray-100 py-2">
+//                   <a href='#' className='w-full'>Trái cây</a>
+//                 </DropdownMenuItem>
+//               </DropdownMenuContent>
+//             </DropdownMenu>
 
-        <div className='flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 md:gap-6 sm:mt-0 -mt-20'>
-          <Link href='/ve-ban' className='text-white text-sm sm:text-base md:text-lg hover:text-yellow-300'>
-            Về bản
-          </Link>
-          <Link href='/thuc-don' className='text-white text-sm sm:text-base md:text-lg hover:text-yellow-300'>
-            Thực đơn
-          </Link>
-          <Link href='/tin-tuc-ve-ban' className='text-white text-sm sm:text-base md:text-lg hover:text-yellow-300'>
-            Tin tức về bản
-          </Link>
-          <Link href='/nhip-song-o-ban' className='text-white text-sm sm:text-base md:text-lg hover:text-yellow-300'>
-            Nhịp sống ở bản
-          </Link>
-          <Link href='/dat-ban' className='text-white text-sm sm:text-base md:text-lg hover:text-yellow-300'>
-            Đặt bàn
-          </Link>
-          <div className='flex items-center gap-1'>
-            <Link href='/lang/vn' className='text-white text-sm sm:text-base md:text-lg hover:text-yellow-300'>
-              VN
-            </Link>
-            <span className='text-white text-sm sm:text-base md:text-lg'>-</span>
-            <Link href='/lang/en' className='text-white text-sm sm:text-base md:text-lg hover:text-yellow-300'>
-              EN
-            </Link>
-          </div>
-        </div>
-      </nav>
-    </div>
-  )
-}
+//             {/* Nhánh hàng uy tín submenu */}
+//             <DropdownMenu>
+//               <DropdownMenuTrigger className="w-full text-left font-semibold text-base hover:bg-[#d55543] focus:bg-[#d55543] px-4 py-3 flex items-center justify-between">
+//                 Nhánh hàng uy tín <ChevronDown size={16} />
+//               </DropdownMenuTrigger>
+//               <DropdownMenuContent className="w-64 bg-white text-black shadow-lg rounded-lg transition-all duration-300">
+//                 <DropdownMenuItem className="hover:bg-gray-100 py-2">
+//                   <a href='#' className='w-full'>Nhà hàng 5 sao</a>
+//                 </DropdownMenuItem>
+//                 <DropdownMenuItem className="hover:bg-gray-100 py-2">
+//                   <a href='#' className='w-full'>Nhà hàng cao cấp</a>
+//                 </DropdownMenuItem>
+//               </DropdownMenuContent>
+//             </DropdownMenu>
+
+//             <DropdownMenuItem className="font-semibold text-base hover:bg-[#d55543] focus:bg-[#d55543] py-3">
+//               <a href='#' className='w-full'>Ưu đãi hot</a>
+//             </DropdownMenuItem>
+//             <DropdownMenuItem className="font-semibold text-base hover:bg-[#d55543] focus:bg-[#d55543] py-3">
+//               <a href='#' className='w-full'>Mới nhất</a>
+//             </DropdownMenuItem>
+
+//             {/* Tin tức & Blog submenu */}
+//             <DropdownMenu>
+//               <DropdownMenuTrigger className="w-full text-left font-semibold text-base hover:bg-[#d55543] focus:bg-[#d55543] px-4 py-3 flex items-center justify-between">
+//                 Tin tức & Blog <ChevronDown size={16} />
+//               </DropdownMenuTrigger>
+//               <DropdownMenuContent className="w-64 bg-white text-black shadow-lg rounded-lg transition-all duration-300">
+//                 <DropdownMenuItem className="hover:bg-gray-100 py-2">
+//                   <a href='#' className='w-full'>Tin tức ẩm thực</a>
+//                 </DropdownMenuItem>
+//                 <DropdownMenuItem className="hover:bg-gray-100 py-2">
+//                   <a href='#' className='w-full'>Blog du lịch</a>
+//                 </DropdownMenuItem>
+//               </DropdownMenuContent>
+//             </DropdownMenu>
+
+//             {/* Video Pato submenu */}
+//             <DropdownMenu>
+//               <DropdownMenuTrigger className="w-full text-left font-semibold text-base hover:bg-[#d55543] focus:bg-[#d55543] px-4 py-3 flex items-center justify-between">
+//                 Video Pato <ChevronDown size={16} />
+//               </DropdownMenuTrigger>
+//               <DropdownMenuContent className="w-64 bg-white text-black shadow-lg rounded-lg transition-all duration-300">
+//                 <DropdownMenuItem className="hover:bg-gray-100 py-2">
+//                   <a href='#' className='w-full'>Review nhà hàng</a>
+//                 </DropdownMenuItem>
+//                 <DropdownMenuItem className="hover:bg-gray-100 py-2">
+//                   <a href='#' className='w-full'>Hướng dẫn đặt bàn</a>
+//                 </DropdownMenuItem>
+//               </DropdownMenuContent>
+//             </DropdownMenu>
+
+//             {/* Tài khoản submenu */}
+//             <DropdownMenu>
+//               <DropdownMenuTrigger className="w-full text-left font-semibold text-base hover:bg-[#d55543] focus:bg-[#d55543] px-4 py-3 flex items-center justify-between">
+//                 Tài khoản <ChevronDown size={16} />
+//               </DropdownMenuTrigger>
+//               <DropdownMenuContent className="w-64 bg-white text-black shadow-lg rounded-lg transition-all duration-300">
+//                 <DropdownMenuItem className="hover:bg-gray-100 py-2">
+//                   <Link href='/login' className='w-full'>Đăng nhập</Link>
+//                 </DropdownMenuItem>
+//                 <DropdownMenuItem className="hover:bg-gray-100 py-2">
+//                   <Link href='/register' className='w-full'>Đăng ký</Link>
+//                 </DropdownMenuItem>
+//                 <DropdownMenuItem className="hover:bg-gray-100 py-2">
+//                   <Link href='/ban-da-dat' className='w-full'>Bàn đã đặt</Link>
+//                 </DropdownMenuItem>
+//                 <DropdownMenuItem className="hover:bg-gray-100 py-2">
+//                   <Link href='/danh-sach-ticket' className='w-full'>Ticket</Link>
+//                 </DropdownMenuItem>
+//                 <DropdownMenuItem className="hover:bg-gray-100 py-2">
+//                   <Link href='/ket-noi-nha-hang' className='w-full'>Kết nối</Link>
+//                 </DropdownMenuItem>
+//               </DropdownMenuContent>
+//             </DropdownMenu>
+//           </DropdownMenuContent>
+//         </DropdownMenu>
+//       </div>
+
+//       {/* Desktop menu (giữ nguyên như cũ) */}
+//       <ul className='hidden md:flex space-x-6 text-white'>
+//         <li>
+//           <a href='#' className='font-semibold hover:text-gray-200'>
+//             Gần bạn
+//           </a>
+//         </li>
+//         <li>
+//           <a href='#' className='font-semibold hover:text-gray-200'>
+//             Bộ sưu tập
+//           </a>
+//         </li>
+//         <li className='relative group'>
+//           <a href='#' className='font-semibold flex items-center hover:text-gray-200'>
+//             Ẩm thực <span className='ml-1'>▼</span>
+//           </a>
+//           <ul className='absolute z-10 hidden group-hover:block bg-white shadow-lg rounded-md p-2 w-48'>
+//             <li>
+//               <a href='#' className='block px-4 py-2 hover:bg-gray-100 text-black'>
+//                 Đồ uống
+//               </a>
+//             </li>
+//             <li>
+//               <a href='#' className='block px-4 py-2 hover:bg-gray-100 text-black'>
+//                 Bánh & Tráng miệng
+//               </a>
+//             </li>
+//             <li>
+//               <a href='#' className='block px-4 py-2 hover:bg-gray-100 text-black'>
+//                 Trái cây
+//               </a>
+//             </li>
+//           </ul>
+//         </li>
+//         <li className='relative group'>
+//           <a href='#' className='font-semibold flex items-center hover:text-gray-200'>
+//             Nhánh hàng uy tín <span className='ml-1'>▼</span>
+//           </a>
+//           <ul className='absolute z-10 hidden group-hover:block bg-white shadow-lg rounded-md p-2 w-48'>
+//             <li>
+//               <a href='#' className='block px-4 py-2 hover:bg-gray-100 text-black'>
+//                 Nhà hàng 5 sao
+//               </a>
+//             </li>
+//             <li>
+//               <a href='#' className='block px-4 py-2 hover:bg-gray-100 text-black'>
+//                 Nhà hàng cao cấp
+//               </a>
+//             </li>
+//           </ul>
+//         </li>
+//         <li>
+//           <a href='#' className='font-semibold hover:text-gray-200'>
+//             Ưu đãi hot
+//           </a>
+//         </li>
+//         <li>
+//           <a href='#' className='font-semibold hover:text-gray-200'>
+//             Mới nhất
+//           </a>
+//         </li>
+//         <li className='relative group'>
+//           <a href='#' className='font-semibold flex items-center hover:text-gray-200'>
+//             Tin tức & Blog <span className='ml-1'>▼</span>
+//           </a>
+//           <ul className='absolute z-10 hidden group-hover:block bg-white shadow-lg rounded-md p-2 w-48'>
+//             <li>
+//               <a href='#' className='block px-4 py-2 hover:bg-gray-100 text-black'>
+//                 Tin tức ẩm thực
+//               </a>
+//             </li>
+//             <li>
+//               <a href='#' className='block px-4 py-2 hover:bg-gray-100 text-black'>
+//                 Blog du lịch
+//               </a>
+//             </li>
+//           </ul>
+//         </li>
+//         <li className='relative group'>
+//           <a href='#' className='font-semibold flex items-center hover:text-gray-200'>
+//             Video Pato <span className='ml-1'>▼</span>
+//           </a>
+//           <ul className='absolute z-10 hidden group-hover:block bg-white shadow-lg rounded-md p-2 w-48'>
+//             <li>
+//               <a href='#' className='block px-4 py-2 hover:bg-gray-100 text-black'>
+//                 Review nhà hàng
+//               </a>
+//             </li>
+//             <li>
+//               <a href='#' className='block px-4 py-2 hover:bg-gray-100 text-black'>
+//                 Hướng dẫn đặt bàn
+//               </a>
+//             </li>
+//           </ul>
+//         </li>
+//       </ul>
+
+//       {/* Desktop account section */}
+//       <div className='hidden md:block relative group'>
+//         <div className='flex items-center space-x-2 cursor-pointer'>
+//           <span className='text-white font-semibold'>Tài khoản</span>
+//           <div className='w-8 h-8 rounded-full flex items-center justify-center'>
+//             <CircleUserRound className='text-white' />
+//           </div>
+//         </div>
+//         <ul className='absolute z-10 right-0 hidden group-hover:block bg-white shadow-lg rounded-md p-2 w-40'>
+//           <li>
+//             <Link href='/login'>
+//               <span className='block px-4 py-2 hover:bg-gray-100 text-black text-center'>Đăng nhập</span>
+//             </Link>
+//           </li>
+//           <li>
+//             <Link href='/register'>
+//               <span className='block px-4 py-2 hover:bg-gray-100 text-black text-center'>Đăng ký</span>
+//             </Link>
+//           </li>
+//           <li>
+//             <Link href='/ban-da-dat'>
+//               <span className='block px-4 py-2 hover:bg-gray-100 text-black text-center'>Bàn đã đặt</span>
+//             </Link>
+//           </li>
+//           <li>
+//             <Link href='/danh-sach-ticket'>
+//               <span className='block px-4 py-2 hover:bg-gray-100 text-black text-center'>Ticket</span>
+//             </Link>
+//           </li>
+//           <li>
+//             <Link href='/ket-noi-nha-hang'>
+//               <span className='block px-4 py-2 hover:bg-gray-100 text-black text-center'>Kết nối</span>
+//             </Link>
+//           </li>
+//         </ul>
+//       </div>
+//     </nav>
+//   )
+// }
