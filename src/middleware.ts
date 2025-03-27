@@ -4,11 +4,9 @@ import { v4 as uuidv4 } from 'uuid'
 
 export function middleware(request: NextRequest) {
   const idUserGuest = request.cookies.get('id_user_guest')?.value
-  console.log("🚀 ~ middleware ~ idUserGuest:", idUserGuest)
   const idUserNumber = request.cookies.get('id_user_number')?.value
   const restaurantIds = request.cookies.get('restaurantIds')?.value
   const listLikedRestaurant = request.cookies.get('listLikedRestaurant')?.value
-  console.log("🚀 ~ middleware ~ idUserNumber:", idUserNumber)
 
   const response = NextResponse.next();
 

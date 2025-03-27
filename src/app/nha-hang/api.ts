@@ -115,21 +115,23 @@ export const getCookie = async (name: string) => {
 
 export const addRestaurantToCookie = async (restaurantId: string) => {
   const cookie = await cookies()
-  const restaurantListCookie = cookie.get('restaurantIds')
+  const restaurantListCookie = cookie.get('restaurantIds')?.value
 
-  let restaurantIds: string[] = restaurantListCookie?.value ? JSON.parse(restaurantListCookie.value) : []
+  if (restaurantListCookie && !restaurantListCookie.includes(restaurantId)) {
+    const listId = JSON.parse(restaurantListCookie)
+    listId.push(restaurantId)
 
-  if (!restaurantIds.includes(restaurantId)) {
-    restaurantIds.push(restaurantId)
-
-    if (restaurantIds.length > 15) {
-      restaurantIds.pop()
+    if (listId.length > 15) {
+      listId.pop()
     }
 
-    await cookie.set('restaurantIds', JSON.stringify(restaurantIds), { path: '/' })
+    await cookie.set('restaurantIds', JSON.stringify(listId), {
+      path: '/',
+      maxAge: 60 * 60 * 24 * 365 * 10,
+    })
   }
 
-  return restaurantIds
+  return true
 }
 
 export const getListRestaurantByCategory = async (categoryId: string) => {
@@ -204,8 +206,7 @@ export const addRestaurantLike = async (restaurantId: string) => {
   const cookieStore = await cookies();
   cookieStore.set('listLikedRestaurant', JSON.stringify(listLikedRestaurantArr), {
     path: '/',
-    maxAge: 60 * 60 * 24 * 30000,
-    sameSite: 'strict',
+    maxAge: 60 * 60 * 24 * 365 * 10,
   });
 }
 
