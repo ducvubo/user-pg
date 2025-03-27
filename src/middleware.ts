@@ -3,25 +3,45 @@ import type { NextRequest } from 'next/server'
 import { v4 as uuidv4 } from 'uuid'
 
 export function middleware(request: NextRequest) {
-  const cookie = request.cookies.get('id_user_guest')?.value
+  const idUserGuest = request.cookies.get('id_user_guest')?.value
+  console.log("🚀 ~ middleware ~ idUserGuest:", idUserGuest)
   const idUserNumber = request.cookies.get('id_user_number')?.value
+  const restaurantIds = request.cookies.get('restaurantIds')?.value
+  const listLikedRestaurant = request.cookies.get('listLikedRestaurant')?.value
+  console.log("🚀 ~ middleware ~ idUserNumber:", idUserNumber)
 
-  if (!cookie || !idUserNumber) {
-    const response = NextResponse.next()
-    response.cookies.set({
-      name: 'id_user_guest',
-      value: 'guest-id-' + uuidv4(),
-      path: '/'
-    })
-    response.cookies.set({
-      name: 'id_user_number',
-      value: Math.floor(10000 + Math.random() * 90000).toString(),
-      maxAge: 60 * 60 * 24 * 365 * 10,
-      path: '/'
-    })
-    return response
+  const response = NextResponse.next();
+
+  if (!idUserGuest) {
+    response.cookies.set('id_user_guest', 'guest-id-' + uuidv4(), {
+      path: '/',
+      maxAge: 60 * 60 * 24 * 365 * 10, // 10 năm
+    });
   }
-  return NextResponse.next()
+
+  if (!idUserNumber) {
+    response.cookies.set('id_user_number', Math.floor(10000 + Math.random() * 90000).toString(), {
+      path: '/',
+      maxAge: 60 * 60 * 24 * 365 * 10, // 10 năm
+    });
+  }
+
+  if (!restaurantIds) {
+    response.cookies.set('restaurantIds', JSON.stringify([]), {
+      path: '/',
+      maxAge: 60 * 60 * 24 * 365 * 10, // 10 năm
+    });
+  }
+
+  if (!listLikedRestaurant) {
+    response.cookies.set('listLikedRestaurant', JSON.stringify([]), {
+      path: '/',
+      maxAge: 60 * 60 * 24 * 365 * 10, // 10 năm
+    });
+  }
+
+
+  return response;
 }
 
 export const config = {

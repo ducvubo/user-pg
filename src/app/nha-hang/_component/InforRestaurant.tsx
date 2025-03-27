@@ -32,9 +32,11 @@ export interface ISpecialOffer {
 
 export default async function InforRestaurant({ restaurant, slug }: IProps) {
   const listIdView = await getCookie('restaurantIds')
+  console.log("🚀 ~ InforRestaurant ~ listIdView:", listIdView)
   let restaurantIds: string[] = listIdView?.value
     ? JSON.parse(listIdView.value).filter((t: string) => t !== restaurant._id)
     : []
+  console.log("🚀 ~ InforRestaurant ~ restaurantIds:", restaurantIds)
 
   const [listFood, listCategory, listSpecialOffer, listCombo, listDish, catBlogRestaurant, articleRestaurant] = await Promise.all([
     getFoodRestaurant(restaurant._id),
