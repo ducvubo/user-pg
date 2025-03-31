@@ -6,6 +6,7 @@ import { cookies } from 'next/headers'
 import { v4 as uuidv4 } from 'uuid'
 import Head from 'next/head'
 import Script from 'next/script'
+import ChatBubble from './chat-bot/ChatBubble'
 const geistSans = Geist({
   variable: '--font-geist-sans',
   subsets: ['latin']
@@ -65,6 +66,7 @@ export default async function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <Toaster />
         {children}
+        <ChatBubble />
       </body>
       <Script
         src='https://www.googletagmanager.com/gtag/js?id=G-84N3NEETJF'
