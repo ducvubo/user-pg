@@ -18,6 +18,18 @@ export interface IFoodRestaurant {
   deletedAt: string | null
   isDeleted: number
   food_id: string
-  food_status: 'enable' | 'disable'
   food_state: 'soldOut' | 'inStock' | 'almostOut'
+  fopt_food: IFoodOption[]
+}
+
+export interface IFoodOption {
+  fopt_id: string
+  fopt_res_id: string
+  fopt_food_id: string
+  fopt_name: string
+  fopt_attribute: string
+  fopt_price: number
+  fopt_image: string
+  fopt_state: 'soldOut' | 'inStock' | 'almostOut'
+  fopt_note: string
 }

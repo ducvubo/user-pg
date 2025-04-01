@@ -5,9 +5,11 @@ import { Card, CardHeader } from '@/components/ui/card'
 import Image from 'next/image'
 import { buildPriceRestaurant, replaceDimensions } from '@/app/utils'
 import GuestQARestaurant from './GuestQARestaurant'
+import Link from 'next/link'
 
 interface IProps {
   restaurant: IRestaurant
+  slug: string
 }
 
 export interface ISpecialOffer {
@@ -16,9 +18,7 @@ export interface ISpecialOffer {
   spo_description: string
 }
 
-export default async function QARestaurant({ restaurant }: IProps) {
-
-
+export default async function QARestaurant({ restaurant, slug }: IProps) {
   return (
     <div className='bg-[#e6eaed] min-h-screen pb-10'>
       <div className='bg-white h-auto min-h-10 px-4 sm:px-6 md:px-8 lg:px-[100px] flex flex-wrap items-center gap-2 sm:gap-3 md:gap-4 py-2'>
@@ -32,51 +32,46 @@ export default async function QARestaurant({ restaurant }: IProps) {
       </div>
 
       <Card className='bg-white h-auto min-h-10 mx-4 sm:mx-6 md:mx-8 lg:mx-[100px] mt-5'>
-        <CardHeader className='font-semibold text-2xl'>
-          Hỏi đáp với nhà hàng
-        </CardHeader>
+        <CardHeader className='font-semibold text-2xl'>Hỏi đáp với nhà hàng</CardHeader>
       </Card>
 
-      <Card className='bg-white h-auto min-h-10 mx-4 sm:mx-6 md:mx-8 lg:mx-[100px] mt-2'>
-        <div className='w-full  rounded-md overflow-hidden flex-shrink-0 flex gap-2 justify-start items-center ml-3'>
+      <Card className='bg-white h-auto min-h-10 mx-4 sm:mx-6 md:mx-8 lg:mx-[100px] mt-2 p-4'>
+        <Link
+          href={`/nha-hang/${restaurant.restaurant_slug}`}
+          className='w-full rounded-md overflow-hidden flex flex-col sm:flex-row gap-3 justify-start items-center'
+        >
           <Image
             src={restaurant?.restaurant_banner.image_cloud}
             alt={restaurant?.restaurant_name || 'Restaurant'}
-            width={100}
-            height={100}
-            className='w-32 h-32 m-2 object-cover rounded-lg'
+            width={128}
+            height={128}
+            className='w-24 h-24 sm:w-32 sm:h-32 object-cover rounded-lg'
           />
-          <div className='flex flex-col gap-2'>
+          <div className='flex flex-col gap-2 w-full'>
             <div className='flex justify-between'>
-              <h1 className='font-semibold text-xl'>{restaurant.restaurant_name}</h1>
+              <h1 className='font-semibold text-lg sm:text-xl'>{restaurant.restaurant_name}</h1>
             </div>
             <div className='flex items-center'>
               <MapPin size={16} />
-              <span className='ml-1 text-sm md:text-base'>
-                Địa chỉ: {restaurant.restaurant_address.address_specific}
-              </span>
+              <span className='ml-1 text-xs sm:text-sm'>Địa chỉ: {restaurant.restaurant_address.address_specific}</span>
             </div>
-            <div className='flex items-center '>
+            <div className='flex items-center'>
               <CircleDollarSign size={16} />
-              <span className='ml-1 font-semibold text-red-500 text-sm md:text-base'>
+              <span className='ml-1 font-semibold text-red-500 text-xs sm:text-sm'>
                 {buildPriceRestaurant(restaurant.restaurant_price)}
               </span>
             </div>
-            <div className='flex items-center '>
+            <div className='flex items-center'>
               <PhoneCall size={16} />
-              <span className='ml-1 font-semibold text-red-500 text-sm md:text-base'>
-                {restaurant.restaurant_phone}
-              </span>
+              <span className='ml-1 font-semibold text-red-500 text-xs sm:text-sm'>{restaurant.restaurant_phone}</span>
             </div>
-
           </div>
-        </div>
+        </Link>
       </Card>
 
       <Card className='bg-white h-auto min-h-10 mx-4 sm:mx-6 md:mx-8 lg:mx-[100px] mt-2'>
         <GuestQARestaurant restaurant={restaurant} />
       </Card>
-
-    </div >
+    </div>
   )
 }

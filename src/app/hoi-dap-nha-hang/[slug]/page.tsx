@@ -30,7 +30,7 @@ export default async function RestaurantDetail({ searchParams, params }: PagePro
 
   return (
     <>
-      <QARestaurant restaurant={restaurant.data} />
+      <QARestaurant restaurant={restaurant.data} slug={slug} />
     </>
   )
 }

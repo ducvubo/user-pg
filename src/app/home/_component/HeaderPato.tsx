@@ -25,7 +25,7 @@ export default function HeaderPato({
           alt='vuducbo'
           width={180}
           height={25}
-          className='w-32 sm:w-40 md:w-48 lg:w-[220px] py-2'
+          className='h-[70px]'
           priority
         />
       </Link>
