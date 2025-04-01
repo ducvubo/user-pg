@@ -1,67 +1,70 @@
-import type { Metadata } from 'next'
-import { Geist, Geist_Mono } from 'next/font/google'
-import './globals.css'
-import { Toaster } from '@/components/ui/toaster'
-import { cookies } from 'next/headers'
-import { v4 as uuidv4 } from 'uuid'
-import Head from 'next/head'
-import Script from 'next/script'
-import ChatBubble from './chat-bot/ChatBubble'
+import type { Metadata, Viewport } from 'next';
+import { Geist, Geist_Mono } from 'next/font/google';
+import './globals.css';
+import { Toaster } from '@/components/ui/toaster';
+import { cookies } from 'next/headers';
+import { v4 as uuidv4 } from 'uuid';
+import Head from 'next/head';
+import Script from 'next/script';
+import ChatBubble from './chat-bot/ChatBubble';
+
 const geistSans = Geist({
   variable: '--font-geist-sans',
-  subsets: ['latin']
-})
+  subsets: ['latin'],
+});
 
 const geistMono = Geist_Mono({
   variable: '--font-geist-mono',
-  subsets: ['latin']
-})
+  subsets: ['latin'],
+});
 
 export const metadata: Metadata = {
-  title: 'PG - Tìm Nhà Hàng, Đặt Đồ Ăn & Đặt Bàn Online',
+  title: 'PATO - Tìm Nhà Hàng, Đặt Đồ Ăn & Đặt Bàn Online',
   description:
-    'Khám phá nhà hàng gần bạn, đặt đồ ăn giao tận nơi và đặt bàn dễ dàng với PG. Trải nghiệm dịch vụ tiện lợi, nhanh chóng!',
-  keywords: 'tìm nhà hàng, đặt đồ ăn online, đặt bàn nhà hàng, PG, giao đồ ăn nhanh',
+    'Khám phá nhà hàng gần bạn, đặt đồ ăn giao tận nơi và đặt bàn dễ dàng với PATO. Trải nghiệm dịch vụ tiện lợi, nhanh chóng!',
+  keywords: 'tìm nhà hàng, đặt đồ ăn online, đặt bàn nhà hàng, PATO, giao đồ ăn nhanh',
   robots: 'index, follow',
-  viewport: 'width=device-width, initial-scale=1.0',
   openGraph: {
-    title: 'PG - Tìm Nhà Hàng & Đặt Đồ Ăn Online',
-    description: 'PG giúp bạn tìm nhà hàng, đặt món ăn yêu thích và đặt bàn chỉ trong vài bước đơn giản.',
+    title: 'PATO - Tìm Nhà Hàng & Đặt Đồ Ăn Online',
+    description: 'PATO giúp bạn tìm nhà hàng, đặt món ăn yêu thích và đặt bàn chỉ trong vài bước đơn giản.',
     url: 'https://pato.taphoaictu.id.vn',
-    siteName: 'PG',
+    siteName: 'PATO',
     images: [
       {
         url: 'https://res.cloudinary.com/dkjasvlw6/image/upload/v1741005120/default/jjkajlyw8vrdtdg7ut06.webp',
         width: 1200,
         height: 630,
-        alt: 'PG - Dịch vụ đặt đồ ăn và đặt bàn'
-      }
+        alt: 'PATO - Dịch vụ đặt đồ ăn và đặt bàn',
+      },
     ],
     locale: 'vi_VN',
-    type: 'website'
+    type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'PG - Tìm Nhà Hàng & Đặt Đồ Ăn',
-    description: 'Tìm kiếm nhà hàng, đặt đồ ăn và đặt bàn dễ dàng với PG.',
-    images: 'https://res.cloudinary.com/dkjasvlw6/image/upload/v1741005120/default/jjkajlyw8vrdtdg7ut06.webp'
-  }
-}
+    title: 'PATO - Tìm Nhà Hàng & Đặt Đồ Ăn',
+    description: 'Tìm kiếm nhà hàng, đặt đồ ăn và đặt bàn dễ dàng với PATO.',
+    images: 'https://res.cloudinary.com/dkjasvlw6/image/upload/v1741005120/default/jjkajlyw8vrdtdg7ut06.webp',
+  },
+};
+
+// Separate viewport export
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1.0,
+};
 
 export default async function RootLayout({
-  children
+  children,
 }: Readonly<{
-  children: React.ReactNode
+  children: React.ReactNode;
 }>) {
   return (
-    <html lang='vi'>
+    <html lang="vi">
       <Head>
-        <meta charSet='UTF-8' />
-        <meta name='viewport' content='width=device-width, initial-scale=1.0' />
-        <meta name='robots' content='index, follow' />
+        <meta charSet="UTF-8" />
         <meta name="google-site-verification" content="Bd48HYijKgYynfqfE4fam-SCg9wRi0nA1xx7teY2PpM" />
-
-        <link rel='icon' href='/logo.ico' />
+        <link rel="icon" href="/logo.ico" />
       </Head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <Toaster />
@@ -69,34 +72,21 @@ export default async function RootLayout({
         <ChatBubble />
       </body>
       <Script
-        src='https://www.googletagmanager.com/gtag/js?id=G-84N3NEETJF'
-        strategy='afterInteractive' // Tải script sau khi trang đã tương tác được
+        src="https://www.googletagmanager.com/gtag/js?id=G-84N3NEETJF"
+        strategy="afterInteractive"
       />
       <Script
-        id='gtag-init' // Cần id để Next.js quản lý script
-        strategy='afterInteractive'
+        id="gtag-init"
+        strategy="afterInteractive"
         dangerouslySetInnerHTML={{
           __html: `
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
             gtag('config', 'G-84N3NEETJF');
-          `
+          `,
         }}
       />
-      {/* <Script
-        id='clarity-init'
-        strategy='afterInteractive'
-        dangerouslySetInnerHTML={{
-          __html: `
-            (function(c,l,a,r,i,t,y){
-                c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-                t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-                y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-            })(window, document, "clarity", "script", "qifzm7kru0");
-          `
-        }}
-      /> */}
     </html>
-  )
+  );
 }

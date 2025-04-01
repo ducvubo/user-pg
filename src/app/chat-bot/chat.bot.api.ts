@@ -16,6 +16,5 @@ export const getConversationHistory = async () => {
     url:`${process.env.URL_SERVER}/chat-bot/conversation`,
     method: 'GET',
   })
-  console.log("🚀 ~ getConversationHistory ~ res:", res)
   return res
 }
