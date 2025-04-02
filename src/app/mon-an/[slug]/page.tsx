@@ -10,11 +10,17 @@ import { GetRestaurantById } from '@/app/home/home.api'
 const ToastServer = dynamic(() => import('@/components/ToastServer'), { ssr: true })
 
 interface PageProps {
-  params: { slug: string }
+  params: Promise<{
+    slug: string
+  }>
+  searchParams: Promise<{
+    [key: string]: string | undefined
+  }>
 }
 
-export default async function FoodDetail({ params }: PageProps) {
-  const { slug } = params
+export default async function FoodDetail({ searchParams, params }: PageProps) {
+  const resolvedParams = await params
+  const slug = resolvedParams.slug
   const foodRes = getFoodBySlug(slug)
 
   // Chờ lấy thông tin món ăn trước
@@ -34,7 +40,6 @@ export default async function FoodDetail({ params }: PageProps) {
 
   return (
     <>
-      <HeaderPato />
       {restaurant.statusCode === 200 && restaurant.data && (
         <PageInforFood
           restaurant={restaurant.data}
@@ -43,7 +48,6 @@ export default async function FoodDetail({ params }: PageProps) {
           food={food.data}
         />
       )}
-      <Footer />
     </>
   )
 }
