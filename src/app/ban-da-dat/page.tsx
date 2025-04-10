@@ -8,9 +8,7 @@ import { ICreateBookTable } from '../nha-hang/api'
 export default async function page() {
   return (
     <>
-      <HeaderPato />
       <PageOrderTable />
-      <Footer />
     </>
   )
 }

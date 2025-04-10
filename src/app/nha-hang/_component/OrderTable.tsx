@@ -67,22 +67,18 @@ export default function OrderTable({ restaurant }: IProps) {
   const validateDateTime = () => {
     if (!book_tb_date || !book_tb_hour) {
       setErrorMessage(null)
-      return true // Chưa chọn đủ thông tin, không hiển thị lỗi
+      return true
     }
 
-    // 1. Xác định ngày trong tuần của ngày được chọn
-    const selectedDayName = format(book_tb_date, 'EEEE', { locale: vi }) // VD: "Thứ Hai"
+    const selectedDayName = format(book_tb_date, 'EEEE', { locale: vi })
 
-    // 2. Lấy tất cả các khung giờ mở cửa của ngày đó
     const schedulesForDay = restaurant.restaurant_hours.filter((schedule) => schedule.day_of_week === selectedDayName)
 
-    // 3. Nếu không có khung giờ mở cửa nào cho ngày đó
     if (schedulesForDay.length === 0) {
       setErrorMessage(`Nhà hàng không mở cửa vào ${selectedDayName}. Vui lòng chọn ngày khác.`)
       return false
     }
 
-    // 4. Kiểm tra giờ được chọn có nằm trong bất kỳ khung giờ mở cửa nào không
     const selectedTime = parse(book_tb_hour, 'HH:mm', new Date())
     const isValidTime = schedulesForDay.some((schedule) => {
       const openTime = parse(schedule.open, 'HH:mm', new Date())
@@ -96,7 +92,6 @@ export default function OrderTable({ restaurant }: IProps) {
       return false
     }
 
-    // 5. Nếu là ngày hôm nay, không cho phép chọn giờ trước giờ hiện tại
     if (isToday(book_tb_date)) {
       const selectedHour = getHours(selectedTime)
       const selectedMinute = getMinutes(selectedTime)
@@ -109,7 +104,7 @@ export default function OrderTable({ restaurant }: IProps) {
       }
     }
 
-    setErrorMessage(null) // Không có lỗi
+    setErrorMessage(null)
     return true
   }
 
@@ -131,8 +126,6 @@ export default function OrderTable({ restaurant }: IProps) {
         book_tb_name: values.book_tb_name,
         book_tb_note: values.book_tb_note,
         book_tb_date: new Date(book_tb_date),
-        //trừ 7 giờ để đúng múi giờ VN
-        // book_tb_date: new Date(book_tb_date.setHours(book_tb_date.getHours() - 7)),
         book_tb_number_adults: values.book_tb_number_adults,
         book_tb_number_children: values.book_tb_number_children,
         book_tb_phone: values.book_tb_phone,

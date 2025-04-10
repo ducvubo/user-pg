@@ -9,7 +9,6 @@ interface IProps {
 }
 
 export default function AddComboFoodToCart({ fcb_id }: IProps) {
-
   const handleAddToCart = async () => {
     const res: IBackendRes<boolean> = await addComboToCart({ fcb_id })
     if (res.statusCode === 201 && res.data) {
@@ -25,10 +24,7 @@ export default function AddComboFoodToCart({ fcb_id }: IProps) {
         variant: 'destructive'
       })
     }
-
   }
 
-  return (
-    <ShoppingBasket onClick={handleAddToCart} size={23} color='red' className='cursor-pointer' />
-  )
+  return <ShoppingBasket onClick={handleAddToCart} size={23} color='red' className='cursor-pointer' />
 }

@@ -6,9 +6,7 @@ import Footer from '@/app/home/_component/Footer'
 export default function page() {
   return (
     <>
-      <HeaderPato />
       <PageCategory />
-      <Footer />
     </>
   )
 }

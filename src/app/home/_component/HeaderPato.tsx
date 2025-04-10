@@ -134,6 +134,9 @@ export default function HeaderPato({
                 <DropdownMenuItem className="hover:bg-gray-100 py-2">
                   <Link href='/ket-noi-nha-hang' className='w-full'>Kết nối</Link>
                 </DropdownMenuItem>
+                <DropdownMenuItem className="hover:bg-gray-100 py-2">
+                  <Link href='/mon-an-da-dat' className='w-full'>Món đã đặt</Link>
+                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </DropdownMenuContent>
@@ -268,6 +271,11 @@ export default function HeaderPato({
           <li>
             <Link href='/ket-noi-nha-hang'>
               <span className='block px-4 py-2 hover:bg-gray-100 text-black text-center'>Kết nối</span>
+            </Link>
+          </li>
+          <li>
+            <Link href='/mon-an-da-dat'>
+              <span className='block px-4 py-2 hover:bg-gray-100 text-black text-center'>Món đã đặt</span>
             </Link>
           </li>
         </ul>

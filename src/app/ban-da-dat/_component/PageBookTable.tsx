@@ -218,49 +218,44 @@ export default function PageOrderTable() {
         <CardContent className='p-3 mx-5'>
           <div className='flex space-x-4 md:space-x-8 lg:space-x-12 overflow-x-auto whitespace-nowrap'>
             <span
-              className={`font-semibold text-sm md:text-base cursor-pointer ${
-                selectedStatus === '' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-800 hover:text-gray-600'
-              }`}
+              className={`font-semibold text-sm md:text-base cursor-pointer ${selectedStatus === '' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-800 hover:text-gray-600'
+                }`}
               onClick={() => handleStatusClick('')}
             >
               Danh sách bàn đã đặt
             </span>
             <span
-              className={`font-semibold text-sm md:text-base cursor-pointer ${
-                selectedStatus === 'WAITING_GUEST'
+              className={`font-semibold text-sm md:text-base cursor-pointer ${selectedStatus === 'WAITING_GUEST'
                   ? 'text-blue-600 border-b-2 border-blue-600'
                   : 'text-gray-800 hover:text-gray-600'
-              }`}
+                }`}
               onClick={() => handleStatusClick('WAITING_GUEST')}
             >
               Chờ bạn xác nhận
             </span>
             <span
-              className={`font-semibold text-sm md:text-base cursor-pointer ${
-                selectedStatus === 'WAITING_RESTAURANT'
+              className={`font-semibold text-sm md:text-base cursor-pointer ${selectedStatus === 'WAITING_RESTAURANT'
                   ? 'text-blue-600 border-b-2 border-blue-600'
                   : 'text-gray-800 hover:text-gray-600'
-              }`}
+                }`}
               onClick={() => handleStatusClick('WAITING_RESTAURANT')}
             >
               Chờ nhà hàng xác nhận
             </span>
             <span
-              className={`font-semibold text-sm md:text-base cursor-pointer ${
-                selectedStatus === 'DONE'
+              className={`font-semibold text-sm md:text-base cursor-pointer ${selectedStatus === 'DONE'
                   ? 'text-blue-600 border-b-2 border-blue-600'
                   : 'text-gray-800 hover:text-gray-600'
-              }`}
+                }`}
               onClick={() => handleStatusClick('DONE')}
             >
               Hoàn thành
             </span>
             <span
-              className={`font-semibold text-sm md:text-base cursor-pointer ${
-                selectedStatus === 'GUEST_CANCEL' || selectedStatus === 'RESTAURANT_CANCEL'
+              className={`font-semibold text-sm md:text-base cursor-pointer ${selectedStatus === 'GUEST_CANCEL' || selectedStatus === 'RESTAURANT_CANCEL'
                   ? 'text-blue-600 border-b-2 border-blue-600'
                   : 'text-gray-800 hover:text-gray-600'
-              }`}
+                }`}
               onClick={() =>
                 handleStatusClick(selectedStatus === 'GUEST_CANCEL' ? 'GUEST_CANCEL' : 'RESTAURANT_CANCEL')
               }
@@ -268,11 +263,10 @@ export default function PageOrderTable() {
               Hủy
             </span>
             <span
-              className={`font-semibold text-sm md:text-base cursor-pointer ${
-                selectedStatus === 'EXEPTION'
+              className={`font-semibold text-sm md:text-base cursor-pointer ${selectedStatus === 'EXEPTION'
                   ? 'text-blue-600 border-b-2 border-blue-600'
                   : 'text-gray-800 hover:text-gray-600'
-              }`}
+                }`}
               onClick={() => handleStatusClick('EXEPTION')}
             >
               Ngoại lệ
@@ -358,13 +352,13 @@ export default function PageOrderTable() {
                     )}
                     {(order.book_tb_status === 'WAITING_RESTAURANT' ||
                       order.book_tb_status === 'RESTAURANT_CONFIRM') && (
-                      <button
-                        className='bg-red-800 text-white px-3 py-1 rounded-md text-sm hover:bg-red-600'
-                        onClick={() => openDialog(order._id ? order._id : '', 'exception')}
-                      >
-                        Ngoại lệ
-                      </button>
-                    )}
+                        <button
+                          className='bg-red-800 text-white px-3 py-1 rounded-md text-sm hover:bg-red-600'
+                          onClick={() => openDialog(order._id ? order._id : '', 'exception')}
+                        >
+                          Ngoại lệ
+                        </button>
+                      )}
                     {order.book_tb_status === 'DONE' && order.book_tb_star === null && (
                       <button
                         className='bg-blue-500 text-white px-3 py-1 rounded-md text-sm hover:bg-blue-600'

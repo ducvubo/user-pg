@@ -54,6 +54,7 @@ export const sendRequest = async <T>(props: IRequest) => {
   if (queryParams) {
     url = `${url}?${buildQueryString(queryParams)}`
   }
+  console.log("🚀 ~ returnfetch ~ url:", url)
   return fetch(url, options).then(async (res: any) => {
     if (res.ok) {
       return res.json() as T
@@ -103,10 +104,11 @@ export const sendRequestFile = async <T>(props: IRequest) => {
 }
 
 const buildQueryString = (params: any) => {
+  console.log("🚀 ~ buildQueryString ~ params:", params)
   const result: any = {}
 
   Object.keys(params).forEach((key) => {
-    if (typeof params[key] === 'object' && !Array.isArray(params[key])) {
+    if (params[key] !== null && typeof params[key] === 'object' && !Array.isArray(params[key])) {
       // Xử lý đối tượng sâu
       Object.keys(params[key]).forEach((subKey: any) => {
         if (typeof params[key][subKey] === 'object') {

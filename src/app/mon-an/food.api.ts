@@ -8,6 +8,5 @@ export const getFoodBySlug = async (slug: string) => {
     url: `${process.env.URL_SERVER_ORDER}/food-restaurant/get-food-res-slug/${slug}`,
     method: 'GET'
   })
-  console.log('🚀 ~ getFoodBySlug ~ res:', res)
   return res
 }

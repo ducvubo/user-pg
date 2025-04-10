@@ -26,7 +26,6 @@ const HomePage = async () => {
   const resListCategory = await GetCategoryByIds(catIds ? JSON.parse(catIds).data : [])
   return (
     <div>
-      <HeaderPato />
       {resListCategory.statusCode !== 200 && resListCategory.data && (
         <CategoryBlock categories={resListCategory.data} />
       )}
@@ -84,7 +83,6 @@ const HomePage = async () => {
             .data.sort((a: any, b: any) => a.order - b.order)
             .map((item: any, index: number) => <CarouselRestaurant key={index} {...item} />)}
       </div>
-      <Footer />
     </div>
   )
 }

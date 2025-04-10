@@ -2,11 +2,10 @@
 
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useState, Suspense } from 'react'
-import { confirmBookTable } from './api'
 import { ICreateBookTable } from '../nha-hang/api'
 import { toast } from '@/hooks/use-toast'
-import HeaderPato from '../home/_component/HeaderPato'
-import Footer from '../home/_component/Footer'
+import { IOrderFood } from '../dat-mon-an/order.food.api'
+import { confirmOrderFood } from './api'
 
 function LoadingFallback() {
   return <div>Loading...</div>
@@ -15,17 +14,22 @@ function LoadingFallback() {
 function ConfirmPage() {
   const [isLoad, setIsLoad] = useState(false)
   const searchParams = useSearchParams()
-  const token = searchParams.get('token')
+  const od_id = searchParams.get('od_id')
+  const od_res_id = searchParams.get('od_res_id')
   const router = useRouter()
 
   const confirmBook = async () => {
-    if (!token) {
-      router.push('ban-da-dat')
+    if (!od_id || !od_res_id) {
+      router.push('mon-an-da-dat')
       return
     }
     setIsLoad(true)
     try {
-      const res: IBackendRes<ICreateBookTable> = await confirmBookTable(token)
+      const res: IBackendRes<IOrderFood> = await confirmOrderFood({
+        od_id,
+        od_res_id
+      })
+      console.log("🚀 ~ confirmBook ~ res:", res)
       if (res.statusCode === 200 || res.statusCode === 201) {
         setIsLoad(false)
         toast({
@@ -33,14 +37,14 @@ function ConfirmPage() {
           description: 'Xác nhận đặt bàn thành công, chúc bạn ngon miệng',
           variant: 'default'
         })
-        router.push('ban-da-dat')
+        router.push('mon-an-da-dat')
       } else {
         toast({
           title: 'Thất bại',
           description: 'Xác nhận đặt bàn thất bại',
           variant: 'destructive'
         })
-        router.push('ban-da-dat')
+        router.push('mon-an-da-dat')
       }
     } catch (error) {
       toast({
@@ -48,7 +52,7 @@ function ConfirmPage() {
         description: 'Xác nhận đặt bàn thất bại',
         variant: 'destructive'
       })
-      router.push('ban-da-dat')
+      router.push('mon-an-da-dat')
     } finally {
       setIsLoad(false)
     }

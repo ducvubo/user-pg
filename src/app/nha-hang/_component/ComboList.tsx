@@ -1,8 +1,11 @@
 import React from 'react'
 import Image from 'next/image'
 import AddComboFoodToCart from './AddComboFoodToCart'
+import Link from 'next/link'
+import { IFoodRestaurant } from '@/app/interface/food-restaurant.interface'
 export interface IComboFood {
   fcb_id: string
+  fcb_res_id: string
   fcb_name: string
   fcb_slug: string
   fcb_price: number
@@ -12,6 +15,17 @@ export interface IComboFood {
   fcb_state: 'soldOut' | 'inStock' | 'almostOut'
   fcb_sort: number
   fcb_image: string
+  fcbi_combo: IFoodComboItems[]
+  fcb_description: string
+}
+
+export interface IFoodComboItems {
+  fcbi_id: string
+  fcbi_res_id: string
+  fcbi_food_id: string
+  fcbi_combo_id: string
+  fcbi_quantity: number
+  fcbi_food: IFoodRestaurant
 }
 
 export default function ComboList({ comboFoods }: { comboFoods: IComboFood[] }) {
@@ -52,27 +66,35 @@ export default function ComboList({ comboFoods }: { comboFoods: IComboFood[] }) 
             >
               {primaryImage && (
                 <div className='relative w-full h-48'>
-                  <Image src={primaryImage} alt={combo.fcb_name} fill className='object-cover' />
+                  <Link href={`/combo-mon-an/${combo.fcb_slug}`} target='_blank'>
+                    <Image src={primaryImage} alt={combo.fcb_name} fill className='object-cover' />
+                  </Link>
                 </div>
               )}
               <div className='p-4'>
                 <div className='flex justify-between'>
-                  <h2 className='text-xl font-semibold text-gray-800 mb-2'>{combo.fcb_name}</h2>
+                  <Link href={`/combo-mon-an/${combo.fcb_slug}`} target='_blank'>
+                    <h2 className='text-xl font-semibold text-gray-800 mb-2'>{combo.fcb_name}</h2>
+                  </Link>
                   <AddComboFoodToCart fcb_id={combo.fcb_id} />
                 </div>
-                <p className='text-gray-600 mb-2'>Giá: {combo.fcb_price.toLocaleString('vi-VN')} VNĐ</p>
-                <p className='text-sm text-gray-500'>
-                  Giờ mở: {combo.fcb_open_time} - {combo.fcb_close_time} {sellingStatus ? '(Đang bán)' : '(Hết giờ)'}
-                </p>
-                <p className='text-sm mt-1'>
-                  Trạng thái:{' '}
-                  <span className={combo.fcb_state === 'inStock' && sellingStatus ? 'text-green-600' : 'text-red-600'}>
-                    {combo.fcb_state === 'inStock' && 'Còn hàng'}
-                    {combo.fcb_state === 'soldOut' && 'Hết hàng'}
-                    {combo.fcb_state === 'almostOut' && 'Sắp hết hàng'}
-                  </span>
-                </p>
-                {combo.fcb_note && <p className='text-sm text-gray-500 mt-1 italic'>Ghi chú: {combo.fcb_note}</p>}
+                <Link href={`/combo-mon-an/${combo.fcb_slug}`} target='_blank'>
+                  <p className='text-gray-600 mb-2'>Giá: {combo.fcb_price.toLocaleString('vi-VN')} VNĐ</p>
+                  <p className='text-sm text-gray-500'>
+                    Giờ mở: {combo.fcb_open_time} - {combo.fcb_close_time} {sellingStatus ? '(Đang bán)' : '(Hết giờ)'}
+                  </p>
+                  <p className='text-sm mt-1'>
+                    Trạng thái:{' '}
+                    <span
+                      className={combo.fcb_state === 'inStock' && sellingStatus ? 'text-green-600' : 'text-red-600'}
+                    >
+                      {combo.fcb_state === 'inStock' && 'Còn hàng'}
+                      {combo.fcb_state === 'soldOut' && 'Hết hàng'}
+                      {combo.fcb_state === 'almostOut' && 'Sắp hết hàng'}
+                    </span>
+                  </p>
+                  {combo.fcb_note && <p className='text-sm text-gray-500 mt-1 italic'>Ghi chú: {combo.fcb_note}</p>}
+                </Link>
               </div>
             </div>
           )
