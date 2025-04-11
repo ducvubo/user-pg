@@ -784,7 +784,6 @@ export default function PageListOrderFood() {
   const [feedbackContent, setFeedbackContent] = useState<{ [key: string]: string }>({})
   const [feedbackStar, setFeedbackStar] = useState<{ [key: string]: 1 | 2 | 3 | 4 | 5 }>({})
   const today = new Date();
-  // const defaultToDate = new Date(today.setHours(0, 0, 0, 0));
   const defaultToDate = new Date();
   defaultToDate.setHours(0, 0, 0, 0);
   defaultToDate.setDate(defaultToDate.getDate() - 10);
@@ -1207,7 +1206,10 @@ export default function PageListOrderFood() {
                     </div>
                     <div className="flex flex-col sm:flex-row gap-1">
                       <p className="text-muted-foreground shrink-0">Thời gian đặt hàng:</p>
-                      <p className="font-medium">{new Date(order.od_created_at).toLocaleString('vi-VN')}</p>
+                      <p className="font-medium">
+                        {new Date(new Date(order.od_created_at).getTime() - 7 * 60 * 60 * 1000).toLocaleString('vi-VN')}
+                      </p>
+
                     </div>
                     <div className="flex flex-col sm:flex-row gap-1">
                       <p className="text-muted-foreground shrink-0">Địa chỉ:</p>

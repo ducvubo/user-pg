@@ -104,7 +104,6 @@ export const sendRequestFile = async <T>(props: IRequest) => {
 }
 
 const buildQueryString = (params: any) => {
-  console.log("🚀 ~ buildQueryString ~ params:", params)
   const result: any = {}
 
   Object.keys(params).forEach((key) => {

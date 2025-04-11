@@ -78,19 +78,29 @@ export default function PageInforFood({ food, listCombo, listFood, restaurant }:
   const [isWithinServiceHours, setIsWithinServiceHours] = useState(true)
   const [quantity, setQuantity] = useState(1)
 
+  const normalizeTime = (time: string) => {
+    const [h, m, s] = time.split(':')
+    return `${h.padStart(2, '0')}:${m.padStart(2, '0')}:${s.padStart(2, '0')}`
+  }
+
   const checkServiceHours = () => {
     const now = new Date()
     const currentTime = `${now.getHours().toString().padStart(2, '0')}:${now
       .getMinutes()
       .toString()
       .padStart(2, '0')}:${now.getSeconds().toString().padStart(2, '0')}`
+    console.log("🚀 ~ currentTime ~ currentTime:", currentTime)
 
-    const openTime = food.food_open_time
-    const closeTime = food.food_close_time
+    const openTime = normalizeTime(food.food_open_time)
+    console.log("🚀 ~ openTime:", openTime)
+    const closeTime = normalizeTime(food.food_close_time)
+    console.log("🚀 ~ closeTime:", closeTime)
 
     const isOpen = currentTime >= openTime && currentTime <= closeTime
+    console.log("🚀 ~ isOpen:", isOpen)
     setIsWithinServiceHours(isOpen)
   }
+
 
   useEffect(() => {
     checkServiceHours()
@@ -239,9 +249,8 @@ export default function PageInforFood({ food, listCombo, listFood, restaurant }:
                           <Button
                             key={option.fopt_id}
                             variant='outline'
-                            className={`flex items-center gap-1.5 p-1.5 rounded-lg border transition-all ${
-                              isSelected && !isOptionSoldOut ? 'border-red-500 text-red-500' : 'border-gray-300'
-                            } ${isOptionSoldOut ? 'opacity-50 cursor-not-allowed' : ''}`}
+                            className={`flex items-center gap-1.5 p-1.5 rounded-lg border transition-all ${isSelected && !isOptionSoldOut ? 'border-red-500 text-red-500' : 'border-gray-300'
+                              } ${isOptionSoldOut ? 'opacity-50 cursor-not-allowed' : ''}`}
                             onClick={() => !isOptionSoldOut && handleOptionSelect(option.fopt_id)}
                             disabled={isOptionSoldOut}
                           >
@@ -300,6 +309,11 @@ export default function PageInforFood({ food, listCombo, listFood, restaurant }:
                 href={`/dat-mon-an?slug=${food.food_slug}&selectedOption=${selectedOptions}&quantity=${quantity}`}
                 target='_blank'
                 className='w-full sm:w-auto'
+                onClick={(e) => {
+                  if (isFoodSoldOut || !isWithinServiceHours) {
+                    e.preventDefault()
+                  }
+                }}
               >
                 <Button
                   className='bg-green-500 hover:bg-green-600 text-white text-sm py-2 px-4 rounded-lg w-full'

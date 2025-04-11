@@ -196,21 +196,11 @@ export default function PageOrderFood({ inforFood, quantity, selectedOption, slu
           food_id: inforFood.food_id,
           od_it_quantity: quantity,
           food_options: selectedOptionsData?.map((opt) => opt.fopt_id) || [],
-        }, {
-          food_id: inforFood.food_id,
-          od_it_quantity: quantity,
-          food_options: selectedOptionsData?.map((opt) => opt.fopt_id) || [],
-        },
-        {
-          food_id: inforFood.food_id,
-          od_it_quantity: quantity,
-          food_options: selectedOptionsData?.map((opt) => opt.fopt_id) || [],
         }],
         od_res_id: inforFood.food_res_id,
       }
 
       const res: IBackendRes<IOrderFood> = await createOrderFood(payload)
-      console.log("🚀 ~ onSubmit ~ res:", res)
 
       if (res.statusCode === 201 || res.statusCode === 200) {
         toast({
