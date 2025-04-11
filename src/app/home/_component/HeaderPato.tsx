@@ -137,6 +137,9 @@ export default function HeaderPato({
                 <DropdownMenuItem className="hover:bg-gray-100 py-2">
                   <Link href='/mon-an-da-dat' className='w-full'>Món đã đặt</Link>
                 </DropdownMenuItem>
+                <DropdownMenuItem className="hover:bg-gray-100 py-2">
+                  <Link href='/combo-da-dat' className='w-full'>Combo đã đặt</Link>
+                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </DropdownMenuContent>
@@ -276,6 +279,11 @@ export default function HeaderPato({
           <li>
             <Link href='/mon-an-da-dat'>
               <span className='block px-4 py-2 hover:bg-gray-100 text-black text-center'>Món đã đặt</span>
+            </Link>
+          </li>
+          <li>
+            <Link href='/combo-da-dat'>
+              <span className='block px-4 py-2 hover:bg-gray-100 text-black text-center'>Combo đã đặt</span>
             </Link>
           </li>
         </ul>

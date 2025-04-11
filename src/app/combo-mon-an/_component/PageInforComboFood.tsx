@@ -17,18 +17,13 @@ interface IProps {
 }
 
 export default function PageInforComboFood({ comboFood, restaurant, listCombo, listFood }: IProps) {
-  console.log('🚀 ~ PageInforComboFood ~ comboFood:', comboFood)
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(price)
   }
 
   const isComboSoldOut = comboFood.fcb_state === 'soldOut'
 
-  // Get images from foods in the combo for the slider
-  const foodImages = comboFood.fcbi_combo.map((item) => {
-    const images = JSON.parse(item.fcbi_food.food_image)
-    return images[0]?.image_cloud || 'https://via.placeholder.com/300'
-  })
+  const comboImages = JSON.parse(comboFood.fcb_image)
 
   return (
     <div className='w-full px-4 md:px-8 lg:px-[100px] bg-[#e6eaed] py-5 flex flex-col gap-4'>
@@ -68,7 +63,7 @@ export default function PageInforComboFood({ comboFood, restaurant, listCombo, l
       <div className='bg-white rounded-lg shadow-md p-5'>
         <div className='flex flex-col md:flex-row gap-4'>
           <div className='md:w-1/2'>
-            <ComboFoodClient foodImages={foodImages} comboFood={comboFood} isComboSoldOut={isComboSoldOut} />
+            <ComboFoodClient comboImages={comboImages} comboFood={comboFood} isComboSoldOut={isComboSoldOut} />
           </div>
 
           <div className='md:w-1/2 flex flex-col gap-2'>
@@ -137,7 +132,7 @@ export default function PageInforComboFood({ comboFood, restaurant, listCombo, l
             </div>
 
             <ComboFoodClient
-              foodImages={foodImages}
+              comboImages={comboImages}
               comboFood={comboFood}
               isComboSoldOut={isComboSoldOut}
               showButtons

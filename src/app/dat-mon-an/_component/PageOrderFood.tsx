@@ -17,9 +17,10 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
 import { IRestaurant } from '@/app/interface/restaurant.interface'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { calcPriceShipingGHTK, calcPriceShippingGHN, createOrderFood, CreateOrderFoodDto, IOrderFood } from '../order.food.api'
+import { calcPriceShipingGHTK, calcPriceShippingGHN, createOrderFood } from '../order.food.api'
 import { toast } from '@/hooks/use-toast'
 import { useRouter } from 'next/navigation'
+import { CreateOrderFoodDto, IOrderFood } from '../order.food.interface'
 
 const formSchema = z.object({
   customerName: z.string().min(1, 'Họ và tên không được để trống'),
@@ -175,7 +176,6 @@ export default function PageOrderFood({ inforFood, quantity, selectedOption, slu
 
   const onSubmit = async (data: FormData) => {
     try {
-      //tìm tên tỉnh, huyện, xã từ id
       const provinceName = provinces.find((p) => p.ProvinceID === parseInt(data.province))?.ProvinceName
       const districtName = districts.find((d) => d.DistrictID === parseInt(data.district))?.DistrictName
       const wardName = wards.find((w) => w.WardCode === data.ward)?.WardName
@@ -271,14 +271,45 @@ export default function PageOrderFood({ inforFood, quantity, selectedOption, slu
             <div className='space-y-2'>
               <Label className='font-semibold'>Tùy chọn:</Label>
               <ul className='list-disc pl-5'>
-                {selectedOptionsData.map((opt) => (
-                  <li key={opt.fopt_id} className='flex justify-between'>
-                    <span>
-                      {opt.fopt_name} ({opt.fopt_attribute})
-                    </span>
-                    <span>{opt.fopt_price.toLocaleString('vi-VN')} VNĐ</span>
-                  </li>
-                ))}
+                {selectedOptionsData.map((opt) => {
+                  let optioneImage = []
+                  try {
+                    optioneImage = JSON.parse(opt.fopt_image || '[]')
+                    if (!Array.isArray(optioneImage)) {
+                      optioneImage = [optioneImage]
+                    }
+                  } catch (error) {
+                    console.error(`Error parsing food images for ${opt.fopt_name}:`, error)
+                    optioneImage = []
+                  }
+                  return (
+                    <li key={opt.fopt_id} className='flex my-1 justify-between'>
+                      <div className='flex'>
+                        {optioneImage.length > 0 ? (
+                          <div className="relative w-10 h-10 flex-shrink-0">
+                            <Image
+                              src={optioneImage[0].image_custom}
+                              alt={opt.fopt_name}
+                              fill
+                              className="object-cover rounded-sm"
+                              sizes="100px"
+                            />
+                          </div>
+                        ) : (
+                          <div className="w-6 h-6 bg-gray-200 rounded-sm flex items-center justify-center flex-shrink-0">
+                            <span className="text-xs text-gray-500">N/A</span>
+                          </div>
+                        )}
+                        <span className='mt-1 font-semibold ml-2'>
+                          {opt.fopt_name} ({opt.fopt_attribute})
+                        </span>
+                      </div>
+
+                      <span>{opt.fopt_price.toLocaleString('vi-VN')} VNĐ</span>
+                    </li>
+                  )
+                }
+                )}
               </ul>
             </div>
           )}

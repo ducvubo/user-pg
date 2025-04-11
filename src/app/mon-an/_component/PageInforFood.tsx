@@ -217,7 +217,9 @@ export default function PageInforFood({ food, listCombo, listFood, restaurant }:
             <h1 className='text-2xl font-bold text-gray-800'>{food.food_name}</h1>
 
             <div className='flex items-center gap-2'>
-              <span className='text-xl font-semibold text-red-500'>{formatPrice(totalPrice * quantity)}</span>
+              {/* <span className='text-xl font-semibold text-red-500'>{formatPrice(totalPrice * quantity)}</span> */}
+              <span className='text-xl font-semibold text-red-500'>{formatPrice(food.food_price)}</span>
+
             </div>
 
             <div className='text-sm'>
@@ -303,6 +305,10 @@ export default function PageInforFood({ food, listCombo, listFood, restaurant }:
               >
                 +
               </Button>
+            </div>
+            <div>
+              <span className='text-sm font-semibold'>Tổng tiền:</span>
+              <span className='text-red-500 font-semibold text-sm ml-1'>{formatPrice(totalPrice * quantity)}</span>
             </div>
             <div className='mt-2 flex flex-col sm:flex-row gap-3 max-w-full items-center justify-center sm:justify-start'>
               <Link

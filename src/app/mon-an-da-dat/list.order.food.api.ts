@@ -1,7 +1,7 @@
 'use server'
 
 import { sendRequest } from "@/lib/api"
-import { IOrderFood } from "../dat-mon-an/order.food.api"
+import { IOrderFood } from "../dat-mon-an/order.food.interface"
 
 export const getListOrderFood = async ({ fromDate = null, q = '', status = 'all', pageIndex = 1, pageSize = 10, toDate = null }: {
   pageSize: number,
@@ -11,8 +11,6 @@ export const getListOrderFood = async ({ fromDate = null, q = '', status = 'all'
   toDate: Date | null,
   fromDate: Date | null,
 }) => {
-  console.log("🚀 ~ toDate:", toDate)
-  console.log("🚀 ~ fromDate:", fromDate)
   const res: IBackendRes<IModelPaginate<IOrderFood>> = await sendRequest({
     url: `${process.env.URL_SERVER_ORDER}/order-food/get-list-order-food-guest-pagination`,
     method: 'GET',
@@ -29,11 +27,11 @@ export const getListOrderFood = async ({ fromDate = null, q = '', status = 'all'
   return res
 }
 
-export const guestCancelOrderFood = async ({ od_id, od_res_id }: { od_id: string, od_res_id: string }) => {
+export const guestCancelOrderFood = async ({ od_id, od_res_id, od_reason_cancel }: { od_id: string, od_res_id: string, od_reason_cancel: string }) => {
   const res: IBackendRes<IOrderFood> = await sendRequest({
     url: `${process.env.URL_SERVER_ORDER}/order-food/guest-cancel-order-food`,
     method: 'PATCH',
-    body: { od_id, od_res_id }
+    body: { od_id, od_res_id, od_reason_cancel }
   })
   return res
 }

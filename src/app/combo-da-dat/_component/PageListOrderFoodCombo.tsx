@@ -1,5 +1,4 @@
 'use client'
-
 import React, { useCallback, useEffect, useState } from 'react'
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -13,7 +12,6 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion"
-import { getListOrderFood, guestCancelOrderFood, guestComplaintDoneOrderFood, guestComplaintOrderFood, guestFeedbackOrderFood, guestReceiveOrderFood } from '@/app/mon-an-da-dat/list.order.food.api'
 import { IRestaurant } from '@/app/interface/restaurant.interface'
 import { GetRestaurantByIds } from '@/app/home/home.api'
 import Link from 'next/link'
@@ -21,7 +19,6 @@ import Image from 'next/image'
 import { Textarea } from "@/components/ui/textarea"
 import { toast } from '@/hooks/use-toast' // Assuming you have a toast utility
 import debounce from 'lodash/debounce'
-import { deleteCookiesAndRedirect } from '@/app/actions/action'
 import { useSearchParams } from 'next/navigation'
 import { Calendar } from '@/components/ui/calendar'
 import { Label } from '@/components/ui/label'
@@ -32,7 +29,8 @@ import { addDays } from 'date-fns'
 import { vi } from 'date-fns/locale'
 import { Input } from '@/components/ui/input'
 import { Pagination } from '@/components/Pagination'
-import { IOrderFood } from '@/app/dat-mon-an/order.food.interface'
+import { IOrderFoodCombo } from '@/app/dat-combo-mon-an/order.combo.interface'
+import { getListOrderFoodCombo, guestCancelOrderFoodCombo, guestComplaintDoneOrderFoodCombo, guestComplaintOrderFoodCombo, guestFeedbackOrderFoodCombo, guestReceiveOrderFoodCombo } from '../list.order.food.api'
 import {
   Dialog,
   DialogContent,
@@ -53,8 +51,9 @@ const formatVietnameseDate = (date: Date) => {
 }
 
 
-export default function PageListOrderFood() {
-  const [orders, setOrders] = useState<IOrderFood[]>([])
+export default function PageListOrderFoodCombo() {
+  const [orders, setOrders] = useState<IOrderFoodCombo[]>([])
+  console.log("🚀 ~ PageListOrderFoodCombo ~ orders:", orders)
   const [loading, setLoading] = useState(true)
   const [listRestaurant, setListRestaurant] = useState<IRestaurant[]>([])
   const [feedbackContent, setFeedbackContent] = useState<{ [key: string]: string }>({})
@@ -85,8 +84,7 @@ export default function PageListOrderFood() {
   const searchParam = useSearchParams().get('a');
   const [isCancelDialogOpen, setIsCancelDialogOpen] = useState(false)
   const [cancelReason, setCancelReason] = useState('')
-  const [selectedOrder, setSelectedOrder] = useState<{ od_id: string; od_res_id: string } | null>(null)
-
+  const [selectedOrder, setSelectedOrder] = useState<{ od_cb_id: string; od_cb_res_id: string } | null>(null)
 
   const handleSelectFromDate = (date: Date | undefined) => {
     if (date) {
@@ -131,7 +129,7 @@ export default function PageListOrderFood() {
 
   const fetchOrders = async () => {
     try {
-      const res: IBackendRes<IModelPaginate<IOrderFood>> = await getListOrderFood({
+      const res: IBackendRes<IModelPaginate<IOrderFoodCombo>> = await getListOrderFoodCombo({
         pageSize: pageSize,
         pageIndex: pageIndex,
         q: query,
@@ -150,7 +148,7 @@ export default function PageListOrderFood() {
           })
           setPageIndex(res.data.meta.pageIndex)
           setPageSize(res.data.meta.pageSize)
-          const listIdRestaurant = res.data.result.map((order) => order.od_res_id)
+          const listIdRestaurant = res.data.result.map((order) => order.od_cb_res_id)
           const resRestaurant: IBackendRes<IRestaurant[]> = await GetRestaurantByIds(listIdRestaurant)
           if (resRestaurant.statusCode === 201 && resRestaurant.data) {
             setListRestaurant(resRestaurant.data)
@@ -206,7 +204,6 @@ export default function PageListOrderFood() {
     return statusMap[status] || status
   }
 
-  // Handle Cancel Order
   const handleCancelOrder = async () => {
     if (!selectedOrder || !cancelReason.trim()) {
       toast({
@@ -217,10 +214,10 @@ export default function PageListOrderFood() {
       return
     }
 
-    const res = await guestCancelOrderFood({
-      od_id: selectedOrder.od_id,
-      od_res_id: selectedOrder.od_res_id,
-      od_reason_cancel: cancelReason,
+    const res = await guestCancelOrderFoodCombo({
+      od_cb_id: selectedOrder.od_cb_id,
+      od_cb_res_id: selectedOrder.od_cb_res_id,
+      od_cb_reason_cancel: cancelReason, // Gửi lý do hủy
     })
 
     if (res.statusCode === 200) {
@@ -242,14 +239,15 @@ export default function PageListOrderFood() {
     }
   }
 
-  const openCancelDialog = (od_id: string, od_res_id: string) => {
-    setSelectedOrder({ od_id, od_res_id })
+  // Hàm mở dialog hủy đơn
+  const openCancelDialog = (od_cb_id: string, od_cb_res_id: string) => {
+    setSelectedOrder({ od_cb_id, od_cb_res_id })
     setIsCancelDialogOpen(true)
   }
 
   // Handle Receive Order
-  const handleReceiveOrder = async (od_id: string, od_res_id: string) => {
-    const res = await guestReceiveOrderFood({ od_id, od_res_id });
+  const handleReceiveOrder = async (od_cb_id: string, od_cb_res_id: string) => {
+    const res = await guestReceiveOrderFoodCombo({ od_cb_id, od_cb_res_id });
     if (res.statusCode === 200) {
       toast({
         title: 'Thành công',
@@ -267,8 +265,8 @@ export default function PageListOrderFood() {
   };
 
   // Handle Complaint
-  const handleComplaint = async (od_id: string, od_res_id: string) => {
-    const res = await guestComplaintOrderFood({ od_id, od_res_id });
+  const handleComplaint = async (od_cb_id: string, od_cb_res_id: string) => {
+    const res = await guestComplaintOrderFoodCombo({ od_cb_id, od_cb_res_id });
     if (res.statusCode === 200) {
       toast({
         title: 'Thành công',
@@ -286,8 +284,8 @@ export default function PageListOrderFood() {
   };
 
   // Handle Complaint Done
-  const handleComplaintDone = async (od_id: string, od_res_id: string) => {
-    const res = await guestComplaintDoneOrderFood({ od_id, od_res_id });
+  const handleComplaintDone = async (od_cb_id: string, od_cb_res_id: string) => {
+    const res = await guestComplaintDoneOrderFoodCombo({ od_cb_id, od_cb_res_id });
     if (res.statusCode === 200) {
       toast({
         title: 'Thành công',
@@ -305,9 +303,9 @@ export default function PageListOrderFood() {
   };
 
   // Handle Feedback
-  const handleFeedback = async (od_id: string, od_res_id: string) => {
-    const content = feedbackContent[od_id] || '';
-    const star = feedbackStar[od_id] || 5;
+  const handleFeedback = async (od_cb_id: string, od_cb_res_id: string) => {
+    const content = feedbackContent[od_cb_id] || '';
+    const star = feedbackStar[od_cb_id] || 5;
 
     if (!content.trim()) {
       toast({
@@ -318,15 +316,15 @@ export default function PageListOrderFood() {
       return;
     }
 
-    const res = await guestFeedbackOrderFood({ od_id, od_res_id, od_feed_content: content, od_feed_star: star });
+    const res = await guestFeedbackOrderFoodCombo({ od_cb_id, od_cb_res_id, od_cb_feed_content: content, od_cb_feed_star: star });
     if (res.statusCode === 200) {
       toast({
         title: 'Thành công',
         description: 'Phản hồi đã được gửi.',
         variant: 'default',
       });
-      setFeedbackContent((prev) => ({ ...prev, [od_id]: '' }));
-      setFeedbackStar((prev) => ({ ...prev, [od_id]: 5 }));
+      setFeedbackContent((prev) => ({ ...prev, [od_cb_id]: '' }));
+      setFeedbackStar((prev) => ({ ...prev, [od_cb_id]: 5 }));
       fetchOrders();
     } else {
       toast({
@@ -343,8 +341,9 @@ export default function PageListOrderFood() {
 
   return (
     <div className="container mx-auto px-4 py-6 sm:px-6 lg:px-8">
-      <h1 className="text-xl sm:text-2xl md:text-3xl font-bold mb-4 sm:mb-6">Danh sách món ăn đã đặt</h1>
+      <h1 className="text-xl sm:text-2xl md:text-3xl font-bold mb-4 sm:mb-6">Danh sách combo đã đặt</h1>
 
+      {/* Filter Section */}
       <div className="flex flex-col sm:flex-row gap-4 mb-6 flex-wrap">
         <div className="flex flex-col sm:flex-row gap-2 items-start sm:items-center w-full sm:w-auto">
           <Label className="mt-2 shrink-0">Từ</Label>
@@ -442,27 +441,29 @@ export default function PageListOrderFood() {
         </div>
       </div>
 
-      {/* Orders List */}
       <div className="grid gap-4 sm:gap-6">
         {orders.map((order) => {
-          const total = order.orderItems.reduce((sum, item) => {
-            const options = item.foodSnap.fsnp_options
-              ? JSON.parse(item.foodSnap.fsnp_options)
-              : [];
-            const optionsTotal = options.reduce((optSum: number, opt: any) => optSum + opt.fopt_price, 0);
-            const itemTotal = (item.foodSnap.fsnp_price + optionsTotal) * item.od_it_quantity;
-            return sum + itemTotal;
-          }, 0) + order.od_price_shipping;
+          let totalComboPrice = 0;
 
-          const attributes = order.od_atribute ? JSON.parse(order.od_atribute) : [];
-          const restaurant = listRestaurant.find((res) => res._id === order.od_res_id);
+          for (const item of order.orderItems) {
+            const quantity = item.od_cb_it_quantity || 0;
+            const price = item.foodComboSnap?.fcb_snp_price || 0;
+            totalComboPrice += quantity * price;
+          }
+
+          const shippingPrice = order.od_cb_price_shipping || 0;
+
+          const total = totalComboPrice + shippingPrice;
+
+
+          const attributes = order.od_cb_atribute ? JSON.parse(order.od_cb_atribute) : [];
+          const restaurant = listRestaurant.find((res) => res._id === order.od_cb_res_id);
 
           return (
-            <Card key={order.od_id} className="shadow-md">
+            <Card key={order.od_cb_id} className="shadow-md">
               <CardContent className="p-4 sm:p-6">
                 <Separator className="my-3" />
 
-                {/* Restaurant and Order Info */}
                 <div className="flex flex-col md:flex-row gap-4">
                   <div className="flex gap-3 w-full md:w-1/2">
                     <Link
@@ -489,12 +490,12 @@ export default function PageListOrderFood() {
                         Địa chỉ: {restaurant ? restaurant.restaurant_address.address_specific : ''}
                       </p>
                       <p className="text-xs sm:text-sm text-gray-600 line-clamp-1">
-                        Phản hồi: {order.od_feed_reply || 'Chưa có phản hồi'}
+                        Phản hồi: {order.od_cb_feed_reply || 'Chưa có phản hồi'}
                       </p>
                       <div className="flex flex-wrap gap-2 mt-2">
                         <p className="text-xs sm:text-sm text-muted-foreground">Trạng thái</p>
-                        <Badge variant={getStatusVariant(order.od_status)} className="text-xs sm:text-sm">
-                          {getTextStatus(order.od_status)}
+                        <Badge variant={getStatusVariant(order.od_cb_status)} className="text-xs sm:text-sm">
+                          {getTextStatus(order.od_cb_status)}
                         </Badge>
                       </div>
                     </div>
@@ -503,31 +504,31 @@ export default function PageListOrderFood() {
                   <div className="grid gap-2 w-full md:w-1/2 text-xs sm:text-sm">
                     <div className="flex flex-col sm:flex-row gap-1">
                       <p className="text-muted-foreground shrink-0">Tên người nhận:</p>
-                      <p className="font-medium">{order.od_user_name} - {order.od_user_phone}</p>
+                      <p className="font-medium">{order.od_cb_user_name} - {order.od_cb_user_phone}</p>
                     </div>
                     <div className="flex flex-col sm:flex-row gap-1">
                       <p className="text-muted-foreground shrink-0">Thời gian đặt hàng:</p>
                       <p className="font-medium">
-                        {new Date(new Date(order.od_created_at).getTime() - 7 * 60 * 60 * 1000).toLocaleString('vi-VN')}
+                        {new Date(new Date(order.od_cb_created_at).getTime() - 7 * 60 * 60 * 1000).toLocaleString('vi-VN')}
                       </p>
 
                     </div>
                     <div className="flex flex-col sm:flex-row gap-1">
                       <p className="text-muted-foreground shrink-0">Địa chỉ:</p>
                       <p className="font-medium line-clamp-2">
-                        {order.od_user_address}, P.{order.od_user_ward}, Q.{order.od_user_district}, T.{order.od_user_province}
+                        {order.od_cb_user_address}, P.{order.od_cb_user_ward}, Q.{order.od_cb_user_district}, T.{order.od_cb_user_province}
                       </p>
                     </div>
                     <div className="flex flex-col sm:flex-row gap-1">
                       <p className="text-muted-foreground shrink-0">Phí giao hàng:</p>
                       <p className="font-medium">
-                        {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(order.od_price_shipping)}
+                        {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(order.od_cb_price_shipping)}
                       </p>
                     </div>
                     <div className="flex flex-col sm:flex-row gap-1">
                       <p className="text-muted-foreground shrink-0">Feedback:</p>
                       <p className="font-medium">
-                        {order.od_feed_star} ⭐ - {order.od_feed_content || 'Chưa có phản hồi'}
+                        {order.od_cb_feed_star} ⭐ - {order.od_cb_feed_content || 'Chưa có phản hồi'}
                       </p>
                     </div>
                   </div>
@@ -540,7 +541,7 @@ export default function PageListOrderFood() {
                   <AccordionItem value="order-items">
                     <AccordionTrigger>
                       <div className="flex justify-between items-center w-full text-xs sm:text-sm font-medium">
-                        <span>Danh sách món ăn</span>
+                        <span>Danh sách combo</span>
                         <span>
                           Tổng hóa đơn: {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(total)}
                         </span>
@@ -550,44 +551,29 @@ export default function PageListOrderFood() {
                       {order.orderItems.length > 0 ? (
                         <div className="space-y-4 max-h-[300px] overflow-y-auto">
                           {order.orderItems.map((item) => {
-                            const options = item.foodSnap.fsnp_options
-                              ? JSON.parse(item.foodSnap.fsnp_options)
-                              : [];
-                            const optionTotal = options.reduce((sum: number, opt: any) => sum + opt.fopt_price, 0);
-                            const itemTotal = (item.foodSnap.fsnp_price + optionTotal) * item.od_it_quantity;
-
                             return (
-                              <div key={item.od_it_id} className="flex gap-3">
-                                <Avatar className="h-16 w-16 sm:h-20 sm:w-20 !rounded-md flex-shrink-0">
+                              <div key={item.od_cb_it_id} className="flex gap-3">
+                                <Avatar className="h-12 w-12 !rounded-md flex-shrink-0">
                                   <AvatarImage
-                                    src={item.foodSnap.fsnp_image ? JSON.parse(item.foodSnap.fsnp_image)[0]?.image_cloud : '/placeholder-image.jpg'}
+                                    src={item.foodComboSnap.fcb_snp_image ? JSON.parse(item.foodComboSnap.fcb_snp_image)?.image_cloud : '/placeholder-image.jpg'}
                                     alt="Food item"
                                   />
                                   <AvatarFallback>ITEM</AvatarFallback>
                                 </Avatar>
                                 <div className="flex-1">
                                   <p className="font-medium text-sm sm:text-base line-clamp-1">
-                                    {item.foodSnap.fsnp_name} - {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(itemTotal)}
+                                    {item.foodComboSnap.fcb_snp_name} - {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.foodComboSnap.fcb_snp_price * item.od_cb_it_quantity)}
                                   </p>
                                   <p className="text-xs sm:text-sm text-muted-foreground">
-                                    Giá: {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.foodSnap.fsnp_price)} x {item.od_it_quantity}
+                                    Giá: {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.foodComboSnap.fcb_snp_price)} x {item.od_cb_it_quantity}
                                   </p>
-                                  {options.length > 0 && (
-                                    <div className="text-xs sm:text-sm text-muted-foreground mt-1">
-                                      {options.map((opt: any, optIndex: number) => (
-                                        <p key={optIndex} className="line-clamp-1">
-                                          {opt.fopt_name}: {opt.fopt_attribute} (+{new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(opt.fopt_price)})
-                                        </p>
-                                      ))}
-                                    </div>
-                                  )}
                                 </div>
                               </div>
                             );
                           })}
                         </div>
                       ) : (
-                        <p className="text-xs sm:text-sm text-muted-foreground">Không có món ăn nào</p>
+                        <p className="text-xs sm:text-sm text-muted-foreground">Không có combo nào</p>
                       )}
                     </AccordionContent>
                   </AccordionItem>
@@ -627,12 +613,13 @@ export default function PageListOrderFood() {
                 {/* Actions and Feedback */}
                 <div className="flex flex-col gap-4">
                   <div className="flex flex-wrap gap-2">
-                    {order.od_status === 'waiting_confirm_customer' || order.od_status === 'waiting_confirm_restaurant' || order.od_status === 'waiting_shipping' && (
+                    {order.od_cb_status === 'waiting_confirm_customer' || order.od_cb_status === 'waiting_confirm_restaurant' || order.od_cb_status === 'waiting_shipping' && (
+                      // <Button
                       // <Button
                       //   variant="outline"
                       //   size="sm"
                       //   className="w-full sm:w-auto"
-                      //   onClick={() => handleCancelOrder(order.od_id, order.od_res_id)}
+                      //   onClick={() => handleCancelOrder()}
                       // >
                       //   Hủy đơn
                       // </Button>
@@ -642,7 +629,7 @@ export default function PageListOrderFood() {
                             variant="outline"
                             size="sm"
                             className="w-full sm:w-auto"
-                            onClick={() => openCancelDialog(order.od_id, order.od_res_id)}
+                            onClick={() => openCancelDialog(order.od_cb_id, order.od_cb_res_id)}
                           >
                             Hủy đơn
                           </Button>
@@ -678,53 +665,53 @@ export default function PageListOrderFood() {
                         </DialogContent>
                       </Dialog>
                     )}
-                    {order.od_status === 'delivered_customer' && (
+                    {order.od_cb_status === 'delivered_customer' && (
                       <Button
                         variant="outline"
                         size="sm"
                         className="w-full sm:w-auto"
-                        onClick={() => handleReceiveOrder(order.od_id, order.od_res_id)}
+                        onClick={() => handleReceiveOrder(order.od_cb_id, order.od_cb_res_id)}
                       >
                         Đã nhận hàng
                       </Button>
                     )}
-                    {(order.od_status === 'delivered_customer' || order.od_status === 'received_customer') && (
+                    {(order.od_cb_status === 'delivered_customer' || order.od_cb_status === 'received_customer') && (
                       <Button
                         variant="outline"
                         size="sm"
                         className="w-full sm:w-auto"
-                        onClick={() => handleComplaint(order.od_id, order.od_res_id)}
+                        onClick={() => handleComplaint(order.od_cb_id, order.od_cb_res_id)}
                       >
                         Khiếu nại
                       </Button>
                     )}
-                    {order.od_status === 'complaint' && (
+                    {order.od_cb_status === 'complaint' && (
                       <Button
                         variant="outline"
                         size="sm"
                         className="w-full sm:w-auto"
-                        onClick={() => handleComplaintDone(order.od_id, order.od_res_id)}
+                        onClick={() => handleComplaintDone(order.od_cb_id, order.od_cb_res_id)}
                       >
                         Đã giải quyết khiếu nại
                       </Button>
                     )}
                   </div>
 
-                  {(order.od_status === 'received_customer' || order.od_status === 'complaint_done') && !order.od_feed_content && (
+                  {(order.od_cb_status === 'received_customer' || order.od_cb_status === 'complaint_done') && !order.od_cb_feed_content && (
                     <div className="space-y-3">
                       <p className="text-xs sm:text-sm font-medium">Gửi phản hồi</p>
                       <Textarea
-                        value={feedbackContent[order.od_id] || ''}
-                        onChange={(e) => setFeedbackContent((prev) => ({ ...prev, [order.od_id]: e.target.value }))}
+                        value={feedbackContent[order.od_cb_id] || ''}
+                        onChange={(e) => setFeedbackContent((prev) => ({ ...prev, [order.od_cb_id]: e.target.value }))}
                         placeholder="Nhập phản hồi của bạn..."
                       />
                       <div className="flex flex-wrap gap-2">
                         {[1, 2, 3, 4, 5].map((star) => (
                           <Button
                             key={star}
-                            variant={feedbackStar[order.od_id] === star ? 'default' : 'outline'}
+                            variant={feedbackStar[order.od_cb_id] === star ? 'default' : 'outline'}
                             size="sm"
-                            onClick={() => setFeedbackStar((prev) => ({ ...prev, [order.od_id]: star as 1 | 2 | 3 | 4 | 5 }))}
+                            onClick={() => setFeedbackStar((prev) => ({ ...prev, [order.od_cb_id]: star as 1 | 2 | 3 | 4 | 5 }))}
                           >
                             {star} ⭐
                           </Button>
@@ -732,7 +719,7 @@ export default function PageListOrderFood() {
                       </div>
                       <Button
                         size="sm"
-                        onClick={() => handleFeedback(order.od_id, order.od_res_id)}
+                        onClick={() => handleFeedback(order.od_cb_id, order.od_cb_res_id)}
                         className="w-full sm:w-auto"
                       >
                         Gửi phản hồi
