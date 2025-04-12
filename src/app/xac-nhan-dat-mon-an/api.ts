@@ -1,7 +1,7 @@
 'use server'
 
 import { sendRequest } from "@/lib/api"
-import { IOrderFood } from "../dat-mon-an/order.food.api"
+import { IOrderFood } from "../dat-mon-an/order.food.interface"
 
 export const confirmOrderFood = async ({
   od_id,
