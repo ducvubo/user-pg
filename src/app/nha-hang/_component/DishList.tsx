@@ -27,7 +27,9 @@ interface DishListProps {
 }
 
 export default function DishList({ dishes }: DishListProps) {
+
   const calculateSalePrice = (price: number, sale: IDishSale) => {
+    if (!sale || sale.sale_type || sale.sale_value <= 0) return price
     if (sale.sale_type === 'percentage') {
       return price * (1 - sale.sale_value / 100)
     }
@@ -38,7 +40,7 @@ export default function DishList({ dishes }: DishListProps) {
     <div className='container mx-auto px-4 py-8'>
       <h1 className='text-xl font-bold mb-6 text-center'>Món Ăn Đang Phục Vụ Tại Nhà Hàng</h1>
       <div className='flex flex-col gap-6'>
-        {dishes.sort((a,b) => a.dish_priority - b.dish_priority).map((dish) => {
+        {dishes.sort((a, b) => a.dish_priority - b.dish_priority).map((dish) => {
           const salePrice = calculateSalePrice(dish.dish_price, dish.dish_sale)
 
           return (
@@ -56,11 +58,11 @@ export default function DishList({ dishes }: DishListProps) {
                 <div className='flex items-center gap-2 mb-2'>
                   <p className='text-gray-600'>
                     Giá:{' '}
-                    <span className={dish.dish_sale.sale_value > 0 ? 'line-through text-gray-400' : ''}>
+                    <span className={dish?.dish_sale?.sale_value > 0 ? 'line-through text-gray-400' : ''}>
                       {dish.dish_price.toLocaleString('vi-VN')} VNĐ
                     </span>
                   </p>
-                  {dish.dish_sale.sale_value > 0 && (
+                  {dish?.dish_sale?.sale_value > 0 && (
                     <p className='text-green-600 font-semibold'>
                       Giá sale: {Math.round(salePrice).toLocaleString('vi-VN')} VNĐ
                     </p>

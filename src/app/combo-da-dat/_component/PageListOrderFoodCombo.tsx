@@ -177,6 +177,7 @@ export default function PageListOrderFoodCombo() {
       case 'waiting_confirm_customer':
         return 'default'
       case 'over_time_customer':
+      case 'customer_unreachable':
         return 'destructive'
       case 'delivered_customer':
       case 'received_customer':
@@ -195,6 +196,7 @@ export default function PageListOrderFoodCombo() {
       waiting_shipping: 'Chờ giao hàng',
       shipping: 'Đang giao hàng',
       delivered_customer: 'Đã giao hàng đến khách hàng',
+      customer_unreachable: 'Không liên lạc được với khách hàng',
       received_customer: 'Khách hàng đã nhận hàng',
       cancel_customer: 'Khách hàng đã hủy đơn hàng',
       cancel_restaurant: 'Nhà hàng đã hủy đơn hàng',
