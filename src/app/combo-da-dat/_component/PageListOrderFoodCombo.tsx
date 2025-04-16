@@ -511,7 +511,7 @@ export default function PageListOrderFoodCombo() {
                     <div className="flex flex-col sm:flex-row gap-1">
                       <p className="text-muted-foreground shrink-0">Thời gian đặt hàng:</p>
                       <p className="font-medium">
-                        {new Date(new Date(order.od_cb_created_at).getTime() - 7 * 60 * 60 * 1000).toLocaleString('vi-VN')}
+                        {new Date(new Date(order.od_cb_created_at).getTime()).toLocaleString('vi-VN')}
                       </p>
 
                     </div>
