@@ -89,15 +89,11 @@ export default function PageInforFood({ food, listCombo, listFood, restaurant }:
       .getMinutes()
       .toString()
       .padStart(2, '0')}:${now.getSeconds().toString().padStart(2, '0')}`
-    console.log("🚀 ~ currentTime ~ currentTime:", currentTime)
 
     const openTime = normalizeTime(food.food_open_time)
-    console.log("🚀 ~ openTime:", openTime)
     const closeTime = normalizeTime(food.food_close_time)
-    console.log("🚀 ~ closeTime:", closeTime)
 
     const isOpen = currentTime >= openTime && currentTime <= closeTime
-    console.log("🚀 ~ isOpen:", isOpen)
     setIsWithinServiceHours(isOpen)
   }
 

@@ -23,14 +23,21 @@ export default function ComboFoodClient({ comboImages, comboFood, isComboSoldOut
   const [isWithinServiceHours, setIsWithinServiceHours] = useState(true)
   const [quantity, setQuantity] = useState(1)
 
+  const normalizeTime = (time: string) => {
+    const [h, m, s] = time.split(':')
+    return `${h.padStart(2, '0')}:${m.padStart(2, '0')}:${s.padStart(2, '0')}`
+  }
+
   const checkServiceHours = () => {
     const now = new Date()
     const currentTime = `${now.getHours().toString().padStart(2, '0')}:${now
       .getMinutes()
       .toString()
       .padStart(2, '0')}:${now.getSeconds().toString().padStart(2, '0')}`
-    const openTime = comboFood.fcb_open_time
-    const closeTime = comboFood.fcb_close_time
+
+    const openTime = normalizeTime(comboFood.fcb_open_time)
+    const closeTime = normalizeTime(comboFood.fcb_close_time)
+
     const isOpen = currentTime >= openTime && currentTime <= closeTime
     setIsWithinServiceHours(isOpen)
   }
