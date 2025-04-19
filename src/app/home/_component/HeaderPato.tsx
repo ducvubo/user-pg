@@ -1,3 +1,4 @@
+'use client'
 import React from 'react'
 import Image from 'next/image'
 import { CircleUserRound, Menu, ChevronDown } from 'lucide-react'
@@ -8,6 +9,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { createTokenSync } from '../home.api'
+import Sync from './Sync'
 
 export default function HeaderPato({
   image
@@ -17,6 +20,9 @@ export default function HeaderPato({
     image_custom: string
   }
 }) {
+
+
+
   return (
     <nav className='flex items-center sticky top-0 z-50 justify-between px-4 md:px-8 lg:px-[100px] bg-[#e6624f] shadow-md h-[60px]'>
       <Link href='/' className=''>
@@ -140,6 +146,9 @@ export default function HeaderPato({
                 <DropdownMenuItem className="hover:bg-gray-100 py-2">
                   <Link href='/combo-da-dat' className='w-full'>Combo đã đặt</Link>
                 </DropdownMenuItem>
+                <DropdownMenuItem className="hover:bg-gray-100 py-2" >
+                  <Sync type='dropdown' />
+                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </DropdownMenuContent>
@@ -242,7 +251,6 @@ export default function HeaderPato({
         </li>
       </ul>
 
-      {/* Desktop account section */}
       <div className='hidden md:block relative group'>
         <div className='flex items-center space-x-2 cursor-pointer'>
           <span className='text-white font-semibold'>Tài khoản</span>
@@ -286,6 +294,7 @@ export default function HeaderPato({
               <span className='block px-4 py-2 hover:bg-gray-100 text-black text-center'>Combo đã đặt</span>
             </Link>
           </li>
+          <Sync type='li' />
         </ul>
       </div>
     </nav>

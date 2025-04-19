@@ -126,3 +126,11 @@ export const getSysteParameterById = async (id: string) => {
   })
   return res
 }
+
+export const createTokenSync = async () => {
+  const res: IBackendRes<string> = await sendRequest({
+    url: `${process.env.URL_SERVER_ORDER}/sync/create-token`,
+    method: 'POST',
+  })
+  return res
+}
