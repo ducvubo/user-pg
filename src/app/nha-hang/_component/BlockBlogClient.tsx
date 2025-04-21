@@ -199,7 +199,7 @@ export default function BlockBlogClient({ categories, articles }: Props) {
   return (
     <div className="mt-10">
       <Label className="font-semibold text-xl sm:text-2xl md:text-3xl">Blog Nhà hàng</Label>
-      <hr className="my-3 font-semibold" />
+      {/* <hr className="my-3 font-semibold" />
       <Slider {...categorySettings} className="">
         {categories.map((category: ICategoryBlogRestaurant) => (
           <div
@@ -214,7 +214,7 @@ export default function BlockBlogClient({ categories, articles }: Props) {
             </span>
           </div>
         ))}
-      </Slider>
+      </Slider> */}
 
       <div className="mt-8">
 

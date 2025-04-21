@@ -16,9 +16,9 @@ import { IFoodRestaurant } from '@/app/interface/food-restaurant.interface'
 import { IComboFood } from '@/app/nha-hang/_component/ComboList'
 import { IRestaurant } from '@/app/interface/restaurant.interface'
 import { calcPriceShipingGHTK, calcPriceShippingGHN, createOrderFood } from '@/app/dat-mon-an/order.food.api'
-import { CreateOrderFoodDto, IOrderFood } from '../dat-mon-an/order.food.interface'
-import { CreateOrderFoodCombo, IOrderFoodCombo } from '../dat-combo-mon-an/order.combo.interface'
-import { createOrderFoodCombo } from '../dat-combo-mon-an/order.combo.api'
+import { CreateOrderFoodDto, IOrderFood } from '../../dat-mon-an/order.food.interface'
+import { CreateOrderFoodCombo, IOrderFoodCombo } from '../../dat-combo-mon-an/order.combo.interface'
+import { createOrderFoodCombo } from '../../dat-combo-mon-an/order.combo.api'
 
 // Extend IFoodRestaurant to include quantity and selected_options
 interface CartFoodItem extends IFoodRestaurant {

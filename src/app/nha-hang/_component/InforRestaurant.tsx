@@ -72,9 +72,9 @@ export default async function InforRestaurant({ restaurant, slug }: IProps) {
         <span className='text-xs sm:text-sm md:text-base'>{restaurant.restaurant_address.address_ward.name}</span>
       </div>
 
-      {listCategory.statusCode === 200 && listCategory.data && listCategory.data.length > 0 && (
+      {/* {listCategory.statusCode === 200 && listCategory.data && listCategory.data.length > 0 && (
         <CategoryRestaurantBlock categories={listCategory.data} />
-      )}
+      )} */}
 
       <BannerAndGallery
         bannerImage={restaurant.restaurant_banner.image_cloud}
