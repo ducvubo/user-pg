@@ -1,20 +1,14 @@
 import React from 'react'
 import CarouselRestaurant from './CarouselRestaurant'
-import { GetCategoryByIds, getRestaurantHome, getSysteParameter } from '../home.api'
-import { IRestaurant } from '../../interface/restaurant.interface'
-import CarouselBanner from './RestaurantDeals'
+import { GetCategoryByIds, getSysteParameter } from '../home.api'
 import SearchRestaurant from './SearchRestaurant'
-import { mockRestaurants } from './mockData'
 import TopRestaurantAddress from './TopRestaurantAddress'
-import YouFind from './YouLookingForRestaurant'
 import Image from 'next/image'
 import RestaurantDeals from './RestaurantDeals'
 import { SystemParameterEnum } from '../../utils/ListSystemParameter'
 import YouLookingForRestaurant from './YouLookingForRestaurant'
-import Footer from './Footer'
 import Link from 'next/link'
 import CategoryBlock from '@/app/components/CategoryBlock'
-import HeaderPato from './HeaderPato'
 const HomePage = async () => {
   const res = await getSysteParameter()
 
@@ -33,7 +27,7 @@ const HomePage = async () => {
         {res.data.find((p) => p.sys_para_id === SystemParameterEnum.RESTAURANTDEAL.sys_para_id)?.sys_para_value &&
           JSON.parse(
             res.data.find((p) => p.sys_para_id === SystemParameterEnum.RESTAURANTDEAL.sys_para_id)?.sys_para_value ||
-              '[]'
+            '[]'
           )
             .sort((a: any, b: any) => a.order - b.order)
             .map((item: any, index: number) => <RestaurantDeals key={index} {...item} />)}
@@ -49,7 +43,7 @@ const HomePage = async () => {
         {res.data.find((p) => p.sys_para_id === SystemParameterEnum.YOULOOKINGFOR.sys_para_id)?.sys_para_value &&
           JSON.parse(
             res.data.find((p) => p.sys_para_id === SystemParameterEnum.YOULOOKINGFOR.sys_para_id)?.sys_para_value ||
-              '[]'
+            '[]'
           )
             .sort((a: any, b: any) => a.order - b.order)
             .map((item: any, index: number) => <YouLookingForRestaurant key={index} {...item} />)}
@@ -78,7 +72,7 @@ const HomePage = async () => {
         {res.data.find((p) => p.sys_para_id === SystemParameterEnum.SLIDEBOTTOMHOME.sys_para_id)?.sys_para_value &&
           JSON.parse(
             res.data.find((p) => p.sys_para_id === SystemParameterEnum.SLIDEBOTTOMHOME.sys_para_id)?.sys_para_value ||
-              '[]'
+            '[]'
           )
             .data.sort((a: any, b: any) => a.order - b.order)
             .map((item: any, index: number) => <CarouselRestaurant key={index} {...item} />)}

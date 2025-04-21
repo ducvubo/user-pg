@@ -126,12 +126,6 @@ export default function HeaderPato({
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-64 bg-white text-black shadow-lg rounded-lg transition-all duration-300">
                 <DropdownMenuItem className="hover:bg-gray-100 py-2">
-                  <Link href='/login' className='w-full'>Đăng nhập</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem className="hover:bg-gray-100 py-2">
-                  <Link href='/register' className='w-full'>Đăng ký</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem className="hover:bg-gray-100 py-2">
                   <Link href='/ban-da-dat' className='w-full'>Bàn đã đặt</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem className="hover:bg-gray-100 py-2">
@@ -145,6 +139,9 @@ export default function HeaderPato({
                 </DropdownMenuItem>
                 <DropdownMenuItem className="hover:bg-gray-100 py-2">
                   <Link href='/combo-da-dat' className='w-full'>Combo đã đặt</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem className="hover:bg-gray-100 py-2">
+                  <Link href='/gio-hang' className='w-full'>Giỏ hàng</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem className="hover:bg-gray-100 py-2" >
                   <Sync type='dropdown' />
@@ -260,16 +257,6 @@ export default function HeaderPato({
         </div>
         <ul className='absolute z-10 right-0 hidden group-hover:block bg-white shadow-lg rounded-md p-2 w-40'>
           <li>
-            <Link href='/login'>
-              <span className='block px-4 py-2 hover:bg-gray-100 text-black text-center'>Đăng nhập</span>
-            </Link>
-          </li>
-          <li>
-            <Link href='/register'>
-              <span className='block px-4 py-2 hover:bg-gray-100 text-black text-center'>Đăng ký</span>
-            </Link>
-          </li>
-          <li>
             <Link href='/ban-da-dat'>
               <span className='block px-4 py-2 hover:bg-gray-100 text-black text-center'>Bàn đã đặt</span>
             </Link>
@@ -292,6 +279,11 @@ export default function HeaderPato({
           <li>
             <Link href='/combo-da-dat'>
               <span className='block px-4 py-2 hover:bg-gray-100 text-black text-center'>Combo đã đặt</span>
+            </Link>
+          </li>
+          <li>
+            <Link href='/gio-hang'>
+              <span className='block px-4 py-2 hover:bg-gray-100 text-black text-center'>Giỏ hàng</span>
             </Link>
           </li>
           <Sync type='li' />
