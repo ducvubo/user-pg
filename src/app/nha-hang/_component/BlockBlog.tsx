@@ -5,22 +5,16 @@ import BlockBlogClient from './BlockBlogClient';
 
 interface Props {
   inforRestaurant: IRestaurant;
-  catBlogRestaurant: IBackendRes<ICategoryBlogRestaurant[]>;
+  catBlogRestaurant?: IBackendRes<ICategoryBlogRestaurant[]>;
   articleRestaurant: IBackendRes<IArticleRestaurant[]>
 }
 
 export default async function BlockBlog({ inforRestaurant, articleRestaurant, catBlogRestaurant }: Props) {
 
-  if (!catBlogRestaurant || catBlogRestaurant.statusCode !== 200 || !catBlogRestaurant.data || catBlogRestaurant.data.length === 0) {
-    return <div className="text-center text-gray-500">Không có danh mục nào để hiển thị.</div>;
-  }
-
   if (!articleRestaurant || articleRestaurant.statusCode !== 200 || !articleRestaurant.data || articleRestaurant.data.length === 0) {
     return (
       <div>
-        {catBlogRestaurant && catBlogRestaurant.data && catBlogRestaurant.data.length > 0 && (
-          <BlockBlogClient categories={catBlogRestaurant.data} articles={[]} />
-        )}
+        <BlockBlogClient articles={[]} />
         <div className="text-center text-gray-500 mt-4">Không có bài viết nào để hiển thị.</div>
       </div>
     );
@@ -28,9 +22,7 @@ export default async function BlockBlog({ inforRestaurant, articleRestaurant, ca
 
   return (
     <div>
-      {catBlogRestaurant && catBlogRestaurant.data && catBlogRestaurant.data.length > 0 && (
-        <BlockBlogClient categories={catBlogRestaurant.data} articles={articleRestaurant.data} />
-      )}
+      <BlockBlogClient articles={articleRestaurant.data} />
     </div>
   );
 }

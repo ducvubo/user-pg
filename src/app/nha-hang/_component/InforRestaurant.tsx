@@ -1,7 +1,7 @@
 import { ChevronRight, CircleDollarSign, List, MapPin, PhoneCall, MessageCircleQuestion, MessageCircle } from 'lucide-react'
 import React from 'react'
 import { IRestaurant } from '@/app/interface/restaurant.interface'
-import { getArtilceRestaurant, getCategoryBlogRestaurant, getCategoryRestaurant, getCookie, getFoodRestaurant, getListCombo, getListDish, getSpecialOffer } from '../api'
+import { getArtilceRestaurant, getCategoryBlogRestaurant, getCategoryRestaurant, getCookie, getFoodRestaurant, getListCombo, getListDish, getRoomRestaurant, getSpecialOffer } from '../api'
 import { buildPriceRestaurant } from '@/app/utils'
 import BannerAndGallery from './BannerAndGallery'
 import CategoryRestaurantBlock from '@/app/components/CategoryRestaurantBlock'
@@ -18,6 +18,7 @@ import CarouselRestaurantLike from '@/app/home/_component/CarouselRestaurantLike
 import CarouselRestaurantRecommend from '@/app/home/_component/CarouselRestaurantRecommend'
 import Link from 'next/link'
 import BlockBlog from './BlockBlog'
+import RoomList from './RoomList'
 
 interface IProps {
   restaurant: IRestaurant
@@ -36,14 +37,13 @@ export default async function InforRestaurant({ restaurant, slug }: IProps) {
     ? JSON.parse(listIdView.value).filter((t: string) => t !== restaurant._id)
     : []
 
-  const [listFood, listCategory, listSpecialOffer, listCombo, listDish, catBlogRestaurant, articleRestaurant] = await Promise.all([
+  const [listFood, listSpecialOffer, listCombo, listDish, articleRestaurant, roomRestaurant] = await Promise.all([
     getFoodRestaurant(restaurant._id),
-    getCategoryRestaurant(restaurant._id),
     getSpecialOffer(restaurant._id),
     getListCombo(restaurant._id),
     getListDish(restaurant._id),
-    getCategoryBlogRestaurant(restaurant._id),
-    getArtilceRestaurant(restaurant._id)
+    getArtilceRestaurant(restaurant._id),
+    getRoomRestaurant(restaurant._id)
   ])
 
   const groupHoursByDay = (hours: { close: string; open: string; day_of_week: string }[]) => {
@@ -157,6 +157,13 @@ export default async function InforRestaurant({ restaurant, slug }: IProps) {
             <Card>
               <CardContent>
                 <FoodList foods={listFood.data} />
+              </CardContent>
+            </Card>
+          )}
+          {roomRestaurant.statusCode === 200 && roomRestaurant.data && roomRestaurant.data.length > 0 && (
+            <Card>
+              <CardContent>
+                <RoomList rooms={roomRestaurant.data} />
               </CardContent>
             </Card>
           )}
@@ -292,10 +299,10 @@ export default async function InforRestaurant({ restaurant, slug }: IProps) {
           </CardContent>
         </Card>
         {
-          catBlogRestaurant && articleRestaurant && articleRestaurant.data && articleRestaurant.data?.length > 0 && (
+          articleRestaurant && articleRestaurant.data && articleRestaurant.data?.length > 0 && (
             <Card>
               <CardContent>
-                <BlockBlog inforRestaurant={restaurant} articleRestaurant={articleRestaurant} catBlogRestaurant={catBlogRestaurant} />
+                <BlockBlog inforRestaurant={restaurant} articleRestaurant={articleRestaurant} />
               </CardContent>
             </Card>
           )

@@ -60,6 +60,22 @@ export interface IArticleRestaurant {
   listArticleRelated: any[]
 }
 
+export interface IRoom {
+  room_id: string;
+  room_res_id: string;
+  room_name: string;
+  room_fix_ame: string;
+  room_max_guest: number;
+  room_base_price: number;
+  room_deposit: number;
+  room_area: string;
+  room_note: string;
+  room_images: string;
+  room_description: string;
+  room_status: 'enable' | 'disable';
+}
+
+
 export const getRestaurantBySlug = async (slug: string) => {
   const res: IBackendRes<IRestaurant> = await sendRequest({
     url: `${URL_SERVER}/restaurants/slug/${slug}`,
@@ -79,6 +95,14 @@ export const getFoodRestaurant = async (restaurantId: string) => {
 export const getCategoryRestaurant = async (restaurantId: string) => {
   const res: IBackendRes<ICategoryRestaurant[]> = await sendRequest({
     url: `${URL_SERVER}/category-restaurant/all-category/${restaurantId}`,
+    method: 'GET'
+  })
+  return res
+}
+
+export const getRoomRestaurant = async (restaurantId: string) => {
+  const res: IBackendRes<IRoom[]> = await sendRequest({
+    url: `${process.env.URL_SERVER_ROOM}/rooms/room-by-restaurant/${restaurantId}`,
     method: 'GET'
   })
   return res

@@ -93,12 +93,10 @@ const PrevArrowArticle = ({ className, style, onClick }: any) => (
   />
 );
 interface Props {
-  categories: ICategoryBlogRestaurant[];
   articles: IArticleRestaurant[];
 }
 
-export default function BlockBlogClient({ categories, articles }: Props) {
-  // Cấu hình slider cho danh mục
+export default function BlockBlogClient({ articles }: Props) {
   const categorySettings = {
     dots: false,
     infinite: true,
@@ -142,7 +140,6 @@ export default function BlockBlogClient({ categories, articles }: Props) {
     ],
   };
 
-  // Cấu hình slider cho bài viết
   const articleSettings = {
     dots: false,
     infinite: true,
@@ -186,7 +183,6 @@ export default function BlockBlogClient({ categories, articles }: Props) {
     ],
   };
 
-  // Hàm chuyển đổi thời gian đăng thành định dạng dễ đọc
   const formatDate = (timestamp: number) => {
     const date = new Date(timestamp);
     return date.toLocaleDateString('vi-VN', {
