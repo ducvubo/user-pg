@@ -34,7 +34,7 @@ export interface ICreateBookRoomDto {
   bkr_phone: string;
   bkr_time_start: string;
   bkr_time_end: string;
-  bkr_note: string;
+  bkr_note?: string;
   menu_items?: ICreateBookRoomMenu[];
   amenities?: ICreateBookRoomAmenity[];
   bkr_link_confirm: string;

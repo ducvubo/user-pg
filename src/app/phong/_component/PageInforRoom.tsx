@@ -177,9 +177,6 @@ export default function PageInforRoom({ roomRes, restaurant, listAmenity, listMe
               <span className="text-sm text-gray-600">
                 Đặt cọc: {formatPrice(roomRes.room_deposit)}
               </span>
-              <span className="text-sm font-semibold">
-                Tổng tiền: <span className="text-red-500">{formatPrice(roomRes.room_base_price)}</span>
-              </span>
             </div>
 
             <div className="text-sm">
