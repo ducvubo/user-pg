@@ -196,14 +196,6 @@ export default function PageInforRoom({ roomRes, restaurant, listAmenity, listMe
               <p className="font-semibold">Tiện ích cố định:</p>
               <p className="text-gray-600">{roomRes.room_fix_ame}</p>
             </div>
-
-            <div className="text-sm">
-              <p className="font-semibold">Trạng thái:</p>
-              <p className={isRoomAvailable ? 'text-green-600' : 'text-red-600'}>
-                {isRoomAvailable ? 'Có sẵn' : 'Không có sẵn'}
-              </p>
-            </div>
-
             <div className="text-sm">
               <p className="font-semibold">Ghi chú:</p>
               <p className="text-gray-600">{roomRes.room_note}</p>
@@ -211,7 +203,7 @@ export default function PageInforRoom({ roomRes, restaurant, listAmenity, listMe
 
             <div className="mt-2 flex flex-col sm:flex-row gap-3 max-w-full items-center justify-center sm:justify-start">
               <Link
-                href={`/dat-phong?room_id=${roomRes.room_id}`}
+                href={`/dat-phong/${roomRes.room_id}`}
                 target="_blank"
                 className="w-full sm:w-auto"
                 onClick={(e) => {
@@ -227,12 +219,6 @@ export default function PageInforRoom({ roomRes, restaurant, listAmenity, listMe
                   {isRoomAvailable ? 'Đặt ngay' : 'Không có sẵn'}
                 </Button>
               </Link>
-              <Button
-                className="bg-red-500 hover:bg-red-600 text-white text-sm py-2 px-4 rounded-lg w-full sm:w-auto"
-                disabled={!isRoomAvailable}
-              >
-                Thêm vào giỏ hàng
-              </Button>
             </div>
           </div>
         </div>
@@ -243,7 +229,6 @@ export default function PageInforRoom({ roomRes, restaurant, listAmenity, listMe
         </div>
       </div>
 
-      {/* Container 3: Tiện ích bổ sung */}
       {listAmenity.length > 0 && (
         <div className="bg-white rounded-lg shadow-md p-5">
           <h2 className="text-xl font-bold text-gray-800">Tiện ích bổ sung</h2>

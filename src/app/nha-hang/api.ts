@@ -162,12 +162,6 @@ export const getListRestaurantByCategory = async (categoryId: string) => {
   const res: IBackendRes<IRestaurant[]> = await sendRequest({
     url: `${URL_SERVER}/restaurants/restaurant-by-id-cat/${categoryId}`,
     method: 'GET'
-    // nextOption: {
-    //   cache: 'force-cache',
-    //   next: {
-    //     revalidate: 3600
-    //   }
-    // }
   })
   return res
 }

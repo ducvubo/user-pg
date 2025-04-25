@@ -16,7 +16,6 @@ async function Component({ searchParams }: PageProps) {
   const foodRes = await getFoodBySlug(slug)
   if (foodRes.statusCode !== 200 || !foodRes.data) {
     redirect('/')
-    return <ToastServer message='Không tìm thấy món ăn' title='Lỗi' variant='destructive' />
   }
   const inforFood = foodRes.data
   const foodResId = foodRes.data.food_res_id
@@ -25,7 +24,6 @@ async function Component({ searchParams }: PageProps) {
 
   if (restaurant.statusCode !== 200 || !restaurant.data) {
     redirect('/')
-    return <ToastServer message='Không tìm thấy nhà hàng' title='Lỗi' variant='destructive' />
   }
   return (
     <PageOrderFood
