@@ -3,8 +3,7 @@
 import { sendRequest } from '@/lib/api'
 import { IFoodRestaurant } from '../interface/food-restaurant.interface'
 import { IRoom } from '../nha-hang/api'
-import { IBookRoomEntity } from '../danh-sach-dat-phong/list.book.room.api';
-
+import { IBookRoom } from '../phong-da-dat/book.room.interface';
 
 export interface IAmenity {
   ame_id: string;
@@ -32,8 +31,8 @@ export interface ICreateBookRoomDto {
   bkr_ame: string;
   bkr_email: string;
   bkr_phone: string;
-  bkr_time_start: string;
-  bkr_time_end: string;
+  bkr_time_start: Date;
+  bkr_time_end: Date;
   bkr_note?: string;
   menu_items?: ICreateBookRoomMenu[];
   amenities?: ICreateBookRoomAmenity[];
@@ -77,7 +76,7 @@ export const getAmenityByRestaurantId = async (restaurantId: string) => {
 }
 
 export const createBookRoom = async (data: ICreateBookRoomDto) => {
-  const res: IBackendRes<IBookRoomEntity> = await sendRequest({
+  const res: IBackendRes<IBookRoom> = await sendRequest({
     url: `${process.env.URL_SERVER_ROOM}/book-room/create-book-room`,
     method: 'POST',
     body: data

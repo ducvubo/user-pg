@@ -11,10 +11,10 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { toast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
-import { Plus, X } from 'lucide-react';
+import { Plus, X, CalendarIcon } from 'lucide-react';
 import { IRoom } from '@/app/nha-hang/api';
 import { IRestaurant } from '@/app/interface/restaurant.interface';
-import { IAmenity, ICreateBookRoomDto, IMenuItem } from '../book.room.api';
+import { createBookRoom, IAmenity, ICreateBookRoomDto, IMenuItem } from '../book.room.api';
 import {
   Command,
   CommandEmpty,
@@ -29,6 +29,98 @@ import {
 } from "@/components/ui/popover";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { format } from "date-fns";
+import { Calendar } from "@/components/ui/calendar";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { IBookRoom } from '@/app/phong-da-dat/book.room.interface';
+
+// Thành phần DateTimePicker24h
+function DateTimePicker24h({ value, onChange }: { value?: Date; onChange: (date: Date | undefined) => void }) {
+  const [isOpen, setIsOpen] = React.useState(false);
+
+  const hours = Array.from({ length: 24 }, (_, i) => i);
+
+  const handleDateSelect = (selectedDate: Date | undefined) => {
+    if (selectedDate) {
+      if (value) {
+        selectedDate.setHours(value.getHours());
+        selectedDate.setMinutes(value.getMinutes());
+      }
+      onChange(selectedDate);
+    }
+  };
+
+  const handleTimeChange = (type: "hour" | "minute", timeValue: string) => {
+    const currentDate = value ? new Date(value) : new Date();
+    if (type === "hour") {
+      currentDate.setHours(parseInt(timeValue));
+    } else if (type === "minute") {
+      currentDate.setMinutes(parseInt(timeValue));
+    }
+    onChange(currentDate);
+  };
+
+  return (
+    <Popover open={isOpen} onOpenChange={setIsOpen}>
+      <PopoverTrigger asChild>
+        <Button
+          variant="outline"
+          className={cn(
+            "w-full justify-start text-left font-normal",
+            !value && "text-muted-foreground"
+          )}
+        >
+          <CalendarIcon className="mr-2 h-4 w-4" />
+          {value ? format(value, "MM/dd/yyyy HH:mm") : <span>MM/DD/YYYY hh:mm</span>}
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="w-auto p-0">
+        <div className="sm:flex">
+          <Calendar
+            mode="single"
+            selected={value}
+            onSelect={handleDateSelect}
+            initialFocus
+          />
+          <div className="flex flex-col sm:flex-row sm:h-[300px] divide-y sm:divide-y-0 sm:divide-x">
+            <ScrollArea className="w-64 sm:w-auto">
+              <div className="flex sm:flex-col p-2">
+                {hours.reverse().map((hour) => (
+                  <Button
+                    key={hour}
+                    size="icon"
+                    variant={value && value.getHours() === hour ? "default" : "ghost"}
+                    className="sm:w-full shrink-0 aspect-square"
+                    onClick={() => handleTimeChange("hour", hour.toString())}
+                  >
+                    {hour}
+                  </Button>
+                ))}
+              </div>
+              <ScrollBar orientation="horizontal" className="sm:hidden" />
+            </ScrollArea>
+            <ScrollArea className="w-64 sm:w-auto">
+              <div className="flex sm:flex-col p-2">
+                {Array.from({ length: 12 }, (_, i) => i * 5).map((minute) => (
+                  <Button
+                    key={minute}
+                    size="icon"
+                    variant={value && value.getMinutes() === minute ? "default" : "ghost"}
+                    className="sm:w-full shrink-0 aspect-square"
+                    onClick={() => handleTimeChange("minute", minute.toString())}
+                  >
+                    {minute.toString().padStart(2, '0')}
+                  </Button>
+                ))}
+              </div>
+              <ScrollBar orientation="horizontal" className="sm:hidden" />
+            </ScrollArea>
+          </div>
+        </div>
+      </PopoverContent>
+    </Popover>
+  );
+}
 
 // Schema cho form
 const formSchema = z.object({
@@ -36,6 +128,11 @@ const formSchema = z.object({
   phone: z.string().min(10, 'Số điện thoại phải có ít nhất 10 chữ số').regex(/^[0-9]+$/, 'Số điện thoại chỉ được chứa số'),
   email: z.string().email('Email không hợp lệ').min(1, 'Email không được để trống'),
   note: z.string().optional(),
+  bkr_time_start: z.date({ required_error: 'Thời gian bắt đầu không được để trống' }),
+  bkr_time_end: z.date({ required_error: 'Thời gian kết thúc không được để trống' }),
+}).refine((data) => data.bkr_time_end > data.bkr_time_start, {
+  message: 'Thời gian kết thúc phải sau thời gian bắt đầu',
+  path: ['bkr_time_end'],
 });
 
 type FormData = z.infer<typeof formSchema>;
@@ -79,6 +176,10 @@ export default function PageBookRoom({ roomRes, restaurant, listAmenity, listMen
   // State để quản lý trạng thái mở của Combobox
   const [openAmenity, setOpenAmenity] = useState<{ [key: string]: boolean }>({});
   const [openMenuItem, setOpenMenuItem] = useState<{ [key: string]: boolean }>({});
+
+  // State cho thời gian bắt đầu và kết thúc
+  const [bkrTimeStart, setBkrTimeStart] = useState<Date | undefined>(undefined);
+  const [bkrTimeEnd, setBkrTimeEnd] = useState<Date | undefined>(undefined);
 
   // Xử lý chọn mục (chung cho cả hai bảng)
   const handleSelectItem = (
@@ -186,6 +287,7 @@ export default function PageBookRoom({ roomRes, restaurant, listAmenity, listMen
     register,
     handleSubmit,
     formState: { errors },
+    setValue,
   } = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -193,51 +295,77 @@ export default function PageBookRoom({ roomRes, restaurant, listAmenity, listMen
       phone: '',
       email: '',
       note: '',
+      bkr_time_start: undefined,
+      bkr_time_end: undefined,
     },
   });
 
   const onSubmit = async (data: FormData) => {
     try {
-      // const payload: ICreateBookRoomDto = {
-      //   bkr_res_id: restaurant._id,
-      //   bkr_ame: data.customerName,
-      //   bkr_email: data.email,
-      //   bkr_note: data.note,
-      //   bkr_phone: data.phone,
-      //   amenities: amenityRows
-      //     .filter((row) => row.type === 'amenity' && row.selectedId)
-      //     .map((row) => ({
-      //       amenity_id: row.selectedId,
-      //       bkr_amenity_quantity: row.quantity,
-      //     })),
-      //   menu_items: menuItemRows
-      //     .filter((row) => row.type === 'menuItem' && row.selectedId)
-      //     .map((row) => ({
-      //       menu_id: row.selectedId,
-      //       bkr_menu_quantity: row.quantity,
-      //     })),
-      //   bkr_link_confirm: `${process.env.NEXT_PUBLIC_URL_CLIENT}/xac-nhan-dat-phong`,
+      const payload: ICreateBookRoomDto = {
+        bkr_res_id: restaurant._id,
+        bkr_ame: data.customerName,
+        bkr_email: data.email,
+        bkr_note: data.note,
+        bkr_phone: data.phone,
+        bkr_time_start: data.bkr_time_start,
+        bkr_time_end: data.bkr_time_end,
+        amenities: amenityRows
+          .filter((row) => row.type === 'amenity' && row.selectedId)
+          .map((row) => ({
+            amenity_id: row.selectedId,
+            bkr_amenity_quantity: row.quantity,
+          })),
+        menu_items: menuItemRows
+          .filter((row) => row.type === 'menuItem' && row.selectedId)
+          .map((row) => ({
+            menu_id: row.selectedId,
+            bkr_menu_quantity: row.quantity,
+          })),
+        bkr_link_confirm: `${process.env.NEXT_PUBLIC_URL_CLIENT}/xac-nhan-dat-phong`,
+      };
 
-      // };
+      const res: IBackendRes<IBookRoom> = await createBookRoom(payload);
+      console.log("🚀 ~ onSubmit ~ res:", res)
+      if (res.statusCode === 201 || res.statusCode === 200) {
+        toast({
+          title: 'Thành công',
+          description: 'Đặt phòng thành công!',
+          variant: 'default'
+        });
+        router.push('/phong-da-dat');
+        return
+      }
 
 
-      console.log("🚀 ~ onSubmit ~ payload:", payload)
-
-
-      toast({
-        title: 'Thành công',
-        description: 'Đặt phòng thành công!',
-      });
-      // router.push('/xac-nhan-dat-phong');
+      if (res.statusCode === 400) {
+        if (Array.isArray(res.message)) {
+          res.message.map((item: string) => {
+            toast({
+              title: 'Thất bại',
+              description: item,
+              variant: 'destructive'
+            })
+          })
+        } else {
+          toast({
+            title: 'Thất bại',
+            description: res.message,
+            variant: 'destructive'
+          })
+        }
+        return
+      } else {
+        toast({
+          title: 'Thất bại',
+          description: 'Đặt phòng thất bại',
+          variant: 'destructive'
+        })
+      }
     } catch (error) {
-      console.error('Lỗi khi gửi form:', error);
-      toast({
-        title: 'Thất bại',
-        description: 'Có lỗi xảy ra khi đặt phòng',
-        variant: 'destructive',
-      });
+      console.error('Lỗi khi gửi form:', error)
     }
-  };
+  }
 
   return (
     <div className="container mx-auto py-8 px-4">
@@ -506,6 +634,32 @@ export default function PageBookRoom({ roomRes, restaurant, listAmenity, listMen
 
           {/* Form */}
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+            <div>
+              <Label htmlFor="bkr_time_start">Thời gian bắt đầu</Label>
+              <DateTimePicker24h
+                value={bkrTimeStart}
+                onChange={(date) => {
+                  setBkrTimeStart(date);
+                  setValue('bkr_time_start', date!, { shouldValidate: true });
+                }}
+              />
+              {errors.bkr_time_start && (
+                <p className="text-red-500 text-sm mt-1">{errors.bkr_time_start.message}</p>
+              )}
+            </div>
+            <div>
+              <Label htmlFor="bkr_time_end">Thời gian kết thúc</Label>
+              <DateTimePicker24h
+                value={bkrTimeEnd}
+                onChange={(date) => {
+                  setBkrTimeEnd(date);
+                  setValue('bkr_time_end', date!, { shouldValidate: true });
+                }}
+              />
+              {errors.bkr_time_end && (
+                <p className="text-red-500 text-sm mt-1">{errors.bkr_time_end.message}</p>
+              )}
+            </div>
             <div>
               <Label htmlFor="customerName">Họ và tên</Label>
               <Input id="customerName" placeholder="Nhập họ và tên" {...register('customerName')} />
