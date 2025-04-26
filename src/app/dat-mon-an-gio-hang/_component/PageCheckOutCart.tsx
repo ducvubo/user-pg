@@ -202,7 +202,7 @@ export default async function PageCheckOutCart({ searchParams }: CheckoutProps) 
   }
 
   return (
-    <div className="container px-4 md:px-8 lg:px-[100px] mt-5 py-4">
+    <div className=" px-4 md:px-8 lg:px-[100px] mt-5 py-4">
       <h1 className="text-3xl font-bold mb-6 text-center">Thanh toán</h1>
       {Object.keys(restaurantGroups).map((resId) => {
         const restaurant = restaurants.find((res) => res._id === resId)

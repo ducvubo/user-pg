@@ -381,6 +381,7 @@ export default function CheckoutForm({ foodItems, comboItems, restaurants }: Che
       // Kiểm tra kết quả
       const errors: string[] = []
       results.forEach(({ type, res, resId }) => {
+        console.log("🚀 ~ results.forEach ~ res:", res)
         const restaurant = restaurants.find((res) => res._id === resId)
         const restaurantName = restaurant?.restaurant_name || `Nhà hàng ${resId}`
 

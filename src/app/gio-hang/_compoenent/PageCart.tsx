@@ -316,7 +316,7 @@ export default function PageCart({ foodCart, foodComboCart }: IProps) {
   }
 
   return (
-    <div className="container px-4 md:px-8 lg:px-[100px] mt-5 py-4">
+    <div className=" px-4 md:px-8 lg:px-[100px] mt-5 py-4 w-full">
       <h1 className="text-3xl font-bold mb-6 text-center">Giỏ hàng</h1>
       <Tabs defaultValue="foods" className="w-full" onValueChange={setActiveTab}>
         <TabsList className="grid w-full grid-cols-2">

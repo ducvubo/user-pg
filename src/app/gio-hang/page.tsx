@@ -6,6 +6,9 @@ export default async function page() {
   const foodCart = await getFoodCart()
   const foodComboCart = await getFoodComboCart()
   return (
-    <PageCart foodCart={foodCart.data || []} foodComboCart={foodComboCart.data || []} />
+    <div className='w-full'>
+
+      <PageCart foodCart={foodCart.data || []} foodComboCart={foodComboCart.data || []} />
+    </div>
   )
 }
