@@ -9,6 +9,7 @@ import Script from 'next/script'
 import ChatBubble from './chat-bot/ChatBubble'
 import HeaderPato from './home/_component/HeaderPato'
 import Footer from './home/_component/Footer'
+import { getMenuHeaderPato } from './home/home.api'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -61,6 +62,9 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
+
+  const resMenuHeader = await getMenuHeaderPato()
+
   return (
     <html lang='vi'>
       <Head>
@@ -69,7 +73,11 @@ export default async function RootLayout({
         <link rel='icon' href='/logo.ico' />
       </Head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <HeaderPato />
+        {
+          resMenuHeader.statusCode === 200 && resMenuHeader.data && (
+            <HeaderPato resMenuHeader={resMenuHeader.data} />
+          )
+        }
         <Toaster />
         {children}
         <ChatBubble />

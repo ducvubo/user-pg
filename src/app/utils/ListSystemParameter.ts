@@ -1,4 +1,5 @@
 export const SystemParameterEnum = {
+  MENU_HEADER: { sys_para_id: '15478c80-acc6-4d2c-bad2-2b253005eea1', sys_para_description: 'Menu header' },
   BANNER_HEADER: { sys_para_id: '79170c98-15b1-4934-8ced-13f64d32de58', sys_para_description: 'Banner header' },
   LOGOHEADER: { sys_para_id: '5ec5b429-956f-4e79-8097-1099af992f77', sys_para_description: 'Logo Header' },
   CATHOME: { sys_para_id: 'd695db21-f4ed-4927-ad42-7b625a9c682d', sys_para_description: 'Danh mục trang chủ' },

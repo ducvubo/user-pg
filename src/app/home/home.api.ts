@@ -1,6 +1,7 @@
 'use server'
 import { sendRequest } from '@/lib/api'
 import { IRestaurant } from '../interface/restaurant.interface'
+import { SystemParameterEnum } from '../utils/ListSystemParameter'
 
 const URL_SERVER = process.env.URL_SERVER
 
@@ -131,6 +132,17 @@ export const createTokenSync = async () => {
   const res: IBackendRes<string> = await sendRequest({
     url: `${process.env.URL_SERVER_ORDER}/sync/create-token`,
     method: 'POST',
+  })
+  return res
+}
+
+export const getMenuHeaderPato = async () => {
+  const res: IBackendRes<ISystemParameter> = await sendRequest({
+    url: `${process.env.URL_SERVER_USER}/system-parameter/${SystemParameterEnum.MENU_HEADER.sys_para_id}`,
+    method: 'GET',
+    nextOption: {
+      cache: 'no-store'
+    }
   })
   return res
 }
