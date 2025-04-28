@@ -37,7 +37,7 @@ export default function DishList({ dishes }: DishListProps) {
   }
 
   return (
-    <div className='container mx-auto px-4 py-8'>
+    <div className=' mx-auto px-4 py-8'>
       <h1 className='text-xl font-bold mb-6 text-center'>Món Ăn Đang Phục Vụ Tại Nhà Hàng</h1>
       <div className='flex flex-col gap-6'>
         {dishes.sort((a, b) => a.dish_priority - b.dish_priority).map((dish) => {

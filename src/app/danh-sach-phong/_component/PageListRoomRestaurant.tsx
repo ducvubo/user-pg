@@ -2,16 +2,16 @@
 
 import React, { useEffect, useState, useCallback } from 'react'
 import Image from 'next/image'
-import { Loader2 } from 'lucide-react'
+import { ShoppingBasket, Loader2 } from 'lucide-react'
 import Link from 'next/link'
-import { IComboFood } from '@/app/nha-hang/_component/ComboList'
-import AddComboFoodToCart from '@/app/nha-hang/_component/AddComboFoodToCart'
-import { getListFoodComboPagination } from '../list.food.combo.api'
+import AddFoodToCart from '@/app/nha-hang/_component/AddFoodToCart'
+import { getListRoomPagination } from '../list.room.api'
+import { IRoom } from '@/app/nha-hang/api'
 
-export default function PageListFoodComboRestaurant() {
+export default function PageListFoodRestaurant() {
   const [pageIndex, setPageIndex] = useState(1)
   const [pageSize] = useState(10)
-  const [listCombos, setListCombos] = useState<IComboFood[]>([])
+  const [listRoom, setListRoom] = useState<IRoom[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const [hasMore, setHasMore] = useState(true)
   const [isMobile, setIsMobile] = useState(false)
@@ -28,7 +28,6 @@ export default function PageListFoodComboRestaurant() {
     return () => window.removeEventListener('resize', checkMobile)
   }, [])
 
-  // Hiển thị nút back to top khi scroll
   useEffect(() => {
     const handleScrollVisibility = () => {
       setShowBackToTop(window.scrollY > 200)
@@ -38,33 +37,31 @@ export default function PageListFoodComboRestaurant() {
     return () => window.removeEventListener('scroll', handleScrollVisibility)
   }, [])
 
-  // Hàm gọi API lấy danh sách combo
-  const fetchCombos = async (page: number) => {
+  // Hàm gọi API lấy danh sách phòng
+  const fetchFoods = async (page: number) => {
     if (!hasMore || isLoading) return
 
     setIsLoading(true)
     try {
-      const res: IBackendRes<IModelPaginate<IComboFood>> = await getListFoodComboPagination(page, pageSize)
-      if (res.statusCode === 200 && res.data?.result) {
-        setListCombos(prev => [...prev, ...(res.data as any).result])
+      const res: IBackendRes<IModelPaginate<IRoom>> = await getListRoomPagination(page, pageSize)
+      if (res.statusCode === 200 && res.data && res.data.result) {
+        setListRoom((prev) => [...prev, ...(res.data as any).result])
         setHasMore(res.data.meta.totalPage > page)
       } else {
         setHasMore(false)
       }
     } catch (error) {
-      console.error('Error fetching combos:', error)
+      console.error('Error fetching rooms:', error)
       setHasMore(false)
     } finally {
       setIsLoading(false)
     }
   }
 
-  // Gọi API lần đầu
   useEffect(() => {
-    fetchCombos(1)
+    fetchFoods(1)
   }, [])
 
-  // Xử lý infinite scroll
   const handleScroll = useCallback(() => {
     const triggerDistance = isMobile ? 1200 : 500
     if (
@@ -82,10 +79,9 @@ export default function PageListFoodComboRestaurant() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [handleScroll])
 
-  // Gọi API khi pageIndex thay đổi
   useEffect(() => {
     if (pageIndex > 1) {
-      fetchCombos(pageIndex)
+      fetchFoods(pageIndex)
     }
   }, [pageIndex])
 
@@ -115,47 +111,31 @@ export default function PageListFoodComboRestaurant() {
     return now >= open && now <= close
   }
 
-  // Hàm render từng combo
-  const renderComboItem = (combo: IComboFood) => {
-    const images = JSON.parse(combo.fcb_image)
-    const primaryImage = images.image_cloud
-    const sellingStatus = isSelling(combo.fcb_open_time, combo.fcb_close_time)
-
+  const renderRoomItem = (room: IRoom) => {
+    const images = JSON.parse(room.room_images)
+    const primaryImage = images[0]?.image_cloud
     return (
       <div
-        key={combo.fcb_id}
+        key={room.room_id}
         className='bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300'
       >
         {primaryImage && (
-          <Link href={`/combo-mon-an/${combo.fcb_slug}`} target='_blank'>
+          <Link href={`/phong/${room.room_id}`} target='_blank'>
             <div className='relative w-full h-48'>
-              <Image src={primaryImage} alt={combo.fcb_name} fill className='object-cover' />
+              <Image src={primaryImage} alt={room.room_name} fill className='object-cover' />
             </div>
           </Link>
         )}
         <div className='p-4'>
           <div className='flex justify-between'>
-            <Link href={`/combo-mon-an/${combo.fcb_slug}`} target='_blank'>
-              <h2 className='text-xl font-semibold text-gray-800 mb-2'>{combo.fcb_name}</h2>
+            <Link href={`/phong/${room.room_id}`} target='_blank'>
+              <h2 className='text-xl font-semibold text-gray-800 mb-2'>{room.room_name}</h2>
             </Link>
-            <AddComboFoodToCart fcb_id={combo.fcb_id} />
+            {/* <AddFoodToCart room_id={room.room_id} /> */}
           </div>
-          <Link href={`/combo-mon-an/${combo.fcb_slug}`} target='_blank'>
-            <p className='text-gray-600 mb-2'>Giá: {combo.fcb_price.toLocaleString('vi-VN')} VNĐ</p>
-            <p className='text-sm text-gray-500'>
-              Giờ mở: {combo.fcb_open_time} - {combo.fcb_close_time} {sellingStatus ? '(Đang bán)' : '(Hết giờ)'}
-            </p>
-            <p className='text-sm mt-1'>
-              Trạng thái:{' '}
-              <span
-                className={combo.fcb_state === 'inStock' && sellingStatus ? 'text-green-600' : 'text-red-600'}
-              >
-                {combo.fcb_state === 'inStock' && 'Còn hàng'}
-                {combo.fcb_state === 'soldOut' && 'Hết hàng'}
-                {combo.fcb_state === 'almostOut' && 'Sắp hết hàng'}
-              </span>
-            </p>
-            {combo.fcb_note && <p className='text-sm text-gray-500 mt-1 italic'>Ghi chú: {combo.fcb_note}</p>}
+          <Link href={`/phong/${room.room_id}`} target='_blank'>
+            <p className='text-gray-600 mb-2'>Giá: {room.room_base_price.toLocaleString('vi-VN')} VNĐ</p>
+            {room.room_note && <p className='text-sm text-gray-500 mt-1 italic'>Ghi chú: {room.room_note}</p>}
           </Link>
         </div>
       </div>
@@ -164,15 +144,15 @@ export default function PageListFoodComboRestaurant() {
 
   return (
     <div className=' px-4 md:px-8 lg:px-[100px] mt-5 py-4'>
-      <h1 className='text-3xl font-bold mb-6 text-center'>Combo Ưu Đãi</h1>
-      {listCombos.length > 0 ? (
-        <div className='grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
-          {listCombos.map(combo => renderComboItem(combo))}
+      <h1 className='text-3xl font-bold mb-6 text-center'>Danh sách phòng</h1>
+      {listRoom.length > 0 ? (
+        <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6'>
+          {listRoom.map(room => renderRoomItem(room))}
         </div>
       ) : (
         !isLoading && (
           <div className='text-center py-10'>
-            <p>Không tìm thấy combo nào.</p>
+            <p>Không tìm thấy phòng nào.</p>
           </div>
         )
       )}

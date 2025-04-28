@@ -241,7 +241,7 @@ export default function PageOrderFood({ inforFood, quantity, selectedOption, slu
   }
 
   return (
-    <div className='container mx-auto py-8 px-4'>
+    <div className=' mx-auto py-8 px-4'>
       <Card className='max-w-2xl mx-auto'>
         <CardHeader>
           <CardTitle className='text-2xl font-bold'>Đặt hàng: {inforFood.food_name}</CardTitle>

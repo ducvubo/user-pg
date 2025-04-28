@@ -159,7 +159,7 @@ export default function PageListFoodRestaurant() {
   }
 
   return (
-    <div className='container px-4 md:px-8 lg:px-[100px] mt-5 py-4'>
+    <div className=' px-4 md:px-8 lg:px-[100px] mt-5 py-4'>
       <h1 className='text-3xl font-bold mb-6 text-center'>Danh sách món ăn</h1>
       {listFoods.length > 0 ? (
         <div className='grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
