@@ -274,7 +274,7 @@ export default async function InforRestaurant({ restaurant, slug }: IProps) {
       </div>
 
       <div className='mt-3 px-4 md:px-8 lg:px-[100px] flex flex-col gap-3'>
-        <Card>
+        {/* <Card>
           <CardContent>
             <CarouselRestaurantRecommend />
           </CardContent>
@@ -297,7 +297,7 @@ export default async function InforRestaurant({ restaurant, slug }: IProps) {
               title='Danh sách nhà hàng đã xem'
             />
           </CardContent>
-        </Card>
+        </Card> */}
         {
           articleRestaurant && articleRestaurant.data && articleRestaurant.data?.length > 0 && (
             <Card>

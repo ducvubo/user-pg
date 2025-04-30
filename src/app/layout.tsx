@@ -64,7 +64,7 @@ export default async function RootLayout({
 }>) {
 
   const resMenuHeader = await getMenuHeaderPato()
-
+  
   return (
     <html lang='vi'>
       <Head>

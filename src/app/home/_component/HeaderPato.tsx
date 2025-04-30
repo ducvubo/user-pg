@@ -54,7 +54,7 @@ export default function HeaderPato({
             </button>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-64 mr-4 bg-[#e6624f] text-white border-none shadow-lg rounded-lg transition-all duration-300">
-            {menuData.data
+            {/* {menuData.data
               .sort((a, b) => a.order - b.order)
               .map((item) =>
                 item.type === 'direct' ? (
@@ -87,7 +87,7 @@ export default function HeaderPato({
                     </DropdownMenuContent>
                   </DropdownMenu>
                 )
-              )}
+              )} */}
 
             {/* Tài khoản (Account) Dropdown - Unchanged */}
             <DropdownMenu>
@@ -141,7 +141,7 @@ export default function HeaderPato({
 
       {/* Desktop Menu */}
       <ul className="hidden md:flex space-x-6 text-white">
-        {menuData.data
+        {/* {menuData.data
           .sort((a, b) => a.order - b.order)
           .map((item) =>
             item.type === 'direct' ? (
@@ -174,7 +174,7 @@ export default function HeaderPato({
                 </ul>
               </li>
             )
-          )}
+          )} */}
       </ul>
 
       {/* Tài khoản (Account) - Unchanged */}

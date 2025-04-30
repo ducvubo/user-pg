@@ -1,9 +1,8 @@
 import Image from 'next/image'
-import HomePage from './home/_component/Home'
 import { redirect } from 'next/navigation'
+import HomePage from '../home/_component/Home'
 
 export default function Home() {
-  redirect('/nha-hang/Nha-PATO-390590.html')
   return (
     <>
       <HomePage />

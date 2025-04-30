@@ -112,22 +112,17 @@ const PageConnect = ({ idUser }: Props) => {
   const unsubscribesRef = useRef<(() => void)[]>([]);
   const conversationsRef = useRef<Conversation[]>([]);
   const searchParams = useSearchParams();
-  const idResParam = searchParams.get("id");
+  const idResParam = searchParams.get("id") || "677aac262fc0d1491a5ca032";
 
   useEffect(() => {
-    // if (idResParam) {
-    //   setSelectedConversation(idResParam);
-    // }
-    // kiểm tra xem có tồn tại trong danh sách cuộc trò chuyện không
+
     const isExistingConversation = conversations.some(
       (conv) => conv.restaurantId === idResParam
     );
-    //nếu có thì set vào selectedConversation
     if (isExistingConversation) {
       setSelectedConversation(idResParam);
     }
 
-    //chưa có thì gọi hàm findRestaurantById rồi thêm vào danh sách cuộc trò chuyện và set vào selectedConversation
     if (idResParam && !isExistingConversation) {
       findRestaurantById(idResParam).then((res) => {
         if (res.statusCode === 200 && res.data) {
@@ -629,7 +624,7 @@ const PageConnect = ({ idUser }: Props) => {
         </DialogContent>
       </Dialog>
 
-      <Dialog open={isAddConversationDialogOpen} onOpenChange={setIsAddConversationDialogOpen}>
+      {/* <Dialog open={isAddConversationDialogOpen} onOpenChange={setIsAddConversationDialogOpen}>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Thêm cuộc trò chuyện mới</DialogTitle>
@@ -665,7 +660,7 @@ const PageConnect = ({ idUser }: Props) => {
             </Button>
           </DialogFooter>
         </DialogContent>
-      </Dialog>
+      </Dialog> */}
 
       {hasUsername === true && (
         <div className="flex flex-col md:flex-row gap-4 h-full">
@@ -698,14 +693,14 @@ const PageConnect = ({ idUser }: Props) => {
               </div>
             </div>
 
-            <div className="mb-6">
+            {/* <div className="mb-6">
               <Button
                 onClick={() => setIsAddConversationDialogOpen(true)}
                 className="w-full bg-blue-600 hover:bg-blue-700"
               >
                 Thêm cuộc trò chuyện
               </Button>
-            </div>
+            </div> */}
 
             {conversations.length > 0 && (
               <div>
