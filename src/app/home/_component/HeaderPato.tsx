@@ -22,15 +22,12 @@ interface IMenuItem {
 
 export default function HeaderPato({
   image,
-  resMenuHeader,
 }: {
   image?: {
     image_cloud: string
     image_custom: string
   }
-  resMenuHeader: ISystemParameter
 }) {
-  const menuData: { data: IMenuItem[] } = JSON.parse(resMenuHeader.sys_para_value)
 
   return (
     <nav className="flex items-center sticky top-0 z-50 justify-between px-4 md:px-8 lg:px-[100px] bg-[#e6624f] shadow-md h-[60px]">
@@ -89,10 +86,10 @@ export default function HeaderPato({
                 )
               )} */}
 
-            {/* Tài khoản (Account) Dropdown - Unchanged */}
+            {/* Bạn (Account) Dropdown - Unchanged */}
             <DropdownMenu>
               <DropdownMenuTrigger className="w-full text-left font-semibold text-base hover:bg-[#d55543] focus:bg-[#d55543] pl-2 py-3 flex items-center justify-between">
-                Tài khoản <ChevronDown size={16} />
+                Bạn <ChevronDown size={16} />
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-64 bg-white text-black shadow-lg rounded-lg transition-all duration-300">
                 <DropdownMenuItem className="hover:bg-gray-100 py-2">
@@ -102,7 +99,7 @@ export default function HeaderPato({
                 </DropdownMenuItem>
                 <DropdownMenuItem className="hover:bg-gray-100 py-2">
                   <Link href="/danh-sach-ticket" className="w-full">
-                    Ticket
+                    Hỏi đáp
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem className="hover:bg-gray-100 py-2">
@@ -177,10 +174,10 @@ export default function HeaderPato({
           )} */}
       </ul>
 
-      {/* Tài khoản (Account) - Unchanged */}
+      {/* Bạn (Account) - Unchanged */}
       <div className="hidden md:block relative group">
         <div className="flex items-center space-x-2 cursor-pointer">
-          <span className="text-white font-semibold">Tài khoản</span>
+          <span className="text-white font-semibold">Bạn</span>
           <div className="w-8 h-8 rounded-full flex items-center justify-center">
             <CircleUserRound className="text-white" />
           </div>
@@ -196,7 +193,7 @@ export default function HeaderPato({
           <li>
             <Link href="/danh-sach-ticket">
               <span className="block px-4 py-2 hover:bg-gray-100 text-black text-center">
-                Ticket
+                Hỏi đáp
               </span>
             </Link>
           </li>

@@ -62,9 +62,6 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
-
-  const resMenuHeader = await getMenuHeaderPato()
-  
   return (
     <html lang='vi'>
       <Head>
@@ -73,14 +70,10 @@ export default async function RootLayout({
         <link rel='icon' href='/logo.ico' />
       </Head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        {
-          resMenuHeader.statusCode === 200 && resMenuHeader.data && (
-            <HeaderPato resMenuHeader={resMenuHeader.data} />
-          )
-        }
+        <HeaderPato />
         <Toaster />
         {children}
-        <ChatBubble />
+        {/* <ChatBubble /> */}
         <Footer />
       </body>
       <Script src='https://www.googletagmanager.com/gtag/js?id=G-84N3NEETJF' strategy='afterInteractive' />

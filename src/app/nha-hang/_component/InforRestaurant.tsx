@@ -32,11 +32,6 @@ export interface ISpecialOffer {
 }
 
 export default async function InforRestaurant({ restaurant, slug }: IProps) {
-  const listIdView = await getCookie('restaurantIds')
-  let restaurantIds: string[] = listIdView?.value
-    ? JSON.parse(listIdView.value).filter((t: string) => t !== restaurant._id)
-    : []
-
   const [listFood, listSpecialOffer, listCombo, listDish, articleRestaurant, roomRestaurant] = await Promise.all([
     getFoodRestaurant(restaurant._id),
     getSpecialOffer(restaurant._id),
@@ -71,10 +66,6 @@ export default async function InforRestaurant({ restaurant, slug }: IProps) {
         <ChevronRight size={12} strokeWidth={3} className='sm:w-4 sm:h-4 md:w-5 md:h-5 shrink-0' />
         <span className='text-xs sm:text-sm md:text-base'>{restaurant.restaurant_address.address_ward.name}</span>
       </div>
-
-      {/* {listCategory.statusCode === 200 && listCategory.data && listCategory.data.length > 0 && (
-        <CategoryRestaurantBlock categories={listCategory.data} />
-      )} */}
 
       <BannerAndGallery
         bannerImage={restaurant.restaurant_banner.image_cloud}
@@ -274,30 +265,6 @@ export default async function InforRestaurant({ restaurant, slug }: IProps) {
       </div>
 
       <div className='mt-3 px-4 md:px-8 lg:px-[100px] flex flex-col gap-3'>
-        {/* <Card>
-          <CardContent>
-            <CarouselRestaurantRecommend />
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent>
-            <CarouselRestaurantLike
-              link='#'
-              order={5}
-              title='Danh sách nhà hàng đã thích'
-            />
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent>
-            <CarouselRestaurant
-              link='/'
-              order={5}
-              selectedRestaurant={restaurantIds}
-              title='Danh sách nhà hàng đã xem'
-            />
-          </CardContent>
-        </Card> */}
         {
           articleRestaurant && articleRestaurant.data && articleRestaurant.data?.length > 0 && (
             <Card>
@@ -307,19 +274,6 @@ export default async function InforRestaurant({ restaurant, slug }: IProps) {
             </Card>
           )
         }
-        {/* <div className='flex flex-col gap-3 mt-3'>
-          {restaurant.restaurant_category &&
-            restaurant.restaurant_category.length > 0 &&
-            restaurant.restaurant_category.map((cate, index) => (
-              <CarouselRestaurantCat
-                idCate={cate._id}
-                key={index}
-                link={`/danh-muc/${cate._id}`}
-                order={5}
-                title={cate.category_name}
-              />
-            ))}
-        </div> */}
       </div>
     </div>
   )

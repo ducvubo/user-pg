@@ -258,7 +258,7 @@ export default function GuestQARestaurant({ restaurant }: IProps) {
               Đang tạo...
             </span>
           ) : (
-            'Tạo ticket'
+            'Tạo hỏi đáp'
           )}
         </Button>
       </div>
