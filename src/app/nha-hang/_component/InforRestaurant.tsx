@@ -32,12 +32,14 @@ export interface ISpecialOffer {
 }
 
 export default async function InforRestaurant({ restaurant, slug }: IProps) {
-  const [listFood, listSpecialOffer, listCombo, listDish, articleRestaurant, roomRestaurant] = await Promise.all([
+  // const [listFood, listSpecialOffer, listCombo, listDish, articleRestaurant, roomRestaurant] = await Promise.all([
+  const [listFood, listSpecialOffer, listCombo, listDish, roomRestaurant] = await Promise.all([
+
     getFoodRestaurant(restaurant._id),
     getSpecialOffer(restaurant._id),
     getListCombo(restaurant._id),
     getListDish(restaurant._id),
-    getArtilceRestaurant(restaurant._id),
+    // getArtilceRestaurant(restaurant._id),
     getRoomRestaurant(restaurant._id)
   ])
 
@@ -77,10 +79,10 @@ export default async function InforRestaurant({ restaurant, slug }: IProps) {
         <div className='w-full lg:w-[67%] flex flex-col gap-3'>
           <Card>
             <CardContent className='p-4'>
-              <div className='flex justify-between'>
-                <h1 className='font-semibold text-xl md:text-2xl'>{restaurant.restaurant_name}</h1>
-                <AddLikeRestaurant restaurantId={restaurant._id} />
-              </div>
+              {/* <div className='flex justify-between'> */}
+              <h1 className='font-semibold text-xl md:text-2xl'>{restaurant.restaurant_name}</h1>
+              {/* <AddLikeRestaurant restaurantId={restaurant._id} /> */}
+              {/* </div> */}
               <div className='flex items-center mt-3'>
                 <MapPin size={16} />
                 <span className='ml-1 text-sm md:text-base'>
@@ -264,7 +266,7 @@ export default async function InforRestaurant({ restaurant, slug }: IProps) {
         </div>
       </div>
 
-      <div className='mt-3 px-4 md:px-8 lg:px-[100px] flex flex-col gap-3'>
+      {/* <div className='mt-3 px-4 md:px-8 lg:px-[100px] flex flex-col gap-3'>
         {
           articleRestaurant && articleRestaurant.data && articleRestaurant.data?.length > 0 && (
             <Card>
@@ -274,7 +276,7 @@ export default async function InforRestaurant({ restaurant, slug }: IProps) {
             </Card>
           )
         }
-      </div>
+      </div> */}
     </div>
   )
 }
