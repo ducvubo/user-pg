@@ -5,6 +5,7 @@ import { Toaster } from '@/components/ui/toaster'
 import HeaderPato from './home/_component/HeaderPato'
 import Footer from './home/_component/Footer'
 import Script from 'next/script'
+import ChatBubble from './chat-bot/ChatBubble'
 
 const geistSans = Geist({
   subsets: ['latin'],
@@ -93,6 +94,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <HeaderPato />
         <Toaster />
         {children}
+        <ChatBubble />
         <Footer />
 
         {/* Google Analytics */}

@@ -16,6 +16,7 @@ const ChatBubble: React.FC = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [message, setMessage] = useState<string>('');
   const [messages, setMessages] = useState<Message[]>([]);
+  console.log("🚀 ~ messages:", messages)
   const [isTyping, setIsTyping] = useState<boolean>(false);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
 
@@ -24,25 +25,20 @@ const ChatBubble: React.FC = () => {
     try {
       const response = await getConversationHistory();
       if (response.statusCode === 200) {
-        // Check if response.data is null or an empty array
         if (!response.data || response.data.length === 0) {
-          // If no conversation history, show an initial greeting
-          setMessages([
-           
-          ]);
+          setMessages([]);
         } else {
           const conversationMessages = response.data.map((msg: any) => [
             {
               text: msg.user_message,
               isUser: true,
             },
-           
             {
               text: msg.bot_response,
               isUser: false,
-              userMessage: msg.user_message, 
+              userMessage: msg.user_message,
             },
-          ]).flat(); 
+          ]).flat();
 
           setMessages(conversationMessages);
         }
@@ -71,12 +67,12 @@ const ChatBubble: React.FC = () => {
 
   const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!message.trim()) return; 
+    if (!message.trim()) return;
 
     setMessages((prev) => [...prev, { text: message, isUser: true }]);
-    const userMessage = message; 
-    setMessage(''); 
-    setIsTyping(true); 
+    const userMessage = message;
+    setMessage('');
+    setIsTyping(true);
 
     try {
       const response = await sendMessageChatBot(message);
@@ -101,7 +97,7 @@ const ChatBubble: React.FC = () => {
         { text: 'Có lỗi xảy ra, vui lòng thử lại sau.', isUser: false, userMessage },
       ]);
     } finally {
-      setIsTyping(false); 
+      setIsTyping(false);
     }
   };
 
@@ -116,75 +112,57 @@ const ChatBubble: React.FC = () => {
     }
   }, [messages, isTyping]);
 
-  const renderBotMessage = (text: string, userMessage?: string) => {
-    if (text === 'Không tìm thấy nhà hàng phù hợp') {
-      return (
-        <div>
-          <p>{text}</p>
-        </div>
-      );
-    }
+  function renderTextWithLink(text: string) {
+    const cleanedText = text.replace(/\[[^\]]*\]/g, "");
 
-    const isJsonResponse = text.startsWith('```json\n') || text.startsWith('```\n');
-    if (isJsonResponse) {
-      text = text
-        .replace(/```json\n|```\n/g, '')
-        .replace(/```/g, '') 
-        .trim();
-    }
+    const urlRegex = /(https?:\/\/[^\s]+)/g;
+    const parts = cleanedText.split(urlRegex);
 
-    try {
-      const parsedResponse = JSON.parse(text);
+    return (
+      <>
+        {parts.map((part, i) => {
+          if (urlRegex.test(part)) {
+            // Nếu là link, render thẻ <a>
+            return (
+              <a
+                key={i}
+                href={part}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-500 underline"
+              >
+                {part}
+              </a>
+            );
+          } else {
+            // Nếu không phải link, xử lý \n và **text**
+            const withLineBreaks = part.split("\n").map((line, j) => {
+              const boldedLine = line.split(/(\*\*[^\*]+\*\*)/g).map((segment, k) => {
+                if (/^\*\*[^\*]+\*\*$/.test(segment)) {
+                  return (
+                    <strong key={k}>
+                      {segment.replace(/\*\*/g, "")}
+                    </strong>
+                  );
+                }
+                return <span key={k}>{segment}</span>;
+              });
 
-      if (Array.isArray(parsedResponse) && parsedResponse.every(item => 'name' in item && 'url' in item)) {
-        const restaurants = parsedResponse as { name: string; url: string }[];
+              return (
+                <React.Fragment key={j}>
+                  {boldedLine}
+                  <br />
+                </React.Fragment>
+              );
+            });
 
-        return (
-          <div>
-            <p className="mb-1">
-              Có thể bạn sẽ thích những nhà hàng này:
-            </p>
-         
-            {restaurants.map((restaurant, index) => (
-              <div key={index} className="mb-1">
-                <a
-                  href={restaurant.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-600 underline hover:text-blue-800"
-                >
-                  {restaurant.name}
-                </a>
-              </div>
-            ))}
-          </div>
-        );
-      }
+            return <React.Fragment key={i}>{withLineBreaks}</React.Fragment>;
+          }
+        })}
+      </>
+    );
+  }
 
-      return (
-        <div>
-          <p>{text}</p>
-         
-        </div>
-      );
-    } catch (error) {
-      console.error('Error parsing bot response:', error);
-      return (
-        <div>
-          <p>{text}</p>
-          {userMessage && (
-            <a
-              href="#"
-              className="text-blue-600 underline hover:text-blue-800 block mt-1"
-              onClick={(e) => e.preventDefault()} 
-            >
-              {userMessage}
-            </a>
-          )}
-        </div>
-      );
-    }
-  };
 
   return (
     <div className="fixed bottom-0 right-0 z-50">
@@ -208,22 +186,16 @@ const ChatBubble: React.FC = () => {
             {messages.map((msg, index) => (
               <div
                 key={index}
-                className={`mb-3 flex ${
-                  msg.isUser ? 'justify-end' : 'justify-start'
-                }`}
+                className={`mb-3 flex ${msg.isUser ? 'justify-end' : 'justify-start'
+                  }`}
               >
                 <div
-                  className={`max-w-[70%] p-2 rounded-lg text-sm ${
-                    msg.isUser
-                      ? 'bg-[#e6624f] text-white'
-                      : 'bg-gray-100 text-gray-900'
-                  }`}
+                  className={`max-w-[70%] p-2 rounded-lg text-sm ${msg.isUser
+                    ? 'bg-[#e6624f] text-white'
+                    : 'bg-gray-100 text-gray-900'
+                    }`}
                 >
-                  {msg.isUser ? (
-                    <p>{msg.text}</p>
-                  ) : (
-                    renderBotMessage(msg.text, msg.userMessage)
-                  )}
+                  {renderTextWithLink(msg.text)}
                 </div>
               </div>
             ))}
@@ -260,9 +232,8 @@ const ChatBubble: React.FC = () => {
       {!isOpen && (
         <Button
           onClick={toggleChat}
-          className={`bg-[#e6624f] hover:bg-[#d55a47] text-white rounded-full shadow-lg transition-all flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 mr-4 mb-4 sm:mr-5 sm:mb-5 md:mr-6 md:mb-6 ${
-            isOpen ? 'opacity-0 pointer-events-none' : 'opacity-100'
-          }`}
+          className={`bg-[#e6624f] hover:bg-[#d55a47] text-white rounded-full shadow-lg transition-all flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 mr-4 mb-4 sm:mr-5 sm:mb-5 md:mr-6 md:mb-6 ${isOpen ? 'opacity-0 pointer-events-none' : 'opacity-100'
+            }`}
           aria-label="Open chat"
         >
           <div className="relative">

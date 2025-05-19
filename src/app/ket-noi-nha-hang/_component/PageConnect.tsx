@@ -112,7 +112,7 @@ const PageConnect = ({ idUser }: Props) => {
   const unsubscribesRef = useRef<(() => void)[]>([]);
   const conversationsRef = useRef<Conversation[]>([]);
   const searchParams = useSearchParams();
-  const idResParam = searchParams.get("id") || "677aac262fc0d1491a5ca032";
+  const idResParam = "677aac262fc0d1491a5ca032";
 
   useEffect(() => {
 

@@ -92,13 +92,6 @@ export default function ComboFoodClient({ comboImages, comboFood, isComboSoldOut
           <span className='text-red-500 font-semibold text-sm ml-1'>{formatPrice(comboFood.fcb_price * quantity)}</span>
         </div>
         <div className='mt-4 flex flex-col sm:flex-row gap-3'>
-
-          <Button
-            className='w-full sm:w-auto flex-1 min-w-[120px] bg-red-500 hover:bg-red-600 text-white text-sm py-2 rounded-lg'
-            disabled={isComboSoldOut}
-          >
-            {isComboSoldOut ? 'Hết hàng' : 'Thêm vào giỏ hàng'}
-          </Button>
           <Link
             className='w-full sm:w-auto flex-1 min-w-[120px]'
             href={`/dat-combo-mon-an?&slug=${comboFood.fcb_slug}&quantity=${quantity}`}

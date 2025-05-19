@@ -324,12 +324,7 @@ export default function PageInforFood({ food, listCombo, listFood, restaurant }:
                   {isFoodSoldOut ? 'Hết hàng' : !isWithinServiceHours ? 'Hiện không phục vụ' : 'Đặt ngay'}
                 </Button>
               </Link>
-              <Button
-                className='bg-red-500 hover:bg-red-600 text-white text-sm py-2 px-4 rounded-lg w-full sm:w-auto'
-                disabled={isFoodSoldOut}
-              >
-                Thêm vào giỏ hàng
-              </Button>
+           
             </div>
           </div>
         </div>
