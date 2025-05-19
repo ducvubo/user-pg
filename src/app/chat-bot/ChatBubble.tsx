@@ -122,16 +122,16 @@ const ChatBubble: React.FC = () => {
       <>
         {parts.map((part, i) => {
           if (urlRegex.test(part)) {
-            // Nếu là link, render thẻ <a>
             return (
               <a
                 key={i}
                 href={part}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-blue-500 underline"
+                className="text-blue-500 underline break-words whitespace-normal"
               >
-                {part}
+                {/* {part} */}
+                Nhấp vào đây
               </a>
             );
           } else {
