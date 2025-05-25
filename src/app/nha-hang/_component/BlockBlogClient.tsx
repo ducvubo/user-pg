@@ -224,6 +224,7 @@ export default function BlockBlogClient({ articles }: Props) {
                 key={article.atlId}
                 href={`/bai-viet-nha-hang/${article.atlSlug}`}
                 className="block px-1"
+                target='_blank'
               >
                 <div className="relative w-full h-52">
                   <Image

@@ -11,6 +11,5 @@ export const getArticleRestaurantBySlug = async (slug: string) => {
       slug
     }
   })
-
   return res
 }

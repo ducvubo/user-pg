@@ -16,7 +16,6 @@ const ChatBubble: React.FC = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [message, setMessage] = useState<string>('');
   const [messages, setMessages] = useState<Message[]>([]);
-  console.log("🚀 ~ messages:", messages)
   const [isTyping, setIsTyping] = useState<boolean>(false);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
 
