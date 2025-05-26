@@ -195,7 +195,7 @@ export default function Footer() {
 
       {/* Bản quyền */}
       <div className="pt-4 pb-6 text-center bg-red-500 w-full text-white text-xs sm:text-sm">
-        <p>© 2024 - Bản quyền thuộc về Vũ Đức Bo - vminhduc8@gmail.com</p>
+        <p>Đây chỉ là 1 sản phẩm demo nếu quý khách có nhu cầu vui lòng xem <a className='text-blue-500 ' href='https://pato.com.vn'> tại đây</a> xin cảm ơn!!! </p>
       </div>
     </div>
   );
