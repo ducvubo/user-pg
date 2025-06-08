@@ -25,6 +25,7 @@ export default async function RestaurantDetail() {
   const slug = 'Nha-PATO-390590.html'
 
   const restaurant: IBackendRes<IRestaurant> = await getRestaurantBySlug(slug)
+  console.log("🚀 ~ RestaurantDetail ~ restaurant:", restaurant)
 
   if (restaurant.statusCode !== 200 || !restaurant.data) {
     return (
