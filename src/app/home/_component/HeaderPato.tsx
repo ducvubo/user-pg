@@ -1,14 +1,14 @@
 'use client'
 import React from 'react'
 import Image from 'next/image'
-import { CircleUserRound, Menu, ChevronDown } from 'lucide-react'
+import { Menu, ChevronDown } from 'lucide-react'
 import Link from 'next/link'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+} from '@/components/ui/dropdown-menu'
 import Sync from './Sync'
 import { ISystemParameter } from '../home.api'
 
@@ -20,6 +20,22 @@ interface IMenuItem {
   subMenus?: { name: string; url: string; order: number }[]
 }
 
+// Sample menuData with account items and Sync integrated
+const menuData: { data: IMenuItem[] } = {
+  data: [
+    { name: 'Trang chủ', type: 'direct', url: '/', order: 1 },
+    { name: 'Liên hệ', type: 'direct', url: '/lien-he', order: 3 },
+    { name: 'Bàn đã đặt', type: 'direct', url: '/ban-da-dat', order: 4 },
+    { name: 'Hỏi đáp', type: 'direct', url: '/danh-sach-ticket', order: 5 },
+    { name: 'Kết nối', type: 'direct', url: '/ket-noi-nha-hang', order: 6 },
+    { name: 'Món đã đặt', type: 'direct', url: '/mon-an-da-dat', order: 7 },
+    { name: 'Combo đã đặt', type: 'direct', url: '/combo-da-dat', order: 8 },
+    { name: 'Phòng đã đặt', type: 'direct', url: '/phong-da-dat', order: 9 },
+    { name: 'Giỏ hàng', type: 'direct', url: '/gio-hang', order: 10 },
+    { name: 'Đồng bộ dữ liệu', type: 'direct', url: '#sync', order: 11 },
+  ],
+}
+
 export default function HeaderPato({
   image,
 }: {
@@ -28,120 +44,87 @@ export default function HeaderPato({
     image_custom: string
   }
 }) {
+  // Flatten menu items for mobile dropdown
+  const mobileMenuItems = [
+    ...menuData.data
+      .map((item) => ({
+        name: item.name,
+        url: item.url || '#',
+        order: item.order,
+        isSubMenu: false,
+      }))
+      .sort((a, b) => a.order - b.order),
+    ...menuData.data
+      .filter((item) => item.type === 'dropdown')
+      .flatMap((item) =>
+        (item.subMenus || []).map((subItem) => ({
+          name: `${item.name} - ${subItem.name}`,
+          url: subItem.url || '#',
+          order: subItem.order + item.order * 100, // Ensure subitems follow parent
+          isSubMenu: true,
+        }))
+      )
+      .sort((a, b) => a.order - b.order),
+  ]
 
   return (
-    <nav className="flex items-center sticky top-0 z-50 justify-between px-4 md:px-8 lg:px-[100px] bg-[#e6624f] shadow-md h-[60px]">
-      <Link href="/" className="">
-        <Image
-          src={image ? image.image_cloud : '/images/logo.webp'}
-          alt="vuducbo"
-          width={180}
-          height={25}
-          className="h-[70px]"
-          priority
-        />
-      </Link>
+    <nav className="flex items-center sticky top-0 z-50 justify-center px-4 md:px-8 lg:px-[100px] bg-[#e6624f] shadow-md h-[60px]">
+      {/* Logo (Left-aligned) */}
+      <div className="absolute left-4 md:left-8 lg:left-[100px]">
+        <Link href="/">
+          <Image
+            src={image ? image.image_cloud : '/images/logo.webp'}
+            alt="vuducbo"
+            width={180}
+            height={25}
+            className="h-[70px] w-auto"
+            priority
+          />
+        </Link>
+      </div>
 
       {/* Mobile Menu */}
-      <div className="md:hidden">
+      <div className="md:hidden absolute right-4">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <button className="text-white focus:outline-none">
               <Menu size={24} />
             </button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-64 mr-4 bg-[#e6624f] text-white border-none shadow-lg rounded-lg transition-all duration-300">
-            {/* {menuData.data
-              .sort((a, b) => a.order - b.order)
-              .map((item) =>
-                item.type === 'direct' ? (
-                  <DropdownMenuItem
-                    key={item.name}
-                    className="font-semibold text-base hover:bg-[#d55543] focus:bg-[#d55543] py-3"
-                  >
-                    <Link href={item.url || '#'} className="w-full">
-                      {item.name}
-                    </Link>
-                  </DropdownMenuItem>
-                ) : (
-                  <DropdownMenu key={item.name}>
-                    <DropdownMenuTrigger className="w-full text-left font-semibold text-base hover:bg-[#d55543] focus:bg-[#d55543] pl-2 py-3 flex items-center justify-between">
-                      {item.name} <ChevronDown size={16} />
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent className="w-64 bg-white text-black shadow-lg rounded-lg transition-all duration-300">
-                      {item.subMenus
-                        ?.sort((a, b) => a.order - b.order)
-                        .map((subItem) => (
-                          <DropdownMenuItem
-                            key={subItem.name}
-                            className="hover:bg-gray-100 py-2"
-                          >
-                            <Link href={subItem.url || '#'} className="w-full">
-                              {subItem.name}
-                            </Link>
-                          </DropdownMenuItem>
-                        ))}
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                )
-              )} */}
-
-            {/* Bạn (Account) Dropdown - Unchanged */}
-            <DropdownMenu>
-              <DropdownMenuTrigger className="w-full text-left font-semibold text-base hover:bg-[#d55543] focus:bg-[#d55543] pl-2 py-3 flex items-center justify-between">
-                Bạn <ChevronDown size={16} />
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-64 bg-white text-black shadow-lg rounded-lg transition-all duration-300">
-                <DropdownMenuItem className="hover:bg-gray-100 py-2">
-                  <Link href="/ban-da-dat" className="w-full">
-                    Bàn đã đặt
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem className="hover:bg-gray-100 py-2">
-                  <Link href="/danh-sach-ticket" className="w-full">
-                    Hỏi đáp
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem className="hover:bg-gray-100 py-2">
-                  <Link href="/ket-noi-nha-hang" className="w-full">
-                    Kết nối
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem className="hover:bg-gray-100 py-2">
-                  <Link href="/mon-an-da-dat" className="w-full">
-                    Món đã đặt
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem className="hover:bg-gray-100 py-2">
-                  <Link href="/combo-da-dat" className="w-full">
-                    Combo đã đặt
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem className="hover:bg-gray-100 py-2">
-                  <Link href="/phong-da-dat" className="w-full">
-                    Phòng đã đặt
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem className="hover:bg-gray-100 py-2">
-                  <Link href="/gio-hang" className="w-full">
-                    Giỏ hàng
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem className="hover:bg-gray-100 py-2">
+          <DropdownMenuContent className="w-64 mr-4 bg-[#e6624f] text-white border-none shadow-lg rounded-lg transition-all duration-300 max-h-[80vh] overflow-y-auto">
+            {mobileMenuItems.map((item) =>
+              item.name === 'Đồng bộ dữ liệu' ? (
+                <DropdownMenuItem
+                  key={item.name}
+                  className="font-semibold text-base hover:bg-[#d55543] focus:bg-[#d55543] py-3 pl-2"
+                >
                   <Sync type="dropdown" />
                 </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+              ) : (
+                <DropdownMenuItem
+                  key={item.name}
+                  className={`font-semibold text-base hover:bg-[#d55543] focus:bg-[#d55543] py-3 ${item.isSubMenu ? 'pl-6' : 'pl-2'}`}
+                >
+                  <Link href={item.url} className="w-full">
+                    {item.name}
+                  </Link>
+                </DropdownMenuItem>
+              )
+            )}
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
 
-      {/* Desktop Menu */}
+      {/* Desktop Menu (Centered) */}
       <ul className="hidden md:flex space-x-6 text-white">
-        {/* {menuData.data
+        {menuData.data
           .sort((a, b) => a.order - b.order)
           .map((item) =>
-            item.type === 'direct' ? (
+            item.name === 'Đồng bộ dữ liệu' ? (
+              <li key={item.name} className="flex items-center">
+                <Sync type="li" />
+              </li>
+            ) : item.type === 'direct' ? (
               <li key={item.name}>
                 <Link
                   href={item.url || '#'}
@@ -154,15 +137,16 @@ export default function HeaderPato({
               <li key={item.name} className="relative group">
                 <span className="font-semibold flex items-center hover:text-gray-200 cursor-pointer">
                   {item.name}
+                  <ChevronDown className="ml-1 h-4 w-4" />
                 </span>
-                <ul className="absolute z-10 hidden group-hover:block bg-white shadow-lg rounded-md p-2 w-48">
+                <ul className="absolute z-10 left-1/2 transform -translate-x-1/2 hidden group-hover:block bg-white shadow-lg rounded-md p-2 w-48">
                   {item.subMenus
                     ?.sort((a, b) => a.order - b.order)
                     .map((subItem) => (
                       <li key={subItem.name}>
                         <Link
                           href={subItem.url || '#'}
-                          className="block px-4 py-2 hover:bg-gray-100 text-black"
+                          className="block px-4 py-2 hover:bg-gray-100 text-black text-center"
                         >
                           {subItem.name}
                         </Link>
@@ -171,70 +155,8 @@ export default function HeaderPato({
                 </ul>
               </li>
             )
-          )} */}
+          )}
       </ul>
-
-      {/* Bạn (Account) - Unchanged */}
-      <div className="hidden md:block relative group">
-        <div className="flex items-center space-x-2 cursor-pointer">
-          <span className="text-white font-semibold">Bạn</span>
-          <div className="w-8 h-8 rounded-full flex items-center justify-center">
-            <CircleUserRound className="text-white" />
-          </div>
-        </div>
-        <ul className="absolute z-10 right-0 hidden group-hover:block bg-white shadow-lg rounded-md p-2 w-40">
-          <li>
-            <Link href="/ban-da-dat">
-              <span className="block px-4 py-2 hover:bg-gray-100 text-black text-center">
-                Bàn đã đặt
-              </span>
-            </Link>
-          </li>
-          <li>
-            <Link href="/danh-sach-ticket">
-              <span className="block px-4 py-2 hover:bg-gray-100 text-black text-center">
-                Hỏi đáp
-              </span>
-            </Link>
-          </li>
-          <li>
-            <Link href="/ket-noi-nha-hang">
-              <span className="block px-4 py-2 hover:bg-gray-100 text-black text-center">
-                Kết nối
-              </span>
-            </Link>
-          </li>
-          <li>
-            <Link href="/mon-an-da-dat">
-              <span className="block px-4 py-2 hover:bg-gray-100 text-black text-center">
-                Món đã đặt
-              </span>
-            </Link>
-          </li>
-          <li>
-            <Link href="/combo-da-dat">
-              <span className="block px-4 py-2 hover:bg-gray-100 text-black text-center">
-                Combo đã đặt
-              </span>
-            </Link>
-          </li>
-          <li>
-            <Link href="/phong-da-dat">
-              <span className="block px-4 py-2 hover:bg-gray-100 text-black text-center">
-                Phòng đã đặt
-              </span>
-            </Link>
-          </li>
-          <li>
-            <Link href="/gio-hang">
-              <span className="block px-4 py-2 hover:bg-gray-100 text-black text-center">
-                Giỏ hàng
-              </span>
-            </Link>
-          </li>
-          <Sync type="li" />
-        </ul>
-      </div>
     </nav>
   )
 }

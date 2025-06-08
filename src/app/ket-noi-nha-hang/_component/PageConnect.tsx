@@ -668,7 +668,7 @@ const PageConnect = ({ idUser }: Props) => {
             className={cn(
               "md:w-1/4 w-full md:block",
               isSidebarOpen ? "block" : "hidden",
-              "fixed md:static top-0 left-0 h-full bg-white dark:bg-gray-900 z-50 p-4 md:p-0"
+              "fixed md:static top-0 left-0 h-full bg-white dark:bg-gray-900 p-4 md:p-0"
             )}
           >
             <div className="flex items-center justify-between mb-4">

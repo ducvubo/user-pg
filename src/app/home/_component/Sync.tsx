@@ -1,3 +1,4 @@
+'use client'
 import React, { useEffect, useState } from 'react'
 import { createTokenSync } from '../home.api'
 import { Button } from '@/components/ui/button'
@@ -6,7 +7,6 @@ import { Input } from '@/components/ui/input'
 import { Copy } from 'lucide-react'
 import { toast } from '@/hooks/use-toast'
 
-
 interface SyncProps {
   type: 'dropdown' | 'li'
 }
@@ -14,6 +14,7 @@ interface SyncProps {
 export default function Sync({ type }: SyncProps) {
   const [open, setOpen] = useState(false)
   const [token, setToken] = useState('')
+
   const handleCreateToken = async (e: React.MouseEvent) => {
     try {
       e.stopPropagation()
@@ -52,11 +53,9 @@ export default function Sync({ type }: SyncProps) {
   }, [open])
 
   const handleTriggerClick = (e: React.MouseEvent) => {
-    if (type === 'dropdown') {
-      e.stopPropagation()
-      e.preventDefault()
-      setOpen(true)
-    }
+    e.stopPropagation()
+    e.preventDefault()
+    setOpen(true)
   }
 
   return (
@@ -70,17 +69,23 @@ export default function Sync({ type }: SyncProps) {
       }}
     >
       <DialogTrigger asChild>
-        {
-          type === 'li' ? (
-            <li className='cursor-pointer hover:text-primary text-center my-2'>Đồng bộ dữ liệu</li>
-          ) : (
-            <span onClick={handleTriggerClick} className='text-sm  hover:text-primary cursor-pointer'>
-              Đồng bộ dữ liệu
-            </span>
-          )
-        }
+        {type === 'li' ? (
+          <span
+            className="cursor-pointer hover:text-gray-200 font-semibold"
+            onClick={handleTriggerClick}
+          >
+            Đồng bộ dữ liệu
+          </span>
+        ) : (
+          <span
+            onClick={handleTriggerClick}
+            className="text-sm hover:text-primary cursor-pointer w-full"
+          >
+            Đồng bộ dữ liệu
+          </span>
+        )}
       </DialogTrigger>
-      <DialogContent className='sm:max-w-[425px]'>
+      <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>{token ? 'Link đồng bộ' : 'Xác nhận tạo link'}</DialogTitle>
           <DialogDescription>
@@ -90,11 +95,16 @@ export default function Sync({ type }: SyncProps) {
           </DialogDescription>
         </DialogHeader>
         {token && (
-          <div className='py-4'>
-            <div className='flex items-center space-x-2'>
-              <Input disabled value={process.env.NEXT_PUBLIC_URL_CLIENT + '/xac-nhan-dong-bo-du-lieu?token=' + token} readOnly className='font-mono' />
-              <Button size='icon' onClick={handleCopy}>
-                <Copy className='h-4 w-4' />
+          <div className="py-4">
+            <div className="flex items-center space-x-2">
+              <Input
+                disabled
+                value={process.env.NEXT_PUBLIC_URL_CLIENT + '/xac-nhan-dong-bo-du-lieu?token=' + token}
+                readOnly
+                className="font-mono"
+              />
+              <Button size="icon" onClick={handleCopy}>
+                <Copy className="h-4 w-4" />
               </Button>
             </div>
           </div>
@@ -104,7 +114,7 @@ export default function Sync({ type }: SyncProps) {
             <Button onClick={() => setOpen(false)}>Đóng</Button>
           ) : (
             <>
-              <Button variant='outline' onClick={() => setOpen(false)}>
+              <Button variant="outline" onClick={() => setOpen(false)}>
                 Hủy
               </Button>
               <Button onClick={handleCreateToken}>Xác nhận</Button>

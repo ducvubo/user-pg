@@ -1,5 +1,4 @@
 import React from 'react';
-import { settings } from '../../setting';
 
 export default function Footer() {
   return (
@@ -12,7 +11,7 @@ export default function Footer() {
 
       {/* Các bước hướng dẫn */}
       <div className="flex flex-col md:flex-row items-center justify-center space-y-6 md:space-y-0 md:space-x-4 lg:space-x-8 mb-8 px-4">
-        {/* Bước 1 */}
+        {/* Bước 1: Truy cập trang chủ */}
         <div className="flex flex-col items-center w-full md:w-auto">
           <div className="w-14 h-14 sm:w-16 sm:h-16 bg-red-500 rounded-full flex items-center justify-center text-white">
             <svg
@@ -30,16 +29,23 @@ export default function Footer() {
               ></path>
             </svg>
           </div>
-          <h3 className="mt-2 font-semibold text-sm sm:text-base">CHỌN NHÀ HÀNG</h3>
+          <h3 className="mt-2 font-semibold text-sm sm:text-base">TRUY CẬP TRANG CHỦ</h3>
           <p className="text-gray-600 text-center text-xs sm:text-sm">
-            Hàng ngàn nhà hàng với nhiều ưu đãi
+            {/* Truy cập pato.taphoaictu.id.vn */}
+            Truy cập trang chủ{' '}
+            <a
+              className="text-blue-500 hover:underline ml-2"
+              href="https://pato.taphoaictu.id.vn"
+            >
+              tại đây
+            </a>
           </p>
         </div>
 
         {/* Mũi tên */}
         <div className="hidden md:block text-gray-400 text-2xl md:text-3xl">➜</div>
 
-        {/* Bước 2 */}
+        {/* Bước 2: Nhập thông tin đặt bàn */}
         <div className="flex flex-col items-center w-full md:w-auto">
           <div className="w-14 h-14 sm:w-16 sm:h-16 bg-red-500 rounded-full flex items-center justify-center text-white">
             <svg
@@ -53,18 +59,20 @@ export default function Footer() {
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 strokeWidth="2"
-                d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
+                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
               ></path>
             </svg>
           </div>
-          <h3 className="mt-2 font-semibold text-sm sm:text-base">GỌI ĐẶT CHỖ</h3>
-          <p className="text-gray-600 text-center text-xs sm:text-sm">{settings.phone}</p>
+          <h3 className="mt-2 font-semibold text-sm sm:text-base">NHẬP THÔNG TIN</h3>
+          <p className="text-gray-600 text-center text-xs sm:text-sm">
+            Điền thông tin đặt bàn online
+          </p>
         </div>
 
         {/* Mũi tên */}
         <div className="hidden md:block text-gray-400 text-2xl md:text-3xl">➜</div>
 
-        {/* Bước 3 */}
+        {/* Bước 3: Xác nhận đặt bàn */}
         <div className="flex flex-col items-center w-full md:w-auto">
           <div className="w-14 h-14 sm:w-16 sm:h-16 bg-red-500 rounded-full flex items-center justify-center text-white">
             <svg
@@ -82,16 +90,16 @@ export default function Footer() {
               ></path>
             </svg>
           </div>
-          <h3 className="mt-2 font-semibold text-sm sm:text-base">ĐẶT BÀN ONLINE</h3>
+          <h3 className="mt-2 font-semibold text-sm sm:text-base">XÁC NHẬN ĐẶT BÀN</h3>
           <p className="text-gray-600 text-center text-xs sm:text-sm">
-            Truy cập Website www.pato.com.vn
+            Kiểm tra và xác nhận thông tin
           </p>
         </div>
 
         {/* Mũi tên */}
         <div className="hidden md:block text-gray-400 text-2xl md:text-3xl">➜</div>
 
-        {/* Bước 4 */}
+        {/* Bước 4: Nhà hàng xác nhận đặt bàn */}
         <div className="flex flex-col items-center w-full md:w-auto">
           <div className="w-14 h-14 sm:w-16 sm:h-16 bg-red-500 rounded-full flex items-center justify-center text-white">
             <svg
@@ -105,18 +113,20 @@ export default function Footer() {
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 strokeWidth="2"
-                d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+                d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
               ></path>
             </svg>
           </div>
-          <h3 className="mt-2 font-semibold text-sm sm:text-base">XÁC NHẬN</h3>
-          <p className="text-gray-600 text-center text-xs sm:text-sm">Xác nhận</p>
+          <h3 className="mt-2 font-semibold text-sm sm:text-base">NHÀ HÀNG XÁC NHẬN</h3>
+          <p className="text-gray-600 text-center text-xs sm:text-sm">
+            Nhà hàng xác nhận đặt bàn
+          </p>
         </div>
 
         {/* Mũi tên */}
         <div className="hidden md:block text-gray-400 text-2xl md:text-3xl">➜</div>
 
-        {/* Bước 5 */}
+        {/* Bước 5: Thưởng thức */}
         <div className="flex flex-col items-center w-full md:w-auto">
           <div className="w-14 h-14 sm:w-16 sm:h-16 bg-red-500 rounded-full flex items-center justify-center text-white">
             <svg
@@ -146,7 +156,7 @@ export default function Footer() {
         {/* Thông tin liên hệ */}
         <div className="w-full md:w-auto">
           <h3 className="font-semibold text-sm sm:text-base mb-2">THÔNG TIN LIÊN HỆ</h3>
-          <p className="text-xs sm:text-sm">Hotline: {settings.phone}</p>
+          <p className="text-xs sm:text-sm">Hotline: 0373853243</p>
           <p className="text-xs sm:text-sm">
             Chực phí 2.000đ/phút, hoạt động 24/7 (ké cả ngày Lễ, Tết).
           </p>
@@ -195,7 +205,13 @@ export default function Footer() {
 
       {/* Bản quyền */}
       <div className="pt-4 pb-6 text-center bg-red-500 w-full text-white text-xs sm:text-sm">
-        <p>Đây chỉ là 1 sản phẩm demo nếu quý khách có nhu cầu vui lòng xem <a className='text-blue-500 ' href='https://pato.com.vn'> tại đây</a> xin cảm ơn!!! </p>
+        <p>
+          Đây chỉ là một sản phẩm demo nếu quý khách có nhu cầu vui lòng xem{' '}
+          <a className="text-blue-500" href="https://pato.com.vn">
+            tại đây
+          </a>{' '}
+          xin cảm ơn!!!
+        </p>
       </div>
     </div>
   );
