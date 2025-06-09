@@ -1,7 +1,7 @@
 'use client'
 import * as React from 'react'
 import { useEffect, useState } from 'react'
-import { getFeedBackBookTable, IBookTableDetail, ICreateBookTable } from '../api'
+import { getFeedBackBookRoom, getFeedBackBookTable, getFeedBackOrderFoodCombo, IBookTableDetail, ICreateBookTable } from '../api'
 import { Pagination } from '@/components/Pagination'
 import {
   Select,
@@ -17,8 +17,13 @@ interface Props {
   restaurantId: string
 }
 
-export default function ListFeedBackBookTable({ restaurantId }: Props) {
-  const [listFeedBack, setListFeedBack] = useState<ICreateBookTable[]>([])
+export default function ListFeedBackBookRoom({ restaurantId }: Props) {
+  const [listFeedBack, setListFeedBack] = useState<{
+    bkr_id: string
+    bkr_feedback: string
+    bkr_reply: string
+    bkr_star: number
+  }[]>([])
   const [pageSize, setPageSize] = useState(10)
   const [pageIndex, setPageIndex] = useState(1)
   const [meta, setMeta] = useState({
@@ -31,7 +36,12 @@ export default function ListFeedBackBookTable({ restaurantId }: Props) {
 
   const getListFeedBack = async () => {
     try {
-      const res: IBackendRes<IModelPaginate<ICreateBookTable>> = await getFeedBackBookTable({
+      const res: IBackendRes<IModelPaginate<{
+        bkr_id: string
+        bkr_feedback: string
+        bkr_reply: string
+        bkr_star: number
+      }>> = await getFeedBackBookRoom({
         pageIndex: pageIndex.toString(),
         pageSize: pageSize.toString(),
         restaurantId,
@@ -99,15 +109,21 @@ export default function ListFeedBackBookTable({ restaurantId }: Props) {
         </Select>
       </div>
 
-      {listFeedBack.map((feedback: ICreateBookTable, index: number) => {
+      {listFeedBack.map((feedback:
+        {
+          bkr_id: string
+          bkr_feedback: string
+          bkr_reply: string
+          bkr_star: number
+        }, index: number) => {
         return (
           <div className='bg-white p-2 max-w-md w-full' key={index}>
             <div className='mb-4'>
               <h3 className='font-semibold text-gray-800'>
-                <span>{renderStars(feedback.book_tb_star ? feedback.book_tb_star : 0)}</span>
-                Khách hàng: {feedback.book_tb_feedback}
+                <span>{renderStars(feedback.bkr_star ? feedback.bkr_star : 0)}</span>
+                Khách hàng: {feedback.bkr_feedback}
               </h3>
-              <p className='text-gray-600'>Nhà hàng: {feedback.book_tb_feedback_restaurant}</p>
+              <p className='text-gray-600'>Nhà hàng: {feedback.bkr_reply}</p>
             </div>
           </div>
         )

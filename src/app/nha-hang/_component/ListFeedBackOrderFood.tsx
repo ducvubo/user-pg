@@ -1,7 +1,7 @@
 'use client'
 import * as React from 'react'
 import { useEffect, useState } from 'react'
-import { getFeedBackBookTable, IBookTableDetail, ICreateBookTable } from '../api'
+import { getFeedBackBookTable, getFeedBackOrderFood, IBookTableDetail, ICreateBookTable } from '../api'
 import { Pagination } from '@/components/Pagination'
 import {
   Select,
@@ -17,8 +17,13 @@ interface Props {
   restaurantId: string
 }
 
-export default function ListFeedBackBookTable({ restaurantId }: Props) {
-  const [listFeedBack, setListFeedBack] = useState<ICreateBookTable[]>([])
+export default function ListFeedBackOrderFood({ restaurantId }: Props) {
+  const [listFeedBack, setListFeedBack] = useState<{
+    od_id: string
+    od_feed_star: number
+    od_feed_content: string
+    od_feed_reply: string
+  }[]>([])
   const [pageSize, setPageSize] = useState(10)
   const [pageIndex, setPageIndex] = useState(1)
   const [meta, setMeta] = useState({
@@ -28,15 +33,22 @@ export default function ListFeedBackBookTable({ restaurantId }: Props) {
     totalItem: 0
   })
   const [start, setStart] = useState(0) // This will now be controlled by the Select
+  console.log("🚀 ~ ListFeedBackOrderFood ~ start:", start)
 
   const getListFeedBack = async () => {
     try {
-      const res: IBackendRes<IModelPaginate<ICreateBookTable>> = await getFeedBackBookTable({
+      const res: IBackendRes<IModelPaginate<{
+        od_id: string
+        od_feed_star: number
+        od_feed_content: string
+        od_feed_reply: string
+      }>> = await getFeedBackOrderFood({
         pageIndex: pageIndex.toString(),
         pageSize: pageSize.toString(),
         restaurantId,
         start
       })
+      console.log('res', res);
       if (res.statusCode === 200 && res.data) {
         setListFeedBack(res.data.result)
         setMeta({
@@ -99,15 +111,20 @@ export default function ListFeedBackBookTable({ restaurantId }: Props) {
         </Select>
       </div>
 
-      {listFeedBack.map((feedback: ICreateBookTable, index: number) => {
+      {listFeedBack.map((feedback: {
+        od_id: string
+        od_feed_star: number
+        od_feed_content: string
+        od_feed_reply: string
+      }, index: number) => {
         return (
           <div className='bg-white p-2 max-w-md w-full' key={index}>
             <div className='mb-4'>
               <h3 className='font-semibold text-gray-800'>
-                <span>{renderStars(feedback.book_tb_star ? feedback.book_tb_star : 0)}</span>
-                Khách hàng: {feedback.book_tb_feedback}
+                <span>{renderStars(feedback.od_feed_star ? feedback.od_feed_star : 0)}</span>
+                Khách hàng: {feedback.od_feed_content}
               </h3>
-              <p className='text-gray-600'>Nhà hàng: {feedback.book_tb_feedback_restaurant}</p>
+              <p className='text-gray-600'>Nhà hàng: {feedback.od_feed_reply}</p>
             </div>
           </div>
         )

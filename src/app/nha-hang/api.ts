@@ -192,7 +192,105 @@ export const getFeedBackBookTable = async ({
     queryParams: {
       pageIndex,
       pageSize,
-      star: start
+      star: start,
+    }
+  })
+  return res
+}
+
+//  @Get('/get-list-feedback-order-food')
+//   @ResponseMessage('Lấy danh sách đánh giá thành công')
+//   async getListFeedbackOrderFood(
+//     @Query('pageIndex') pageIndex: string,
+//     @Query('pageSize') pageSize: string,
+//     @Query('star') star: string,
+//     @Query('restaurant_id') restaurant_id: string
+//   ): Promise<ResultPagination<OrderFoodEntity>> {
+//     return await this.orderFoodService.getListFeedbackOrderFood({ pageIndex: +pageIndex, pageSize: +pageSize, star, restaurant_id });
+//   }
+
+
+export const getFeedBackOrderFood = async ({
+  restaurantId,
+  pageSize,
+  pageIndex,
+  start
+}: {
+  restaurantId: string
+  pageSize: string
+  pageIndex: string
+  start: number
+}) => {
+  console.log("🚀 ~ start:", start)
+  const res: IBackendRes<IModelPaginate<{
+    od_id: string
+    od_feed_star: number
+    od_feed_content: string
+    od_feed_reply: string
+  }>> = await sendRequest({
+    url: `${URL_SERVER_ORDER}/order-food/get-list-feedback-order-food/${restaurantId}`,
+    method: 'GET',
+    queryParams: {
+      pageIndex,
+      pageSize,
+      star: start,
+    }
+  })
+  return res
+}
+
+export const getFeedBackOrderFoodCombo = async ({
+  restaurantId,
+  pageSize,
+  pageIndex,
+  start
+}: {
+  restaurantId: string
+  pageSize: string
+  pageIndex: string
+  start: number
+}) => {
+  const res: IBackendRes<IModelPaginate<{
+    od_cb_id: string
+    od_cb_feed_star: number
+    od_cb_feed_content: string
+    od_cb_feed_reply: string
+  }>> = await sendRequest({
+    url: `${URL_SERVER_ORDER}/order-food-combo/get-list-feedback-order-food-combo/${restaurantId}`,
+    method: 'GET',
+    queryParams: {
+      pageIndex,
+      pageSize,
+      star: start,
+    }
+  })
+  return res
+}
+
+
+export const getFeedBackBookRoom = async ({
+  restaurantId,
+  pageSize,
+  pageIndex,
+  start
+}: {
+  restaurantId: string
+  pageSize: string
+  pageIndex: string
+  start: number
+}) => {
+  const res: IBackendRes<IModelPaginate<{
+    bkr_id: string
+    bkr_feedback: string
+    bkr_reply: string
+    bkr_star: number
+  }>> = await sendRequest({
+    url: `${process.env.URL_SERVER_ROOM}/book-room/restaurant-feedback-list/${restaurantId}`,
+    method: 'GET',
+    queryParams: {
+      pageIndex,
+      pageSize,
+      star: start,
     }
   })
   return res

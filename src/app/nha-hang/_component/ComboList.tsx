@@ -1,6 +1,5 @@
 import React from 'react'
 import Image from 'next/image'
-import AddComboFoodToCart from './AddComboFoodToCart'
 import Link from 'next/link'
 import { IFoodRestaurant } from '@/app/interface/food-restaurant.interface'
 export interface IComboFood {
@@ -76,7 +75,7 @@ export default function ComboList({ comboFoods }: { comboFoods: IComboFood[] }) 
                   <Link href={`/combo-mon-an/${combo.fcb_slug}`} target='_blank'>
                     <h2 className='text-xl font-semibold text-gray-800 mb-2'>{combo.fcb_name}</h2>
                   </Link>
-                  <AddComboFoodToCart fcb_id={combo.fcb_id} />
+                  {/* <AddComboFoodToCart fcb_id={combo.fcb_id} /> */}
                 </div>
                 <Link href={`/combo-mon-an/${combo.fcb_slug}`} target='_blank'>
                   <p className='text-gray-600 mb-2'>Giá: {combo.fcb_price.toLocaleString('vi-VN')} VNĐ</p>

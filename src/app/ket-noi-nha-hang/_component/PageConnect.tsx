@@ -740,14 +740,14 @@ const PageConnect = ({ idUser }: Props) => {
           </div>
 
           <div className="md:w-3/4 w-full">
-            <Button
+            {/* <Button
               variant="ghost"
               className="md:hidden mb-4"
               onClick={() => setIsSidebarOpen(true)}
             >
               <MenuIcon className="h-5 w-5" />
               <span className="ml-2">Danh sách cuộc trò chuyện</span>
-            </Button>
+            </Button> */}
 
             {selectedConversation ? (
               <div>

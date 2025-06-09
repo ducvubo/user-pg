@@ -1,24 +1,22 @@
 import { ChevronRight, CircleDollarSign, List, MapPin, PhoneCall, MessageCircleQuestion, MessageCircle } from 'lucide-react'
 import React from 'react'
 import { IRestaurant } from '@/app/interface/restaurant.interface'
-import { getArtilceRestaurant, getCategoryBlogRestaurant, getCategoryRestaurant, getCookie, getFoodRestaurant, getListCombo, getListDish, getRoomRestaurant, getSpecialOffer } from '../api'
+import { getArtilceRestaurant, getFoodRestaurant, getListCombo, getListDish, getRoomRestaurant, getSpecialOffer } from '../api'
 import { buildPriceRestaurant } from '@/app/utils'
 import BannerAndGallery from './BannerAndGallery'
-import CategoryRestaurantBlock from '@/app/components/CategoryRestaurantBlock'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import OrderTable from './OrderTable'
 import FoodList from './FoodList'
 import ComboList from './ComboList'
 import DishList from './DishList'
-import CarouselRestaurant from '@/app/home/_component/CarouselRestaurant'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
 import ListFeedBackBookTable from './ListFeedBackBookTable'
-import AddLikeRestaurant from './AddLikeRestaurant'
-import CarouselRestaurantLike from '@/app/home/_component/CarouselRestaurantLike'
-import CarouselRestaurantRecommend from '@/app/home/_component/CarouselRestaurantRecommend'
 import Link from 'next/link'
 import BlockBlog from './BlockBlog'
 import RoomList from './RoomList'
+import ListFeedBackOrderFood from './ListFeedBackOrderFood'
+import ListFeedBackOrderFoodCombo from './ListFeedBackOrderFoodCombo'
+import ListFeedBackBookRoom from './ListFeedBackBookRoom'
 
 interface IProps {
   restaurant: IRestaurant
@@ -242,13 +240,7 @@ export default async function InforRestaurant({ restaurant, slug }: IProps) {
               />
             </CardContent>
           </Card>
-          {listDish.statusCode === 200 && listDish.data && listDish.data.length > 0 && (
-            <Card>
-              <CardContent>
-                <DishList dishes={listDish.data} />
-              </CardContent>
-            </Card>
-          )}
+
           <Card className='!p-2'>
             <CardHeader className='text-xl font-bold mb-6 text-center'>Feedback của khách hàng</CardHeader>
             <CardContent className='p-2'>
@@ -259,9 +251,34 @@ export default async function InforRestaurant({ restaurant, slug }: IProps) {
                     <ListFeedBackBookTable restaurantId={restaurant._id} />
                   </AccordionContent>
                 </AccordionItem>
+                <AccordionItem value='item-2'>
+                  <AccordionTrigger className='font-semibold'>Feedback đặt món</AccordionTrigger>
+                  <AccordionContent>
+                    <ListFeedBackOrderFood restaurantId={restaurant._id} />
+                  </AccordionContent>
+                </AccordionItem>
+                <AccordionItem value='item-3'>
+                  <AccordionTrigger className='font-semibold'>Feedback đặt combo</AccordionTrigger>
+                  <AccordionContent>
+                    <ListFeedBackOrderFoodCombo restaurantId={restaurant._id} />
+                  </AccordionContent>
+                </AccordionItem>
+                <AccordionItem value='item-4'>
+                  <AccordionTrigger className='font-semibold'>Feedback đặt phòng</AccordionTrigger>
+                  <AccordionContent>
+                    <ListFeedBackBookRoom restaurantId={restaurant._id} />
+                  </AccordionContent>
+                </AccordionItem>
               </Accordion>
             </CardContent>
           </Card>
+          {listDish.statusCode === 200 && listDish.data && listDish.data.length > 0 && (
+            <Card>
+              <CardContent>
+                <DishList dishes={listDish.data} />
+              </CardContent>
+            </Card>
+          )}
         </div>
       </div>
 
