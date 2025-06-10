@@ -54,6 +54,9 @@ export default async function InforRestaurant({ restaurant, slug }: IProps) {
     }))
   }
 
+  const tags = restaurant.restaurant_metadata ? JSON.parse(restaurant.restaurant_metadata).tags || [] : []
+  const amenities = restaurant.restaurant_metadata ? JSON.parse(restaurant.restaurant_metadata).amenities || [] : []
+
   return (
     <div className='bg-[#e6eaed] min-h-screen pb-10'>
       <div className='bg-white h-auto min-h-10 px-4 sm:px-6 md:px-8 lg:px-[100px] flex flex-wrap items-center gap-2 sm:gap-3 md:gap-4 py-2'>
@@ -76,10 +79,7 @@ export default async function InforRestaurant({ restaurant, slug }: IProps) {
         <div className='w-full lg:w-[67%] flex flex-col gap-3'>
           <Card>
             <CardContent className='p-4'>
-              {/* <div className='flex justify-between'> */}
               <h1 className='font-semibold text-xl md:text-2xl'>{restaurant.restaurant_name}</h1>
-              {/* <AddLikeRestaurant restaurantId={restaurant._id} /> */}
-              {/* </div> */}
               <div className='flex items-center mt-3'>
                 <MapPin size={16} />
                 <span className='ml-1 text-sm md:text-base'>
@@ -112,12 +112,12 @@ export default async function InforRestaurant({ restaurant, slug }: IProps) {
               </Link>
               <hr className='border-gray-300 my-3' />
               <div className='flex flex-wrap gap-2'>
-                {restaurant.restaurant_type.map((type, index) => (
+                {tags.map((tags: string, index: number) => (
                   <div
                     key={index}
                     className='text-xs md:text-sm px-2 py-1 border border-gray-300 rounded-full text-gray-700 hover:bg-gray-100'
                   >
-                    {type.restaurant_type_name}
+                    {tags}
                   </div>
                 ))}
               </div>
@@ -201,7 +201,7 @@ export default async function InforRestaurant({ restaurant, slug }: IProps) {
               </ul>
               <hr className='border-gray-300 my-3' />
               <span className='font-semibold text-sm md:text-base uppercase'>Tiện ích</span>
-              {restaurant.restaurant_amenity.map((amenity, index) => (
+              {amenities.map((amenity: string, index: number) => (
                 <div key={index} className='flex gap-2 mt-1'>
                   <div className='w-5 md:w-6'>
                     <svg xmlns='http://www.w3.org/2000/svg' width='100%' height='100%' viewBox='0 0 24 24' fill='none'>
@@ -211,7 +211,7 @@ export default async function InforRestaurant({ restaurant, slug }: IProps) {
                       />
                     </svg>
                   </div>
-                  <span className='text-xs md:text-sm line-clamp-1'>{amenity.amenity_name}</span>
+                  <span className='text-xs md:text-sm line-clamp-1'>{amenity}</span>
                 </div>
               ))}
             </CardContent>

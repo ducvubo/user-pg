@@ -3,7 +3,6 @@ export interface IRestaurant {
   restaurant_email: string
   isDeleted: boolean
   restaurant_phone: string
-  restaurant_category: RestaurantCategory[]
   restaurant_name: string
   restaurant_slug: string
   restaurant_bank: RestaurantBank
@@ -11,20 +10,13 @@ export interface IRestaurant {
   restaurant_image: RestaurantImage[]
   restaurant_address: RestaurantAddress
   restaurant_price: RestaurantPrice
-  restaurant_type: {
-    _id: string
-    restaurant_type_name: string
-  }[]
-  restaurant_amenity: {
-    _id: string
-    amenity_name: string
-  }[]
   restaurant_hours: RestaurantHour[]
   restaurant_overview: string
   restaurant_description: string
   restaurant_verify: boolean
   restaurant_status: 'active' | 'inactive' | 'banned'
   restaurant_state: boolean
+  restaurant_metadata: string
 }
 
 export interface RestaurantCategory {

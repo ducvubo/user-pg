@@ -368,6 +368,7 @@ export const getCategoryBlogRestaurant = async (restaurantId: string) => {
 }
 
 export const getArtilceRestaurant = async (restaurantId: string) => {
+  console.log("🚀 ~ getArtilceRestaurant ~ restaurantId:", restaurantId)
   const res: IBackendRes<IArticleRestaurant[]> = await sendRequest({
     url: `${process.env.URL_SERVER_BLOG}/articles/all-article-view`,
     method: 'GET',
