@@ -386,9 +386,14 @@ export default function PageBookRoom({ roomRes, restaurant, listAmenity, listMen
           )}
           <div className="space-y-2">
             <div className="flex justify-between">
+              <span className="font-semibold">Giá cọc:</span>
+              <span>{formatPrice(roomRes.room_deposit)}</span>
+            </div>
+            <div className="flex justify-between">
               <span className="font-semibold">Giá phòng:</span>
               <span>{formatPrice(basePrice)}</span>
             </div>
+
           </div>
 
           {/* Bảng tiện ích */}
