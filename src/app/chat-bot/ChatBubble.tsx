@@ -214,7 +214,7 @@ const ChatBubble: React.FC = () => {
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               placeholder="Nhập tin nhắn..."
-              className="flex-1 text-sm rounded-full border-gray-300"
+              className="flex-1 text-base rounded-full border-gray-300"
             />
             <Button
               type="submit"
