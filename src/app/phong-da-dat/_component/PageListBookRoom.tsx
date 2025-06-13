@@ -59,6 +59,7 @@ const formatVietnameseDate = (date: Date) => {
 
 export default function PageListBookRoom() {
   const [bookRooms, setBookRooms] = useState<IBookRoom[]>([])
+  console.log("🚀 ~ PageListBookRoom ~ bookRooms:", bookRooms)
   const [loading, setLoading] = useState(true)
   const [listRestaurant, setListRestaurant] = useState<IRestaurant[]>([])
   const [feedbackContent, setFeedbackContent] = useState<{ [key: string]: string }>({})
@@ -423,7 +424,7 @@ export default function PageListBookRoom() {
         {bookRooms.map((bookRoom) => {
           const total = (bookRoom.menuItems?.reduce((sum, item) => sum + (item.mitems_snap_price || 0) * (item.mitems_snap_quantity || 1), 0) || 0) +
             (bookRoom.amenities?.reduce((sum, item) => sum + (item.ame_snap_price || 0) * (item.ame_snap_quantity || 1), 0) || 0) +
-            (bookRoom.bkr_plus_price || 0)
+            (bookRoom.bkr_base_price || 0)
           const history = bookRoom.bkr_detail_history ? JSON.parse(bookRoom.bkr_detail_history) : []
           const restaurant = listRestaurant.find((res) => res._id === bookRoom.bkr_res_id)
 
@@ -457,6 +458,18 @@ export default function PageListBookRoom() {
                       <p className="text-xs sm:text-sm text-gray-600 line-clamp-1">
                         Địa chỉ: {restaurant ? restaurant.restaurant_address.address_specific : ''}
                       </p>
+
+                      <p className="text-xs sm:text-sm text-gray-600 line-clamp-1">
+                        Tên phòng: {bookRoom.room?.room_name || 'Chưa có tên phòng'}
+                      </p>
+                      <p className="text-xs sm:text-sm text-gray-600 line-clamp-1">
+                        Giá cọc: {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(bookRoom.bkr_deposit_price || 0)}
+                      </p>
+                      <p className="text-xs sm:text-sm text-gray-600 line-clamp-1">
+                        Giá cơ bản: {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(bookRoom.bkr_base_price || 0)}
+                      </p>
+
+
                       <p className="text-xs sm:text-sm text-gray-600 line-clamp-1">
                         Phản hồi: {bookRoom.bkr_reply || 'Chưa có phản hồi'}
                       </p>
@@ -547,9 +560,9 @@ export default function PageListBookRoom() {
                     <AccordionTrigger>
                       <div className="flex justify-between items-center w-full text-xs sm:text-sm font-medium">
                         <span>Danh sách tiện ích</span>
-                        <span>
+                        {/* <span>
                           Tổng hóa đơn: {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(total)}
-                        </span>
+                        </span> */}
                       </div>
                     </AccordionTrigger>
                     <AccordionContent>

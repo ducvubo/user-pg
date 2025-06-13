@@ -303,6 +303,7 @@ export default function PageBookRoom({ roomRes, restaurant, listAmenity, listMen
   const onSubmit = async (data: FormData) => {
     try {
       const payload: ICreateBookRoomDto = {
+        room_id: roomRes.room_id,
         bkr_res_id: restaurant._id,
         bkr_ame: data.customerName,
         bkr_email: data.email,

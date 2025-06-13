@@ -27,6 +27,7 @@ export interface IMenuItem {
 }
 
 export interface ICreateBookRoomDto {
+  room_id: string;
   bkr_res_id: string;
   bkr_ame: string;
   bkr_email: string;
