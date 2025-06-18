@@ -30,14 +30,47 @@ export interface ISpecialOffer {
 }
 
 export default async function InforRestaurant({ restaurant, slug }: IProps) {
-  const [listFood, listSpecialOffer, listCombo, listDish, articleRestaurant, roomRestaurant] = await Promise.all([
-    // const [listFood, listSpecialOffer, listCombo, listDish, roomRestaurant] = await Promise.all([
-    getFoodRestaurant(restaurant._id),
-    getSpecialOffer(restaurant._id),
-    getListCombo(restaurant._id),
-    getListDish(restaurant._id),
-    getArtilceRestaurant(restaurant._id),
-    getRoomRestaurant(restaurant._id)
+  // const [listFood, listSpecialOffer, listCombo, listDish, articleRestaurant, roomRestaurant] = await Promise.all([
+  //   // const [listFood, listSpecialOffer, listCombo, listDish, roomRestaurant] = await Promise.all([
+  //   getFoodRestaurant(restaurant._id),
+  //   getSpecialOffer(restaurant._id),
+  //   getListCombo(restaurant._id),
+  //   getListDish(restaurant._id),
+  //   getArtilceRestaurant(restaurant._id),
+  //   getRoomRestaurant(restaurant._id)
+  // ])
+  console.time("getFoodRestaurant")
+  const foodPromise = getFoodRestaurant(restaurant._id).finally(() => console.timeEnd("getFoodRestaurant"))
+
+  console.time("getSpecialOffer")
+  const specialOfferPromise = getSpecialOffer(restaurant._id).finally(() => console.timeEnd("getSpecialOffer"))
+
+  console.time("getListCombo")
+  const comboPromise = getListCombo(restaurant._id).finally(() => console.timeEnd("getListCombo"))
+
+  console.time("getListDish")
+  const dishPromise = getListDish(restaurant._id).finally(() => console.timeEnd("getListDish"))
+
+  console.time("getArtilceRestaurant")
+  const articlePromise = getArtilceRestaurant(restaurant._id).finally(() => console.timeEnd("getArtilceRestaurant"))
+
+  console.time("getRoomRestaurant")
+  const roomPromise = getRoomRestaurant(restaurant._id).finally(() => console.timeEnd("getRoomRestaurant"))
+
+  const [
+    listFood,
+    listSpecialOffer,
+    listCombo,
+    listDish,
+    articleRestaurant,
+    roomRestaurant
+  ] = await Promise.all([
+    foodPromise,
+    specialOfferPromise,
+    comboPromise,
+    dishPromise,
+    articlePromise,
+    roomPromise
   ])
 
   const groupHoursByDay = (hours: { close: string; open: string; day_of_week: string }[]) => {
