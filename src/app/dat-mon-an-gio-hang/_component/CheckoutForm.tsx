@@ -565,7 +565,7 @@ export default function CheckoutForm({ foodItems, comboItems, restaurants }: Che
           </div>
 
           <Button type="submit" className="w-full bg-green-600 hover:bg-green-700">
-            Xác nhận thanh toán
+            Đặt hàng
           </Button>
         </form>
       </CardContent>

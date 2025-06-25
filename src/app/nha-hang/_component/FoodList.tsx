@@ -3,6 +3,7 @@ import Image from 'next/image'
 import { IFoodRestaurant } from '@/app/interface/food-restaurant.interface'
 // import AddFoodToCart from './AddFoodToCart'
 import Link from 'next/link'
+import AddFoodToCart from './AddFoodToCart'
 
 export default function FoodList({ foods }: { foods: IFoodRestaurant[] }) {
   const getTimeAsDate = (timeString: string) => {
@@ -50,7 +51,7 @@ export default function FoodList({ foods }: { foods: IFoodRestaurant[] }) {
                   <Link href={`/mon-an/${food.food_slug}`} target='_blank'>
                     <h2 className='text-xl font-semibold text-gray-800 mb-2'>{food.food_name}</h2>
                   </Link>
-                  {/* <AddFoodToCart food_id={food.food_id} /> */}
+                  <AddFoodToCart food_id={food.food_id} />
                 </div>
                 <Link href={`/mon-an/${food.food_slug}`} target='_blank'>
                   <p className='text-gray-600 mb-2'>Giá: {food.food_price.toLocaleString('vi-VN')} VNĐ</p>

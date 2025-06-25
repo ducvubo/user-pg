@@ -30,6 +30,7 @@ const menuData: { data: IMenuItem[] } = {
     { name: 'Món đã đặt', type: 'direct', url: '/mon-an-da-dat', order: 7 },
     { name: 'Combo đã đặt', type: 'direct', url: '/combo-da-dat', order: 8 },
     { name: 'Phòng đã đặt', type: 'direct', url: '/phong-da-dat', order: 9 },
+    { name: 'Giỏ hàng', type: 'direct', url: '/gio-hang', order: 10 },
     { name: 'Đồng bộ dữ liệu', type: 'direct', url: '#sync', order: 11 },
   ],
 }
