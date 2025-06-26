@@ -82,6 +82,7 @@ export default function PageListTicket() {
       tkgr_user_id: 0
     })
     if (res.statusCode === 200 && res.data && res.data.result) {
+      console.log('res.data.result', res.data.result);
       setListTicket(res.data.result)
       setMeta({
         current: res.data.meta.pageIndex,
@@ -121,10 +122,8 @@ export default function PageListTicket() {
 
   return (
     <div className='px-4 md:px-8 lg:px-[100px] mt-10 h-auto'>
-      {/* Filter Section */}
       <div className='mb-6'>
         <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4'>
-          {/* Status Filter */}
           <div>
             <label className='text-sm font-medium mb-1 block'>Trạng thái</label>
             <Select value={status} onValueChange={(e: any) => setStatus(e)}>
@@ -132,7 +131,6 @@ export default function PageListTicket() {
                 <SelectValue placeholder='Chọn trạng thái' />
               </SelectTrigger>
               <SelectContent>
-                {/* <SelectItem value=''>Tất cả</SelectItem> */}
                 <SelectItem value='open'>Mở</SelectItem>
                 <SelectItem value='in_progress'>Đang xử lý</SelectItem>
                 <SelectItem value='close'>Đóng</SelectItem>
@@ -141,7 +139,6 @@ export default function PageListTicket() {
             </Select>
           </div>
 
-          {/* Priority Filter */}
           <div>
             <label className='text-sm font-medium mb-1 block'>Độ ưu tiên</label>
             <Select value={priority} onValueChange={(e: any) => setPriority(e)}>
@@ -149,7 +146,6 @@ export default function PageListTicket() {
                 <SelectValue placeholder='Chọn độ ưu tiên' />
               </SelectTrigger>
               <SelectContent>
-                {/* <SelectItem value=''>Tất cả</SelectItem> */}
                 <SelectItem value='low'>Thấp</SelectItem>
                 <SelectItem value='medium'>Trung bình</SelectItem>
                 <SelectItem value='high'>Cao</SelectItem>
@@ -227,7 +223,7 @@ export default function PageListTicket() {
                       <div className='prose prose-sm' dangerouslySetInnerHTML={{ __html: ticket.tkgr_description }} />
                     </div>
                   </div>
-                  {ticket.tkgr_attachment && (
+                  {ticket.tkgr_attachment && JSON.parse(ticket.tkgr_attachment).length > 0 && (
                     <div className='space-y-1'>
                       <div className='text-xs text-muted-foreground'>Tệp đính kèm</div>
                       <a
