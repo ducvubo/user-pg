@@ -7,7 +7,6 @@ import { CreateOrderFoodDto, IOrderFood } from "./order.food.interface";
 
 
 export const calcPriceShipingGHTK = async (requestBody: any) => {
-  console.log('🚀 ~ calcPriceShipingGHTK ~ requestBody:')
   const response = await fetch('https://services.giaohangtietkiem.vn/services/shipment/fee', {
     method: 'POST',
     headers: {
@@ -17,6 +16,7 @@ export const calcPriceShipingGHTK = async (requestBody: any) => {
     body: JSON.stringify(requestBody)
   })
   const data = await response.json()
+  console.log('data', data);
   return data
 }
 
@@ -30,6 +30,7 @@ export const calcPriceShippingGHN = async (requestBody: any) => {
     body: JSON.stringify(requestBody)
   })
   const data = await response.json()
+  console.log('data', data);
   return data
 }
 

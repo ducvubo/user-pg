@@ -440,7 +440,7 @@ export default function PageOrderCombo({ inforCombo, quantity, restaurant, slug 
               <div className="space-y-2">
                 {shippingFeeGHTK !== null && (
                   <div className="flex justify-between">
-                    <span className="font-semibold">Phí giao hàng GHTK:</span>
+                    <span className="font-semibold">Phí giao hàng:</span>
                     <span>{shippingFeeGHTK.toLocaleString('vi-VN')} VNĐ</span>
                   </div>
                 )}
@@ -450,12 +450,12 @@ export default function PageOrderCombo({ inforCombo, quantity, restaurant, slug 
                     <span>{shippingFeeGHN.toLocaleString('vi-VN')} VNĐ</span>
                   </div>
                 )}
-                <div className="flex justify-between font-semibold">
+                {/* <div className="flex justify-between font-semibold">
                   <span>Phí giao hàng (thấp nhất):</span>
                   <span>
                     {Math.min(shippingFeeGHN || Infinity, shippingFeeGHTK || Infinity).toLocaleString('vi-VN')} VNĐ
                   </span>
-                </div>
+                </div> */}
               </div>
             )}
             {(shippingFeeGHN !== null || shippingFeeGHTK !== null) && (
